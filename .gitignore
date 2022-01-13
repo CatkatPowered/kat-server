@@ -1,0 +1,10 @@
+# IDE
+.idea/
+.vscode/
+
+# Gradle
+.gradle/
+build/
+
+# Other
+bin/
