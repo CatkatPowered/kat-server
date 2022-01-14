@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- log4j2.xml - Example log4j configuration file
+     Place this file in the same directory as your server.jar, edit
+     to taste, and add -D log4j.configurationFile=log4j2.xml to your
+     server startup flags.
+     More log4j example configs can be found at
+     <http://logging.apache.org/log4j/2.x/manual/appenders.html>.
+-->
+<!-- log4j2.xml maybe i am lazy @Hanbings -->
+
+<Configuration status="info">
+    <Appenders>
+
+        <!-- console logging - logs to stdout -->
+        <Console name="SysOut" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{yyyy-MM-dd}][%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+        </Console>
+
+        <!-- file logging - stuff under the logs/ dir -->
+        <RollingRandomAccessFile name="File" fileName="logs/latest.log"
+                                 filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{yyyy-MM-dd}][%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <OnStartupTriggeringPolicy />
+                <!-- <SizeBasedTriggeringPolicy size="250 MB"/> -->
+            </Policies>
+            <!-- keep up to 20 files before removing them -->
+            <!-- <DefaultRolloverStrategy max="20"/> -->
+        </RollingRandomAccessFile>
+
+        <!-- legacy logging - logs to server.log -->
+        <File name="LegacyServerLog" fileName="logs/server.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%level] %msg%n" />
+        </File>
+
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+
+            <!-- DEFAULT LOGGERS -->
+
+            <filters>
+                <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY"
+                              onMismatch="NEUTRAL" />
+            </filters>
+            <AppenderRef ref="SysOut"/>
+            <AppenderRef ref="File"/>
+
+            <!-- EXAMPLE LOGGERS -->
+
+            <!-- <AppenderRef ref="LegacyServerLog"/> -->
+        </Root>
+    </Loggers>
+</Configuration>
