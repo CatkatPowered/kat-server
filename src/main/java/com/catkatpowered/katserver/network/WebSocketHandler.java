@@ -1,4 +1,4 @@
-package com.catkatpowered.network;
+package com.catkatpowered.katserver.network;
 
 
 public class WebSocketHandler {
