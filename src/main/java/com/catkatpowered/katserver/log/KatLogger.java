@@ -1,18 +1,14 @@
 package com.catkatpowered.katserver.log;
 
-import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-
 public class KatLogger {
-    private static final KatLogger INSTANCE = new KatLogger();
-    @Getter
-    private final HashMap<String, Logger> loggerHashMap = new HashMap<>();
+    private static final Logger INSTANCE = LogManager.getLogger();
 
     private KatLogger() {}
 
-    public static KatLogger getInstance() {
+    public static Logger getInstance() {
         return INSTANCE;
     }
 }
