@@ -10,8 +10,7 @@ public class KatLogger {
     @Getter
     private final HashMap<String, Logger> loggerHashMap = new HashMap<>();
 
-    private KatLogger() {
-    }
+    private KatLogger() {}
 
     public static KatLogger getInstance() {
         return INSTANCE;
