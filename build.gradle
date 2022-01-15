@@ -1,4 +1,5 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'java'
 }
 
@@ -25,7 +26,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j
     implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
-    
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.1'
+
     // https://mvnrepository.com/artifact/io.javalin/javalin
     implementation 'io.javalin:javalin:4.2.0'
     
@@ -36,6 +39,15 @@ dependencies {
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 
+}
+
+shadowJar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.catkatpowered.katserver.KatServer',
+                "Multi-Release": true
+        )
+    }
 }
 
 test {

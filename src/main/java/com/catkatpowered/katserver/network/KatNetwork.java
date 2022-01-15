@@ -10,5 +10,7 @@ public class KatNetwork {
 
         // WebSocket Handlers
         katserver.ws("/websocket", ws -> ws.onMessage(WebSocketHandler::WebSocketMessageHandler));
+
+        katserver.start();
     }
 }

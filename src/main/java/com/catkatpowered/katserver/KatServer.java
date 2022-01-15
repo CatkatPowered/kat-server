@@ -1,5 +1,6 @@
 package com.catkatpowered.katserver;
 
+import com.catkatpowered.katserver.log.KatLogger;
 import com.catkatpowered.katserver.network.KatNetwork;
 import com.catkatpowered.katserver.storage.KatStorage;
 
@@ -12,5 +13,7 @@ public class KatServer {
     KatNetwork.KatNetworkMain();
     // 启动储存模块
     KatStorage.KatStorageMain();
+
+    KatLogger.getInstance().info("Started!");
   }
 }
