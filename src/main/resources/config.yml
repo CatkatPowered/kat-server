@@ -1,1 +1,2 @@
 network_port: 25565
+data_folder_path: "./data"

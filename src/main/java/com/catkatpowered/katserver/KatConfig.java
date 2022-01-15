@@ -2,7 +2,6 @@ package com.catkatpowered.katserver;
 
 
 import com.catkatpowered.katserver.log.KatLogger;
-import org.apache.logging.log4j.Level;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -11,6 +10,7 @@ import java.util.Objects;
 
 public class KatConfig {
     public static Integer KAT_NETWORK_PORT = 25565; // ;)
+    public static String KAT_DATA_FOLDER_PATH = "";
 
     public static void KatConfigMain() {
         File katConfigFile = new File("./config.yml");
@@ -22,6 +22,7 @@ public class KatConfig {
                 inputStream.close();
                 // 开始获取常量
                 KAT_NETWORK_PORT = Integer.parseInt(config.get("network_port").toString());
+                KAT_DATA_FOLDER_PATH = config.get("data_folder_path").toString();
             } catch (Exception e) {
                 e.printStackTrace();
             }
