@@ -3,6 +3,7 @@ package com.catkatpowered.katserver.network;
 import io.javalin.Javalin;
 
 public class KatNetwork {
+
     public static void KatNetworkMain() {
         Javalin katserver = Javalin.create();
         // HTTP Handlers
