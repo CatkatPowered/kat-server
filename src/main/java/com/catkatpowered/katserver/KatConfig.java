@@ -19,22 +19,24 @@ import java.util.Objects;
  */
 public class KatConfig {
 
-    @Getter
-    private static Integer katNetworkPort = 25565; // ;)
-    @Getter
-    private static String katDataFolderPath = "";
+    private static final KatConfig Instance = new KatConfig();
 
-    public static void KatConfigMain() {
+    @Getter
+    private Integer katNetworkPort = 25565;
+    @Getter
+    private String katDataFolderPath = "";
+
+    private KatConfig() {
         File katConfigFile = new File(KatWorkingDir.fixPath("./config.yml"));
         if (katConfigFile.exists()) {
             Yaml yaml = new Yaml();
             try {
                 InputStream inputStream = new FileInputStream(katConfigFile);
-                Map<String, Object> config = yaml.load(inputStream);
+                Map<String, Object> yamlContent = yaml.load(inputStream);
                 inputStream.close();
                 // 开始获取常量
-                katNetworkPort = Integer.parseInt(config.get("network_port").toString());
-                katDataFolderPath = config.get("data_folder_path").toString();
+                katNetworkPort = Integer.parseInt(yamlContent.get("network_port").toString());
+                katDataFolderPath = yamlContent.get("data_folder_path").toString();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -57,5 +59,9 @@ public class KatConfig {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static KatConfig getInstance() {
+        return Instance;
     }
 }
