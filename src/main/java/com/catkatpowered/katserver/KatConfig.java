@@ -1,6 +1,8 @@
 package com.catkatpowered.katserver;
 
+import com.catkatpowered.katserver.common.KatMiscConstants;
 import com.catkatpowered.katserver.log.KatLogger;
+import com.catkatpowered.katserver.util.KatWorkingDir;
 import org.yaml.snakeyaml.Yaml;
 
 import lombok.Getter;
@@ -9,6 +11,12 @@ import java.io.*;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Kat Server 的配置文件项
+ *
+ * @author exusiai
+ * @author suibing112233
+ */
 public class KatConfig {
 
     @Getter
@@ -17,7 +25,7 @@ public class KatConfig {
     private static String katDataFolderPath = "";
 
     public static void KatConfigMain() {
-        File katConfigFile = new File("./config.yml");
+        File katConfigFile = new File(KatWorkingDir.fixPath("./config.yml"));
         if (katConfigFile.exists()) {
             Yaml yaml = new Yaml();
             try {
@@ -36,12 +44,14 @@ public class KatConfig {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
                     outputStream.write(Objects.requireNonNull(KatConfig.class
                             .getClassLoader()
-                            .getResourceAsStream("config.yml"))
-                            .readAllBytes());
+                            .getResourceAsStream(KatWorkingDir.fixPath("./config.yml")))
+                        .readAllBytes());
                     outputStream.flush();
                     outputStream.close();
                 } else {
-                    KatLogger.getInstance().fatal("Unable to write config file!");
+                    KatLogger
+                        .getLogger(KatMiscConstants.KAT_PROJECT_NAME)
+                        .fatal("Unable to write config file!");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

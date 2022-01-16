@@ -10,6 +10,7 @@ import java.io.File;
 /**
  * 类定义了一个基本的 Kat 桥
  * @author hanbings
+ * @author suibing112233
  */
 @SuppressWarnings("unused")
 public abstract class KatBridge {
@@ -25,14 +26,6 @@ public abstract class KatBridge {
     // 桥模块网站
     @Setter @Getter
     private String website = "https://github.com";
-
-    /**
-     * 为桥提供日志实例
-     * @return 日志实例
-     */
-    public Logger getLogger() {
-        return KatLogger.getInstance();
-    }
 
     // 抽象方法 在桥被加载时会执行此代码
     public abstract void onEnable();

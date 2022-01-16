@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 public class KatLogger {
 
-    private static final Logger INSTANCE = LogManager.getLogger();
+    private static final KatLogger INSTANCE = new KatLogger();
 
     @Getter
     private final HashMap<String, Logger> loggerManager = new HashMap<String, Logger>();
@@ -15,17 +15,17 @@ public class KatLogger {
     private KatLogger() {
     }
 
-    public static Logger getInstance() {
+    public static KatLogger getInstance() {
         return INSTANCE;
     }
 
-    public Logger getLogger(String name) {
-        var logger = this.loggerManager.get(name);
+    public static Logger getLogger(String name) {
+        var logger = KatLogger.getInstance().loggerManager.get(name);
 
         if (logger == null) {
-            this.loggerManager.put(name, LogManager.getLogger(name));
+            KatLogger.getInstance().loggerManager.put(name, LogManager.getLogger(name));
         }
-        return this.loggerManager.get(name);
+        return KatLogger.getInstance().loggerManager.get(name);
     }
 
     public static Logger getLogger() {
