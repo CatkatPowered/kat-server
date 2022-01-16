@@ -6,18 +6,22 @@ import java.io.File;
 import java.io.InputStream;
 
 public class KatMediaStorage {
-    public static Boolean KatMediaPut(InputStream inputStream){
 
-        return true;
-    }
+  public static Boolean putMedia(InputStream inputStream) {
 
-    public static File KatMediaGet(String mediaHash) {
-        String mediaPath = KatConfig.KAT_DATA_FOLDER_PATH + "/media/" + mediaHash.substring(0,3) + "/" + mediaHash;
-        File media = new File(mediaPath);
-        if (media.exists()) {
-            return media;
-        } else {
-            return null;
-        }
-    }
+    return true;
+  }
+
+  public static File getMedia(String mediaHash) {
+    String mediaPath = String.valueOf(
+        new StringBuilder()
+            .append(KatConfig.getKatDataFolderPath())
+            .append("/media/")
+            .append(mediaHash.substring(0, 3))
+            .append("/")
+            .append(mediaHash));
+
+    File media = new File(mediaPath);
+    return media.exists() ? media : null;
+  }
 }
