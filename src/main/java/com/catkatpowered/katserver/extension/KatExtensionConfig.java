@@ -10,6 +10,9 @@ import java.util.List;
  * 实体类 存放扩展配置文件
  */
 public class KatExtensionConfig {
+    // 扩展主函数
+    @Setter @Getter @SerializedName("main")
+    public String main;
     // 扩展名
     @Setter @Getter @SerializedName("extension")
     public String extension;

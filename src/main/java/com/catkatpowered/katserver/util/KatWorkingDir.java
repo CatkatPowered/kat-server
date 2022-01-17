@@ -2,7 +2,6 @@ package com.catkatpowered.katserver.util;
 
 import com.catkatpowered.katserver.common.KatMiscConstants;
 
-import java.util.Objects;
 
 public class KatWorkingDir {
 
@@ -10,8 +9,8 @@ public class KatWorkingDir {
         var workingDir = System.getenv().get(KatMiscConstants.KAT_ENV_WORKING_DIR);
 
         return workingDir == null || workingDir.isEmpty()
-            ? System.getProperty("user.dir")
-            : workingDir;
+                ? System.getProperty("user.dir")
+                : workingDir;
     }
 
     public static String fixPath(String path) {
