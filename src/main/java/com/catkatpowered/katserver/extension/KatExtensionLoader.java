@@ -6,6 +6,10 @@ import com.google.gson.Gson;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,37 +25,97 @@ import java.util.stream.Collectors;
 public class KatExtensionLoader {
     static Logger logger = KatLogger.getLogger("Kat Extension Loader");
     static Gson gson = new Gson();
+    // 扩展映射图与扩展实例图以及一个描述文件索引
+    static Map<String, KatExtensionInfo> index = new HashMap<>();
+    static Map<KatExtensionInfo, Class<?>> mapping = new HashMap<>();
+    static Map<KatExtensionInfo, Object> extensions = new HashMap<>();
 
     /**
      * 加载扩展流程 <br>
      * 扫描扩展目录 找到文件名符合的扩展 <br>
-     * -> 读取扩展的配置文件 <br>
-     * -> TODO: 根据配置文件中所定义的依赖顺序排列扩展加载顺序 <br>
-     * -> 通过 ClassLoader 加载配置文件中所定义的主类 <br>
+     * -> 读取扩展的描述文件 <br>
+     * -> TODO: 根据描述文件中所定义的依赖顺序排列扩展加载顺序 <br>
+     * -> 通过 ClassLoader 加载描述文件中所定义的主类 <br>
      * -> 在 onLoad 以前注入所需的模块 <br>
      * -> 分别执行 onLoad onEnable onDisable <br>
      * -> 释放无用资源 <br>
-     * 加载完成
-     *
+     * 加载完成 <br>
+     * <p>
      * 此方法为入口方法
      */
-    public void loadExtension() {
+    public void loadExtensions() {
+        // 获取扩展文件
         List<File> jars = this.getExtensions();
-        // 扩展文件与扩展配置文件成对存放
-        Map<File, KatExtensionInfo> mapping = new HashMap<>();
-        for(File jar : jars) {
-            mapping.put(jar, this.getExtensionConfig(jar));
+        for (File jar : jars) {
+            // 扩展描述文件
+            KatExtensionInfo info = this.getExtensionInfo(jar);
+            // 建立描述文件索引
+            index.put(info.extension, info);
+            // 获取扩展主类
+            Class<?> clazz = loadJar(jar, info.main);
+            // 保留映射
+            mapping.put(info, clazz);
+            // 加载
+            this.loadExtension(clazz, info);
         }
-        // 遍历加载
     }
 
     /**
-     * 获取配置文件实体类
+     * 注入扩展依赖并调用单个扩展方法
+     *
+     * @param clazz 扩展主类
+     * @param info  扩展描述
+     */
+    public void loadExtension(Class<?> clazz, KatExtensionInfo info) {
+        try {
+            // 新对象
+            Object extension = clazz.getDeclaredConstructor().newInstance();
+            extensions.put(info, extension);
+            // 获取方法 -> 注入日志 -> 按顺序调用
+            clazz.getMethod("setLogger", Logger.class).invoke(extension, KatLogger.getLogger(info.extension));
+            clazz.getMethod("onLoad").invoke(this);
+            clazz.getMethod("onEnable").invoke(this);
+        } catch (InstantiationException
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException exception) {
+            logger.error("unknown error. cloud not load {} extension.", info.extension, exception);
+        }
+    }
+
+    /**
+     * 卸载一个扩展名
+     *
+     * @param extension 扩展名
+     */
+    public void unloadExtension(String extension) {
+
+    }
+
+    /**
+     * 正式加载扩类文件
+     *
+     * @param extension 扩展文件
+     * @param main      主类
+     * @return 扩展类
+     */
+    public Class<?> loadJar(File extension, String main) {
+        try {
+            URLClassLoader loader = new URLClassLoader(new URL[]{extension.toURI().toURL()});
+            return loader.loadClass(main);
+        } catch (MalformedURLException | ClassNotFoundException exception) {
+            logger.error("cloud not load {} extension.", extension.getName(), exception);
+        }
+        return null;
+    }
+
+    /**
+     * 获取描述文件实体类
      *
      * @param extension 扩展文件对象
-     * @return 配置文件实体类或者失败时返回 null
+     * @return 描述文件实体类或者失败时返回 null
      */
-    public KatExtensionInfo getExtensionConfig(File extension) {
+    public KatExtensionInfo getExtensionInfo(File extension) {
         try {
             JarFile jar = new JarFile(extension);
             // 获得 Input Stream

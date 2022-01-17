@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * 实体类 存放扩展配置文件
+ * 实体类 存放扩展描述文件
  */
 public class KatExtensionInfo {
     // 扩展主函数

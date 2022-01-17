@@ -7,6 +7,7 @@ package com.catkatpowered.katserver.extension;
  */
 public class KatExtensionManager {
     public static void KatExtensionMain() {
-
+         KatExtensionLoader loader = new KatExtensionLoader();
+        loader.loadExtensions();
     }
 }

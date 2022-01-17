@@ -15,11 +15,7 @@ import org.apache.logging.log4j.Logger;
  */
 @SuppressWarnings("unused")
 public abstract class KatExtension {
-    // 配置文件对象 需要由加载器来注入
-    @Setter @Getter
-    private static KatExtensionInfo extensionInfo;
-
-    // 日志 日志名从 config 中获取 同样由加载器注入
+    // 日志 日志名从描述文件中获取 同样由加载器注入
     @Setter @Getter
     private static Logger logger;
 
