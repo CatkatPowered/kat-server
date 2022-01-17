@@ -13,13 +13,8 @@ public class KatResources {
     // 日志文件储存路径
     public static final String KAT_LOGGER_PATH = KatWorkingDir.fixPath("/log");
 
-    // 桥模块存储路径
-    public static final String KAT_BRIDGE_ROOT = KatWorkingDir.fixPath("/bridges");
-    // 桥模块配置文件存储路径
-    public static final String KAT_BRIDGE_CONFIG_ROOT = KatWorkingDir.fixPath("/bridges/config");
-
-    // 插件存储路径
-    public static final String KAT_PLUGIN_ROOT = KatWorkingDir.fixPath("/plugins");
-    // 插件配置文件存储路径
-    public static final String KAT_PLUGIN_CONFIG_ROOT = KatWorkingDir.fixPath("/plugins/config");
+    // 扩展存储路径
+    public static final String KAT_EXTENSIONS_ROOT = KatWorkingDir.fixPath("/extension");
+    // 扩展配置文件存储路径
+    public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkingDir.fixPath("/extension/config");
 }
