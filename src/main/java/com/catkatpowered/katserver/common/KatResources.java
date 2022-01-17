@@ -19,5 +19,5 @@ public class KatResources {
     public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkingDir.fixPath("/extension/config");
 
     // SQLite 数据库存储路径
-    public static final String SQLITE_DATABASE_PATH = "./data/database.db";
+    public static final String SQLITE_DATABASE_PATH = KatWorkingDir.fixPath("./data/database.db");
 }
