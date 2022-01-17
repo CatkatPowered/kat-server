@@ -67,7 +67,8 @@ public class KatConfig {
                         e.printStackTrace();
                     }
 
-                    Files.createDirectory(Path.of(KatWorkingDir.getWorkingDir() + katDataFolderPath));
+                    if (!Files.exists(Path.of(KatWorkingDir.fixPath(katDataFolderPath))))
+                        Files.createDirectory(Path.of(KatWorkingDir.fixPath(katDataFolderPath)));
 
                 } else {
                     KatLogger
