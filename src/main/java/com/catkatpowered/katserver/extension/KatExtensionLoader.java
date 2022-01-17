@@ -38,7 +38,7 @@ public class KatExtensionLoader {
     public void loadExtension() {
         List<File> jars = this.getExtensions();
         // 扩展文件与扩展配置文件成对存放
-        Map<File, KatExtensionConfig> mapping = new HashMap<>();
+        Map<File, KatExtensionInfo> mapping = new HashMap<>();
         for(File jar : jars) {
             mapping.put(jar, this.getExtensionConfig(jar));
         }
@@ -51,7 +51,7 @@ public class KatExtensionLoader {
      * @param extension 扩展文件对象
      * @return 配置文件实体类或者失败时返回 null
      */
-    public KatExtensionConfig getExtensionConfig(File extension) {
+    public KatExtensionInfo getExtensionConfig(File extension) {
         try {
             JarFile jar = new JarFile(extension);
             // 获得 Input Stream
@@ -60,7 +60,7 @@ public class KatExtensionLoader {
             String json = new BufferedReader(new InputStreamReader(stream))
                     .lines().collect(Collectors.joining(System.lineSeparator()));
             // 注入依赖
-            return gson.fromJson(json, KatExtensionConfig.class);
+            return gson.fromJson(json, KatExtensionInfo.class);
         } catch (IOException exception) {
             logger.error("Are you ready {} is a extension?", extension.getName(), exception);
         }

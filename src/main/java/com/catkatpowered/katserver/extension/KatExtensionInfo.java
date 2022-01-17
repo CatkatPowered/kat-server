@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 实体类 存放扩展配置文件
  */
-public class KatExtensionConfig {
+public class KatExtensionInfo {
     // 扩展主函数
     @Setter @Getter @SerializedName("main")
     public String main;

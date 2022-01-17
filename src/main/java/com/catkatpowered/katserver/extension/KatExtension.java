@@ -11,12 +11,13 @@ import org.apache.logging.log4j.Logger;
  * 抽象类应向扩展提供已经实现的 API 方法 由扩展实现抽象方法提供给核心调用
  *
  * @author hanbings
+ * @author suibing112233
  */
 @SuppressWarnings("unused")
 public abstract class KatExtension {
     // 配置文件对象 需要由加载器来注入
     @Setter @Getter
-    private static KatExtensionConfig extensionConfig;
+    private static KatExtensionInfo extensionInfo;
 
     // 日志 日志名从 config 中获取 同样由加载器注入
     @Setter @Getter
