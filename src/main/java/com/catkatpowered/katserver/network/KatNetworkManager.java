@@ -3,7 +3,7 @@ package com.catkatpowered.katserver.network;
 import com.catkatpowered.katserver.KatConfig;
 import io.javalin.Javalin;
 
-public class KatNetwork {
+public class KatNetworkManager {
 
     public static void KatNetworkMain() {
         Javalin katserver = Javalin.create();

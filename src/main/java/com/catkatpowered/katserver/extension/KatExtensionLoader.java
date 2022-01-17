@@ -7,7 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,29 @@ import java.util.stream.Collectors;
 public class KatExtensionLoader {
     static Logger logger = KatLogger.getLogger("Kat Extension Loader");
     static Gson gson = new Gson();
+
+    /**
+     * 加载扩展流程 <br>
+     * 扫描扩展目录 找到文件名符合的扩展 <br>
+     * -> 读取扩展的配置文件 <br>
+     * -> TODO: 根据配置文件中所定义的依赖顺序排列扩展加载顺序 <br>
+     * -> 通过 ClassLoader 加载配置文件中所定义的主类 <br>
+     * -> 在 onLoad 以前注入所需的模块 <br>
+     * -> 分别执行 onLoad onEnable onDisable <br>
+     * -> 释放无用资源 <br>
+     * 加载完成
+     *
+     * 此方法为入口方法
+     */
+    public void loadExtension() {
+        List<File> jars = this.getExtensions();
+        // 扩展文件与扩展配置文件成对存放
+        Map<File, KatExtensionConfig> mapping = new HashMap<>();
+        for(File jar : jars) {
+            mapping.put(jar, this.getExtensionConfig(jar));
+        }
+        // 遍历加载
+    }
 
     /**
      * 获取配置文件实体类

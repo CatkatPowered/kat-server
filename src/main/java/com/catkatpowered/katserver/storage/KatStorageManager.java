@@ -7,7 +7,7 @@ import java.io.File;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class KatStorage {
+public class KatStorageManager {
 
     public static void KatStorageMain() {
         // ShaUtils 轮子已造

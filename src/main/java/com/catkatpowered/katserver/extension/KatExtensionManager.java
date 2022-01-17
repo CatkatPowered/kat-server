@@ -5,7 +5,7 @@ package com.catkatpowered.katserver.extension;
  *
  * @author hanbings
  */
-public class KatExtensionController {
+public class KatExtensionManager {
     public static void KatExtensionMain() {
 
     }
