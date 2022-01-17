@@ -1,5 +1,6 @@
 package com.catkatpowered.katserver.network;
 
+import com.catkatpowered.katserver.KatConfig;
 import io.javalin.Javalin;
 
 public class KatNetwork {
@@ -12,6 +13,6 @@ public class KatNetwork {
         // WebSocket Handlers
         katserver.ws("/websocket", ws -> ws.onMessage(WebSocketHandler::WebSocketMessageHandler));
 
-        katserver.start();
+        katserver.start(KatConfig.getInstance().getKatNetworkPort());
     }
 }

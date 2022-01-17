@@ -9,11 +9,8 @@ public class KatWorkingDir {
     public static String getWorkingDir() {
         var workingDir = System.getenv().get(KatMiscConstants.KAT_ENV_WORKING_DIR);
 
-        return workingDir.isEmpty()
-            ? Objects.requireNonNull(Thread.currentThread()
-                .getContextClassLoader()
-                .getResource(""))
-                .getPath()
+        return workingDir == null || workingDir.isEmpty()
+            ? System.getProperty("user.dir")
             : workingDir;
     }
 
