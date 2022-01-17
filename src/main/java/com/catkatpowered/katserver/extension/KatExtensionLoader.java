@@ -10,10 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
@@ -73,8 +70,8 @@ public class KatExtensionLoader {
             extensions.put(info, extension);
             // 获取方法 -> 注入日志 -> 按顺序调用
             clazz.getMethod("setLogger", Logger.class).invoke(extension, KatLogger.getLogger(info.extension));
-            clazz.getMethod("onLoad").invoke(this);
-            clazz.getMethod("onEnable").invoke(this);
+            clazz.getMethod("onLoad").invoke(extension);
+            clazz.getMethod("onEnable").invoke(extension);
         } catch (InstantiationException
                 | IllegalAccessException
                 | InvocationTargetException
@@ -84,12 +81,44 @@ public class KatExtensionLoader {
     }
 
     /**
-     * 卸载一个扩展名
+     * 卸载一个扩展
      *
      * @param extension 扩展名
      */
     public void unloadExtension(String extension) {
+        KatExtensionInfo info = index.get(extension);
+        try {
+            mapping.get(info).getMethod("onDisable").invoke(extensions.get(info));
+            // 卸载成功后移除索引与图
+            extensions.remove(info);
+            mapping.remove(info);
+            index.remove(extension);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
+            logger.error("unload {} extension error.", info.extension, exception);
+        }
+    }
 
+    /**
+     * 卸载一个扩展
+     *
+     * @param extension 扩展实例
+     */
+    public void unloadExtension(KatExtension extension) {
+        // extension 表获取描述文件实体类
+        KatExtensionInfo info = (KatExtensionInfo) extensions.entrySet()
+                .stream()
+                .filter(kvEntry -> Objects.equals(kvEntry.getValue(), extension))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+        try {
+            mapping.get(info).getMethod("onDisable").invoke(extensions.get(info));
+            // 卸载成功后移除索引与图
+            extensions.remove(info);
+            mapping.remove(info);
+            index.remove(info.extension);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
+            logger.error("unload {} extension error.", info.extension, exception);
+        }
     }
 
     /**
