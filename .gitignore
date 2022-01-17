@@ -8,3 +8,8 @@ build/
 
 # Other
 bin/
+
+# Project
+logs/
+data/
+config.yml
