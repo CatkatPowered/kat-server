@@ -42,28 +42,24 @@ public class KatExtensionLoader {
      */
     public void loadExtensions() {
         // 获取扩展文件
-        List<File> jars = this.getExtensions();
-        for (File jar : jars) {
-            // 扩展描述文件
-            KatExtensionInfo info = this.getExtensionInfo(jar);
-            // 建立描述文件索引
-            index.put(info.extension, info);
-            // 获取扩展主类
-            Class<?> clazz = loadJar(jar, info.main);
-            // 保留映射
-            mapping.put(info, clazz);
-            // 加载
-            this.loadExtension(clazz, info);
+        for (File jar : this.getExtensions()) {
+            loadExtension(jar);
         }
     }
 
     /**
      * 注入扩展依赖并调用单个扩展方法
-     *
-     * @param clazz 扩展主类
-     * @param info  扩展描述
      */
-    public void loadExtension(Class<?> clazz, KatExtensionInfo info) {
+    public void loadExtension(File jar) {
+        // 扩展描述文件
+        KatExtensionInfo info = this.getExtensionInfo(jar);
+        // 建立描述文件索引
+        index.put(info.extension, info);
+        // 获取扩展主类
+        Class<?> clazz = loadJar(jar, info.main);
+        // 保留映射
+        mapping.put(info, clazz);
+        // 加载
         try {
             // 新对象
             Object extension = clazz.getDeclaredConstructor().newInstance();
@@ -77,6 +73,15 @@ public class KatExtensionLoader {
                 | InvocationTargetException
                 | NoSuchMethodException exception) {
             logger.error("unknown error. cloud not load {} extension.", info.extension, exception);
+        }
+    }
+
+    /**
+     * 卸载所有扩展
+     */
+    public void unloadExtensions() {
+        for (Map.Entry<String, KatExtensionInfo> entry : index.entrySet()) {
+            this.unloadExtension(entry.getKey());
         }
     }
 

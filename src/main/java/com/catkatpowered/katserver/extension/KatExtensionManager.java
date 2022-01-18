@@ -1,5 +1,7 @@
 package com.catkatpowered.katserver.extension;
 
+import java.io.File;
+
 /**
  * 扩展管理器
  *
@@ -17,6 +19,22 @@ public class KatExtensionManager {
      */
     public static void loadExtensions() {
         loader.loadExtensions();
+    }
+
+    /**
+     * 加载一个扩展
+     *
+     * @param jar 扩展文件
+     */
+    public static void loadExtension(File jar) {
+        loader.loadExtension(jar);
+    }
+
+    /**
+     * 卸载全部扩展
+     */
+    public static void unloadExtensions() {
+        loader.unloadExtensions();
     }
 
     /**
