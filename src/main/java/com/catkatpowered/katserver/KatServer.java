@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver;
 
 import com.catkatpowered.katserver.common.KatMiscConstants;
+import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.log.KatLogger;
 import com.catkatpowered.katserver.network.KatNetworkManager;
@@ -15,6 +16,8 @@ public class KatServer {
         // 画大饼
         KatLogger.getLogger(KatMiscConstants.KAT_PROJECT_NAME).info(KatMiscConstants.KAT_SERVER_LOGO);
 
+        // 启动事件总线模块
+        KatEventManager.KatEventMain();
         // 启动网络模块
         KatNetworkManager.KatNetworkMain();
         // 启动储存模块
