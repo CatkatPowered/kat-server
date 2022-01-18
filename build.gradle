@@ -11,6 +11,7 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url = 'https://repository.hanbings.io/snapshots' }
 }
 
 dependencies {
@@ -22,6 +23,8 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'io.hanbings.cynops:cynops-database:1.0.4-dev'
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j
     implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
@@ -42,6 +45,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
     implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+
+
 
 }
 
