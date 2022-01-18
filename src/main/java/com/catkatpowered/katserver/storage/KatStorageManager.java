@@ -19,7 +19,7 @@ public class KatStorageManager {
             KatLogger.getLogger().fatal(e.getStackTrace());
         }
         // 创建数据库
-        String databasePath = "JDBC:sqlite:" + KatMiscConstants.SQLITE_DATABASE_PATH;
+        String databasePath = "JDBC:sqlite:" + KatMiscConstants.KAT_DATABASE_PATH;
         if (!new File(databasePath).exists()) {
             try {
                 KatMessageStorage.getInstance().setDatabaseConnection(DriverManager.getConnection(databasePath));

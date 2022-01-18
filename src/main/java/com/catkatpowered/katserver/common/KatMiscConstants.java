@@ -7,6 +7,8 @@ import com.catkatpowered.katserver.util.KatWorkingDir;
  * 提供常量
  *
  * @author hanbings
+ * @author suibing112233
+ * @author CatMoe
  */
 public class KatMiscConstants {
 
@@ -40,6 +42,6 @@ public class KatMiscConstants {
     public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkingDir.fixPath("/extension/config");
 
     // SQLite 数据库存储路径
-    public static final String SQLITE_DATABASE_PATH = KatWorkingDir.fixPath(KatConfig.getInstance().getKatDataFolderPath() + "/database.db");
+    public static final String KAT_DATABASE_PATH = KatWorkingDir.fixPath(KatConfig.getInstance().getKatDataFolderPath() + "/database.db");
 
 }
