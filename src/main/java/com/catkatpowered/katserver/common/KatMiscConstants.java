@@ -1,5 +1,8 @@
 package com.catkatpowered.katserver.common;
 
+import com.catkatpowered.katserver.util.KatConfig;
+import com.catkatpowered.katserver.util.KatWorkingDir;
+
 /**
  * 提供常量
  *
@@ -27,4 +30,16 @@ public class KatMiscConstants {
 
     // Kat Server 环境变量：KAT_ENV_WORKING_DIR
     public static final String KAT_ENV_WORKING_DIR = "KAT_ENV_WORKING_DIR";
+
+    // 日志文件储存路径
+    public static final String KAT_LOGGER_PATH = KatWorkingDir.fixPath("/log");
+
+    // 扩展存储路径
+    public static final String KAT_EXTENSIONS_ROOT = KatWorkingDir.fixPath("/extension");
+    // 扩展配置文件存储路径
+    public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkingDir.fixPath("/extension/config");
+
+    // SQLite 数据库存储路径
+    public static final String SQLITE_DATABASE_PATH = KatWorkingDir.fixPath(KatConfig.getInstance().getKatDataFolderPath() + "/database.db");
+
 }

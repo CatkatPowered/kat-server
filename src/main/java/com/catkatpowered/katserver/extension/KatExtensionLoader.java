@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.extension;
 
-import com.catkatpowered.katserver.common.KatResources;
+import com.catkatpowered.katserver.common.KatMiscConstants;
 import com.catkatpowered.katserver.log.KatLogger;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.Logger;
@@ -173,7 +173,7 @@ public class KatExtensionLoader {
      */
     public List<File> getExtensions() {
         List<File> list = new ArrayList<>();
-        File path = new File(KatResources.KAT_EXTENSIONS_ROOT);
+        File path = new File(KatMiscConstants.KAT_EXTENSIONS_ROOT);
         File[] files = path.listFiles();
         if (files != null) {
             for (File file : files) {

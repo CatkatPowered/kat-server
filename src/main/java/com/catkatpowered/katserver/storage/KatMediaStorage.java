@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.storage;
 
-import com.catkatpowered.katserver.KatConfig;
+import com.catkatpowered.katserver.util.KatConfig;
 
 import java.io.File;
 import java.io.InputStream;

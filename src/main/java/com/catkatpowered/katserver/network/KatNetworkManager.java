@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.network;
 
-import com.catkatpowered.katserver.KatConfig;
+import com.catkatpowered.katserver.util.KatConfig;
 import io.javalin.Javalin;
 
 public class KatNetworkManager {
