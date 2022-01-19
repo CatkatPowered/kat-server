@@ -5,27 +5,27 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class KatLogger {
+public class KatLoggerManager {
 
-    private static final KatLogger INSTANCE = new KatLogger();
+    private static final KatLoggerManager INSTANCE = new KatLoggerManager();
 
     @Getter
     private final HashMap<String, Logger> loggerManager = new HashMap<String, Logger>();
 
-    private KatLogger() {
+    private KatLoggerManager() {
     }
 
-    public static KatLogger getInstance() {
+    public static KatLoggerManager getInstance() {
         return INSTANCE;
     }
 
     public static Logger getLogger(String name) {
-        var logger = KatLogger.getInstance().loggerManager.get(name);
+        var logger = KatLoggerManager.getInstance().loggerManager.get(name);
 
         if (logger == null) {
-            KatLogger.getInstance().loggerManager.put(name, LogManager.getLogger(name));
+            KatLoggerManager.getInstance().loggerManager.put(name, LogManager.getLogger(name));
         }
-        return KatLogger.getInstance().loggerManager.get(name);
+        return KatLoggerManager.getInstance().loggerManager.get(name);
     }
 
     public static Logger getLogger() {

@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.util;
 
 import com.catkatpowered.katserver.common.KatMiscConstants;
-import com.catkatpowered.katserver.log.KatLogger;
+import com.catkatpowered.katserver.log.KatLoggerManager;
 import lombok.Getter;
 import org.yaml.snakeyaml.Yaml;
 
@@ -56,7 +56,7 @@ public class KatConfig {
                     katNetworkPort = Integer.parseInt(yamlContent.get("network_port").toString());
                     katDataFolderPath = yamlContent.get("data_folder_path").toString();
                 } else {
-                    KatLogger
+                    KatLoggerManager
                             .getLogger(KatMiscConstants.KAT_PROJECT_NAME)
                             .fatal("Unable to write config file!");
                 }
@@ -66,7 +66,7 @@ public class KatConfig {
                 Files.createDirectory(Path.of(KatWorkingDir.fixPath(katDataFolderPath)));
 
         } catch (Exception e) {
-            KatLogger.getLogger().fatal(e.getStackTrace());
+            KatLoggerManager.getLogger().fatal(e.getStackTrace());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.storage;
 
 import com.catkatpowered.katserver.common.KatMiscConstants;
-import com.catkatpowered.katserver.log.KatLogger;
+import com.catkatpowered.katserver.log.KatLoggerManager;
 
 import java.io.File;
 import java.sql.DriverManager;
@@ -16,7 +16,7 @@ public class KatStorageManager {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {
-            KatLogger.getLogger().fatal(e.getStackTrace());
+            KatLoggerManager.getLogger().fatal(e.getStackTrace());
         }
         // 创建数据库
         String databasePath = "JDBC:sqlite:" + KatMiscConstants.KAT_DATABASE_PATH;

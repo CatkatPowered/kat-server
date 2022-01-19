@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.extension;
 
 import com.catkatpowered.katserver.common.KatMiscConstants;
-import com.catkatpowered.katserver.log.KatLogger;
+import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author hanbings
  */
 public class KatExtensionLoader {
-    static Logger logger = KatLogger.getLogger("Kat Extension Loader");
+    static Logger logger = KatLoggerManager.getLogger("Kat Extension Loader");
     static Gson gson = new Gson();
     // 扩展映射图与扩展实例图以及一个描述文件索引
     static Map<String, KatExtensionInfo> index = new HashMap<>();
@@ -65,7 +65,7 @@ public class KatExtensionLoader {
             Object extension = clazz.getDeclaredConstructor().newInstance();
             extensions.put(info, extension);
             // 获取方法 -> 注入日志 -> 按顺序调用
-            clazz.getMethod("setLogger", Logger.class).invoke(extension, KatLogger.getLogger(info.extension));
+            clazz.getMethod("setLogger", Logger.class).invoke(extension, KatLoggerManager.getLogger(info.extension));
             clazz.getMethod("onLoad").invoke(extension);
             clazz.getMethod("onEnable").invoke(extension);
         } catch (InstantiationException
