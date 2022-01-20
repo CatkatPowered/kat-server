@@ -2,7 +2,11 @@ package com.catkatpowered.katserver.util;
 
 import com.catkatpowered.katserver.common.KatMiscConstants;
 
-
+/**
+ * Kat Server的工作目录
+ *
+ * @author suibing112233
+ */
 public class KatWorkingDir {
 
     public static String getWorkingDir() {
