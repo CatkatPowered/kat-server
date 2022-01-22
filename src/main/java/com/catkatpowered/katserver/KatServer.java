@@ -1,31 +1,74 @@
 package com.catkatpowered.katserver;
 
-import com.catkatpowered.katserver.common.KatMiscConstants;
+import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
+import com.catkatpowered.katserver.event.RegisteredListener;
+import com.catkatpowered.katserver.event.interfaces.Listener;
+import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.log.KatLoggerManager;
-import com.catkatpowered.katserver.network.KatNetworkManager;
-import com.catkatpowered.katserver.storage.KatStorageManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 /**
- * 本项目采用 AGpl v3 进行开源 请遵循开源协议
+ * Kat API 入口
  */
+@SuppressWarnings("unused")
 public class KatServer {
-
-    public static void main(String[] args) {
-        // 画大饼
-        KatLoggerManager.getLogger(KatMiscConstants.KAT_PROJECT_NAME).info(KatMiscConstants.KAT_SERVER_LOGO);
-
-        // 启动事件总线模块
-        KatEventManager.KatEventMain();
-        // 启动网络模块
-        KatNetworkManager.KatNetworkMain();
-        // 启动储存模块
-        KatStorageManager.KatStorageMain();
-        // 启动扩展模块
-        KatExtensionManager.KatExtensionMain();
-
-        // 启动完成
-        KatLoggerManager.getLogger(KatMiscConstants.KAT_PROJECT_NAME).info("Started!");
+    // EventBus API
+    public void registerEvent(Event event) {
+        KatEventManager.registerEvent(event);
     }
+
+    public static void unregisterEvent(Event event) {
+        KatEventManager.unregisterEvent(event);
+    }
+
+    public static void registerListener(Listener listener) {
+        KatEventManager.registerListener(listener);
+    }
+
+    public static void unregisterListener(Listener listener) {
+        KatEventManager.unregisterListener(listener);
+    }
+
+    public static void callEvent(Event event) {
+        KatEventManager.callEvent(event);
+    }
+
+    public static RegisteredListener getEventHandler(Event event) {
+        return KatEventManager.getEventHandler(event);
+    }
+
+    // 扩展 API
+    public static void loadExtensions() {
+        KatExtensionManager.loadExtensions();
+    }
+
+    public static void loadExtension(File jar) {
+        KatExtensionManager.loadExtension(jar);
+    }
+
+    public static void unloadExtensions() {
+        KatExtensionManager.unloadExtensions();
+    }
+
+    public static void unloadExtension(String extension) {
+        KatExtensionManager.unloadExtension(extension);
+    }
+
+    public static void unloadExtension(KatExtension extension) {
+        KatExtensionManager.unloadExtension(extension);
+    }
+
+    // 日志 API
+    public static Logger getLogger() {
+        return KatLoggerManager.getLogger();
+    }
+
+    public static Logger getLogger(String name) {
+        return KatLoggerManager.getLogger(name);
+    }
+
 }
