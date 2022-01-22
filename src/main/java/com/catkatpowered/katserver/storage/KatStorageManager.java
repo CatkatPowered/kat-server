@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.storage;
 
+import com.catkatpowered.katserver.api.KatLoggerManager;
 import com.catkatpowered.katserver.common.KatMiscConstants;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 
 import java.io.File;
 import java.sql.DriverManager;

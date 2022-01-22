@@ -1,10 +1,10 @@
 package com.catkatpowered.katserver;
 
+import com.catkatpowered.katserver.api.KatLoggerManager;
 import com.catkatpowered.katserver.common.KatMiscConstants;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.catkatpowered.katserver.network.KatNetworkManager;
 import com.catkatpowered.katserver.storage.KatStorageManager;
 

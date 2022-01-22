@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.database.mysql;
 
-import com.catkatpowered.katserver.log.KatLoggerManager;
+import com.catkatpowered.katserver.api.KatLoggerManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.extension;
 
+import com.catkatpowered.katserver.api.KatLoggerManager;
 import com.catkatpowered.katserver.common.KatMiscConstants;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.Logger;
 

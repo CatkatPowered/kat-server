@@ -1,12 +1,12 @@
 package com.catkatpowered.katserver;
 
+import com.catkatpowered.katserver.api.KatLoggerManager;
 import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.RegisteredListener;
 import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
