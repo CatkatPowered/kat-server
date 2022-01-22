@@ -8,38 +8,38 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
  * @author hanbings
  */
 public class KatEventManager {
-    static EventBus bus;
 
-    public static void KatEventMain() {
-        bus = new EventBus();
+
+    public static void init() {
+        EventBus.getInstance();
     }
 
     public static void callEvent(Event event) {
-        bus.callEvent(event);
+        EventBus.getInstance().callEvent(event);
     }
 
     public static void registerEvent(Event event) {
-        bus.registerEvent(event);
+        EventBus.getInstance().registerEvent(event);
     }
 
     public static void unregisterEvent(Event event) {
-        bus.unregisterEvent(event);
+        EventBus.getInstance().unregisterEvent(event);
     }
 
     public static void registerListener(Listener listener) {
-        bus.registerListener(listener);
+        EventBus.getInstance().registerListener(listener);
     }
 
     public static void unregisterListener(Listener listener) {
-        bus.unregisterListener(listener);
+        EventBus.getInstance().unregisterListener(listener);
     }
 
     @Deprecated
     public static EventBus getEventBus() {
-        return bus;
+        return EventBus.getInstance();
     }
 
     public static RegisteredListener getEventHandler(Event event) {
-        return bus.getEventHandler(event);
+        return EventBus.getInstance().getEventHandler(event);
     }
 }

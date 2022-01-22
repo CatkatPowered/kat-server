@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.message;
 
-import com.catkatpowered.katserver.common.KatMessageTypeConstants;
+import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import lombok.Data;
@@ -9,6 +9,7 @@ import lombok.Data;
  * Kat 聚合消息
  *
  * @author suibing112233
+ * @author hanbings
  */
 @Data
 public class KatUniMessage {

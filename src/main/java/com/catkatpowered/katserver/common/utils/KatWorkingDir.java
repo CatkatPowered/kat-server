@@ -1,11 +1,12 @@
-package com.catkatpowered.katserver.util;
+package com.catkatpowered.katserver.common.utils;
 
-import com.catkatpowered.katserver.common.KatMiscConstants;
+import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 
 /**
  * Kat Server的工作目录
  *
  * @author suibing112233
+ * @author CatMoe
  */
 public class KatWorkingDir {
 

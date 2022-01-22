@@ -8,9 +8,8 @@ import java.io.File;
  * @author hanbings
  */
 public class KatExtensionManager {
-    static KatExtensionLoader loader = new KatExtensionLoader();
 
-    public static void KatExtensionMain() {
+    public static void init() {
         KatExtensionManager.loadExtensions();
     }
 
@@ -18,7 +17,7 @@ public class KatExtensionManager {
      * 加载所有符合要求的扩展
      */
     public static void loadExtensions() {
-        loader.loadExtensions();
+        KatExtensionLoader.getInstance().loadExtensions();
     }
 
     /**
@@ -27,14 +26,14 @@ public class KatExtensionManager {
      * @param jar 扩展文件
      */
     public static void loadExtension(File jar) {
-        loader.loadExtension(jar);
+        KatExtensionLoader.getInstance().loadExtension(jar);
     }
 
     /**
      * 卸载全部扩展
      */
     public static void unloadExtensions() {
-        loader.unloadExtensions();
+        KatExtensionLoader.getInstance().unloadExtensions();
     }
 
     /**
@@ -43,7 +42,7 @@ public class KatExtensionManager {
      * @param extension 扩展名
      */
     public static void unloadExtension(String extension) {
-        loader.unloadExtension(extension);
+        KatExtensionLoader.getInstance().unloadExtension(extension);
     }
 
     /**
@@ -52,6 +51,6 @@ public class KatExtensionManager {
      * @param extension 扩展实例
      */
     public static void unloadExtension(KatExtension extension) {
-        loader.unloadExtension(extension);
+        KatExtensionLoader.getInstance().unloadExtension(extension);
     }
 }

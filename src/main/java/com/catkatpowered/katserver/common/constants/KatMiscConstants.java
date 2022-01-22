@@ -1,7 +1,7 @@
-package com.catkatpowered.katserver.common;
+package com.catkatpowered.katserver.common.constants;
 
-import com.catkatpowered.katserver.util.KatConfig;
-import com.catkatpowered.katserver.util.KatWorkingDir;
+import com.catkatpowered.katserver.common.utils.KatConfig;
+import com.catkatpowered.katserver.common.utils.KatWorkingDir;
 
 /**
  * 提供常量

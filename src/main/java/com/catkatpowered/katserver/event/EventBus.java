@@ -4,7 +4,6 @@ import com.catkatpowered.katserver.event.interfaces.Blockable;
 import com.catkatpowered.katserver.event.interfaces.Cancellable;
 import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -12,6 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
 public class EventBus {
+
+    private static final EventBus Instance = new EventBus();
+
+    private EventBus() {
+    }
+
+    public static EventBus getInstance() {
+        return Instance;
+    }
+
     private final Map<Class<? extends Event>, RegisteredListener> handlers = new ConcurrentHashMap<>();
 
     public void callEvent(Event event) {
@@ -21,8 +30,8 @@ public class EventBus {
                     return;
                 }
                 if (event instanceof Cancellable
-                        && ((Cancellable) event).isCancelled()
-                        && handler.isIgnoreCancelled()) {
+                    && ((Cancellable) event).isCancelled()
+                    && handler.isIgnoreCancelled()) {
                     continue;
                 }
                 try {
@@ -58,8 +67,8 @@ public class EventBus {
                 if (handlers.containsKey(event)) {
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
                     handlers.get(event).addHandler(
-                            new RegisteredHandler(annotation.priority()
-                                    , annotation.ignoreCancelled(), listener, method));
+                        new RegisteredHandler(annotation.priority()
+                            , annotation.ignoreCancelled(), listener, method));
                 }
             }
         }
@@ -75,8 +84,8 @@ public class EventBus {
                 if (handlers.containsKey(event)) {
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
                     handlers.get(event).removeHandler(
-                            new RegisteredHandler(annotation.priority()
-                                    , annotation.ignoreCancelled(), listener, method));
+                        new RegisteredHandler(annotation.priority()
+                            , annotation.ignoreCancelled(), listener, method));
                 }
             }
         }

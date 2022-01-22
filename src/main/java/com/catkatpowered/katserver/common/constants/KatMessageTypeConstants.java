@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.common;
+package com.catkatpowered.katserver.common.constants;
 
 public class KatMessageTypeConstants {
 

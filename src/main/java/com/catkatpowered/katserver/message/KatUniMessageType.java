@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.message;
 
-import com.catkatpowered.katserver.common.KatMessageTypeConstants;
+import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
 import java.util.HashSet;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +10,14 @@ import lombok.Setter;
  *
  * @author suibing112233
  */
-public class KatMessageType {
+public class KatUniMessageType {
 
-    private static final KatMessageType Instance = new KatMessageType();
+    private static final KatUniMessageType Instance = new KatUniMessageType();
 
     @Getter @Setter
     private HashSet<String> messageTypes = new HashSet<>();
 
-    private KatMessageType() {
+    private KatUniMessageType() {
         this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE);
         this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_MEDIA_MESSAGE);
         this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_COLLECTION_MESSAGE);
@@ -25,9 +25,12 @@ public class KatMessageType {
 
     }
 
-    public static KatMessageType getInstance() {
+    public static KatUniMessageType getInstance() {
         return Instance;
     }
 
 
+    public  boolean addNewMessageType(String msgType) {
+        return this.messageTypes.add(msgType);
+    }
 }

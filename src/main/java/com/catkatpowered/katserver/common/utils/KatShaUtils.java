@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.util;
+package com.catkatpowered.katserver.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author hanbings
  */
-public class ShaUtils {
+public class KatShaUtils {
     public String sha256(File file) {
         if (file == null || file.length() == 0) {
             return null;

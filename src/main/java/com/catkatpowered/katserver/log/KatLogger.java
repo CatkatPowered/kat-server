@@ -20,4 +20,14 @@ public class KatLogger {
         return INSTANCE;
     }
 
+    public  Logger getLogger(String name) {
+
+        var logger = this.loggerManager.get(name);
+
+        if (logger == null) {
+            logger = LogManager.getLogger(name);
+            this.loggerManager.put(name, logger);
+        }
+        return logger;
+    }
 }
