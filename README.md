@@ -2,7 +2,7 @@
 
 <h1 align="center">🕊 Kat Server</h1>
 
-![Github License](https://img.shields.io/github/license/catkatpowered/kat-server?style=for-the-badge) ![GitHub Last Commit](https://img.shields.io/github/last-commit/catkatpowered/kat-server?style=for-the-badge) [![Website](https://img.shields.io/badge/WEBSITE-@CatKatPowered-blue.svg?style=for-the-badge)](https://catkatpowered.com)
+![Github License](https://img.shields.io/github/license/catkatpowered/kat-server?style=for-the-badge) ![GitHub Last Commit](https://img.shields.io/github/last-commit/catkatpowered/kat-server?style=for-the-badge)![GitHub Workflow Status](https://img.shields.io/github/workflow/status/catkatpowered/kat-server/Verify%20Build%20Github%20Actions?style=for-the-badge) [![Website](https://img.shields.io/badge/WEBSITE-@CatKatPowered-blue.svg?style=for-the-badge)](https://catkatpowered.com)
 
 ## 🎉 你好！
 
