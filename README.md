@@ -2,6 +2,8 @@
 
 <h1 align="center">🕊 Kat Server</h1>
 
+![Github License](https://img.shields.io/github/license/catkatpowered/kat-server?style=for-the-badge) ![GitHub Last Commit](https://img.shields.io/github/last-commit/catkatpowered/kat-server?style=for-the-badge) [![Website](https://img.shields.io/badge/WEBSITE-@CatKatPowered-blue.svg?style=for-the-badge)](https://catkatpowered.com)
+
 ## 🎉 你好！
 
 这是一个聊天软件的后端，或者说好几个聊天软件的后端
