@@ -43,7 +43,7 @@ public class KatUniMessage {
      * <b>MessageContent</b> 是本级消息的内容。<br>
      */
     @SerializedName("message_content")
-    public ArrayList<String> messageContent;
+    public String messageContent;
 
     /**
      * <b>MessageList</b> 指向的是下一级消息列表。</br>
@@ -83,7 +83,7 @@ public class KatUniMessage {
     @SerializedName("resource_url")
     public String resourceURL;
 
-    public KatUniMessage(String messageType, String messageID, ArrayList<String> messageContent,
+    public KatUniMessage(String messageType, String messageID, String messageContent,
         ArrayList<KatUniMessage> messageList, ArrayList<String> extended, String resourceHash,
         String resourceName, String resourceURL) {
         this.messageType = messageType;
