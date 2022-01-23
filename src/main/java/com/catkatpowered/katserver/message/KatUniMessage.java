@@ -3,6 +3,8 @@ package com.catkatpowered.katserver.message;
 import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 
 /**
@@ -12,6 +14,7 @@ import lombok.Data;
  * @author hanbings
  */
 @Data
+@Builder
 public class KatUniMessage {
 
     /**
@@ -25,6 +28,7 @@ public class KatUniMessage {
      * @see KatUniMessageTypeManager
      */
     @SerializedName("message_type")
+    @Default
     public String messageType = KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE;
 
     /**
