@@ -12,13 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("unused")
 public class EventBus {
 
-    private static final EventBus Instance = new EventBus();
+    private static final EventBus instance = new EventBus();
 
     private EventBus() {
     }
 
     public static EventBus getInstance() {
-        return Instance;
+        return instance;
     }
 
     private final Map<Class<? extends Event>, RegisteredListener> handlers = new ConcurrentHashMap<>();
