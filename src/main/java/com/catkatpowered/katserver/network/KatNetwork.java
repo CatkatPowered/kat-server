@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.network;
 
-import com.catkatpowered.katserver.common.utils.KatConfig;
+import com.catkatpowered.katserver.config.KatConfig;
 import io.javalin.Javalin;
 import lombok.Getter;
 import lombok.Setter;

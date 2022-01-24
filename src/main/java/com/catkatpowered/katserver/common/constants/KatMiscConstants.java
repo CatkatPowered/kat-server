@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.common.constants;
 
-import com.catkatpowered.katserver.common.utils.KatConfig;
+import com.catkatpowered.katserver.config.KatConfig;
 import com.catkatpowered.katserver.common.utils.KatWorkingDir;
 
 /**

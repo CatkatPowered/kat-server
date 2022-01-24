@@ -1,7 +1,8 @@
-package com.catkatpowered.katserver.common.utils;
+package com.catkatpowered.katserver.config;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
+import com.catkatpowered.katserver.common.utils.KatWorkingDir;
 import com.catkatpowered.katserver.log.KatLoggerManager;
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,5 +1,6 @@
 package com.catkatpowered.katserver;
 
+import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.RegisteredListener;
@@ -9,6 +10,7 @@ import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
 import java.io.File;
+import java.util.Map;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -22,10 +24,6 @@ public class KatServer {
 
     // EventBus API
     public static final class KatEventBusAPI {
-
-        public void registerEvent(Event event) {
-            KatEventManager.registerEvent(event);
-        }
 
         public static void unregisterEvent(Event event) {
             KatEventManager.unregisterEvent(event);
@@ -45,6 +43,10 @@ public class KatServer {
 
         public static RegisteredListener getEventHandler(Event event) {
             return KatEventManager.getEventHandler(event);
+        }
+
+        public void registerEvent(Event event) {
+            KatEventManager.registerEvent(event);
         }
     }
 
@@ -84,11 +86,24 @@ public class KatServer {
         }
     }
 
-    // KatUniMessage 类型API
+    // KatUniMessageType API
     public static final class KatUniMessageTypeAPI {
 
         public static boolean addMessageType(String msgType) {
             return KatUniMessageTypeManager.addMessageType(msgType);
         }
     }
+
+    // KatConfig API
+    public static final class KatConfigAPI {
+
+        public static Map<String, Object> getAllConfig() {
+            return KatConfigManager.getAllConfig();
+        }
+
+        public static Object getConfig(String configNode) {
+            return KatConfigManager.getConfig(configNode);
+        }
+    }
+
 }
