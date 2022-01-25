@@ -1,2 +1,25 @@
 network_port: 25565
 data_folder_path: "./data"
+
+# The SQLite only for development!
+#
+# You can choose those type of database:
+# 1. postgresql
+# 2. mysql
+# 3. mongodb
+# 4. sqlite
+database_type: sqlite
+
+# If you choose mongodb, you must add those yaml content
+#
+#mongodb:
+#  connection_url:
+#  password:
+#  username:
+
+# If you choose mysql, you must add those yaml content
+#
+#mysql:
+#  connection_url:
+#  password:
+#  username:
