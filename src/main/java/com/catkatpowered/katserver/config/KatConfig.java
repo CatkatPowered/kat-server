@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.config;
 
 import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 import com.catkatpowered.katserver.common.utils.KatWorkingDir;
 import com.catkatpowered.katserver.log.KatLoggerManager;
@@ -46,9 +47,7 @@ public class KatConfig {
                 InputStream inputStream = new FileInputStream(katConfigFile);
                 configContent = yaml.load(inputStream);
                 inputStream.close();
-                // 开始获取常量
-                katNetworkPort = Integer.parseInt(configContent.get("network_port").toString());
-                katDataFolderPath = configContent.get("data_folder_path").toString();
+
             } else {
                 if (katConfigFile.createNewFile()) {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
@@ -58,18 +57,22 @@ public class KatConfig {
                         .readAllBytes());
                     outputStream.flush();
                     outputStream.close();
-
                     Yaml yaml = new Yaml();
                     InputStream inputStream = new FileInputStream(katConfigFile);
                     configContent = yaml.load(inputStream);
                     inputStream.close();
-                    // 开始获取常量
-                    katNetworkPort = Integer.parseInt(configContent.get("network_port").toString());
-                    katDataFolderPath = configContent.get("data_folder_path").toString();
+
                 } else {
                     logger.fatal("Unable to write config file!");
                 }
             }
+
+            // 开始获取常量
+            katNetworkPort = Integer.parseInt(
+                configContent.get(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).toString());
+            katDataFolderPath = configContent.get(
+                KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH).toString();
+
             // 检测数据储存文件夹状态并处理
             if (!Files.exists(Path.of(KatWorkingDir.fixPath(katDataFolderPath)))) {
                 Files.createDirectory(Path.of(KatWorkingDir.fixPath(katDataFolderPath)));
