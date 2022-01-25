@@ -3,6 +3,7 @@ package com.catkatpowered.katserver.message;
 import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
@@ -94,5 +95,24 @@ public class KatUniMessage {
         this.resourceHash = resourceHash;
         this.resourceName = resourceName;
         this.resourceURL = resourceURL;
+    }
+
+    public boolean isResource() {
+        return
+            Objects.equals(this.messageType, KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE)
+                || Objects.equals(this.messageType,
+                KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE)
+                || Objects.equals(this.messageType,
+                KatMessageTypeConstants.KAT_MESSAGE_TYPE_AUDIO_MESSAGE)
+                || Objects.equals(this.messageType,
+                KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
+    }
+
+    public boolean isDownloadable() {
+        return this.resourceURL != null;
+    }
+
+    public boolean isHashed() {
+        return this.resourceHash != null;
     }
 }
