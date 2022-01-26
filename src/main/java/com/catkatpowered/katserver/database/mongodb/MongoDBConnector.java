@@ -13,7 +13,7 @@ public class MongoDBConnector {
      * @param database    数据库名字
      * @return MongoDatabase
      */
-    public static MongoDatabase getMongoDatabase(MongoClient mongoClient, String database) {
+    public MongoDatabase getMongoDatabase(MongoClient mongoClient, String database) {
         return mongoClient.getDatabase(database);
     }
 
@@ -27,10 +27,10 @@ public class MongoDBConnector {
      * @param password 数据库密码
      * @return 返回一步到位的数据库对象
      */
-    public static MongoDatabase getMongoDatabase(String address, int port, String username, String database, String password) {
-        return MongoDBConnector.getMongoClient(MongoDBConnector.getServerAddress(address, port)
-                , MongoDBConnector.getMongoCredential(username, database, password)
-                , MongoDBConnector.getMongoClientOptions()
+    public MongoDatabase getMongoDatabase(String address, int port, String username, String database, String password) {
+        return this.getMongoClient(this.getServerAddress(address, port)
+                , this.getMongoCredential(username, database, password)
+                , this.getMongoClientOptions()
         ).getDatabase(database);
     }
 
@@ -40,7 +40,7 @@ public class MongoDBConnector {
      * @param address 地址
      * @return Mongo Client 对象
      */
-    public static MongoClient getMongoClient(String address) {
+    public MongoClient getMongoClient(String address) {
         return new MongoClient(address, 27017);
     }
 
@@ -51,7 +51,7 @@ public class MongoDBConnector {
      * @param port    端口
      * @return Mongo Client 对象
      */
-    public static MongoClient getMongoClient(String address, int port) {
+    public MongoClient getMongoClient(String address, int port) {
         return new MongoClient(address, port);
     }
 
@@ -66,7 +66,7 @@ public class MongoDBConnector {
      * @param options    选项
      * @return Mongo Client 对象
      */
-    public static MongoClient getMongoClient(ServerAddress address, MongoCredential credential, MongoClientOptions options) {
+    public MongoClient getMongoClient(ServerAddress address, MongoCredential credential, MongoClientOptions options) {
         return new MongoClient(address, credential, options);
     }
 
@@ -76,7 +76,7 @@ public class MongoDBConnector {
      * @param address 地址
      * @return ServerAddress
      */
-    public static ServerAddress getServerAddress(String address) {
+    public ServerAddress getServerAddress(String address) {
         return new ServerAddress(address, 27017);
     }
 
@@ -87,7 +87,7 @@ public class MongoDBConnector {
      * @param port    端口
      * @return ServerAddress
      */
-    public static ServerAddress getServerAddress(String address, int port) {
+    public ServerAddress getServerAddress(String address, int port) {
         return new ServerAddress(address, port);
     }
 
@@ -99,7 +99,7 @@ public class MongoDBConnector {
      * @param password 数据库密码
      * @return MongoCredential
      */
-    public static MongoCredential getMongoCredential(String username, String database, String password) {
+    public MongoCredential getMongoCredential(String username, String database, String password) {
         return MongoCredential.createScramSha1Credential(username, database, password.toCharArray());
     }
 
@@ -111,7 +111,7 @@ public class MongoDBConnector {
      * @param password 密码 char 数组 使用 char 数组 能在密码使用后能及时从内存中抹除
      * @return MongoCredential
      */
-    public static MongoCredential getMongoCredential(String username, String database, char[] password) {
+    public MongoCredential getMongoCredential(String username, String database, char[] password) {
         return MongoCredential.createScramSha1Credential(username, database, password);
     }
 
@@ -120,7 +120,7 @@ public class MongoDBConnector {
      *
      * @return MongoClientOptions
      */
-    public static MongoClientOptions getMongoClientOptions() {
+    public MongoClientOptions getMongoClientOptions() {
         return MongoClientOptions.builder()
                 .connectTimeout(5000)
                 .socketTimeout(5000)

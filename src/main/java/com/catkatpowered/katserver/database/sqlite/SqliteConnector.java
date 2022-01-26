@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class SqliteConnector {
 
-    public static Connection getSqliteConnection(String path) {
+    public Connection getSqliteConnection(String path) {
         var logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
 
         // 加载驱动

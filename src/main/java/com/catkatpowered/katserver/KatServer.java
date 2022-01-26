@@ -114,12 +114,6 @@ public class KatServer {
 
     // KatDatabase API
     public static final class KatDatabaseAPI {
-        public static Connection getSqliteConnection(String database) {
-            return KatDatabaseManager.getSqliteConnection(database);
-        }
 
-        public static Connection getMysqlConnection(String url, String username, String password) {
-            return KatDatabaseManager.getMysqlConnection(url, username, password);
-        }
     }
 }
