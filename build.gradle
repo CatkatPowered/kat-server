@@ -50,6 +50,8 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.26'
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation 'mysql:mysql-connector-java:5.1.49'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation 'org.postgresql:postgresql:42.3.1'
 
 }
 

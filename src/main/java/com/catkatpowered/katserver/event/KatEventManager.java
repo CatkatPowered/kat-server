@@ -9,9 +9,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
  */
 public class KatEventManager {
 
-    public static void init() {
-        EventBus.getInstance();
-    }
+    public static void init() {}
 
     public static void callEvent(Event event) {
         EventBus.getInstance().callEvent(event);

@@ -1,6 +1,9 @@
 package com.catkatpowered.katserver;
 
 import com.catkatpowered.katserver.config.KatConfigManager;
+import com.catkatpowered.katserver.database.KatDatabaseManager;
+import com.catkatpowered.katserver.database.mysql.MySqlConnector;
+import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
 import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.RegisteredListener;
@@ -9,8 +12,11 @@ import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+
 import java.io.File;
+import java.sql.Connection;
 import java.util.Map;
+
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -106,4 +112,14 @@ public class KatServer {
         }
     }
 
+    // KatDatabase API
+    public static final class KatDatabaseAPI {
+        public static Connection getSqliteConnection(String database) {
+            return KatDatabaseManager.getSqliteConnection(database);
+        }
+
+        public static Connection getMysqlConnection(String url, String username, String password) {
+            return KatDatabaseManager.getMysqlConnection(url, username, password);
+        }
+    }
 }
