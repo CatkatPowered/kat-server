@@ -9,6 +9,6 @@ public class KatDatabaseManager {
 
     public static void init() {
         // 加载数据库
-        KatDatabaseConnector.loadDatabase();
+
     }
 }

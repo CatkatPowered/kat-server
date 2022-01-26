@@ -1,16 +1,20 @@
 package com.catkatpowered.katserver.database.postgresql;
 
 import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.database.interfaces.KatDatabaseConnector;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class PostgreSqlConnector {
-    public Connection getPostgreSqlConnection(String url, String username, String password) {
-        var logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
+public class PostgreSqlConnector implements KatDatabaseConnector {
+    Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
+    Connection connection;
 
+    @Override
+    public void loadDatabase(String url, String username, String password) {
         // 先处理 8.x 版本的 Mysql JDBC
         try {
             Class.forName("org.postgresql.Driver");
@@ -23,10 +27,9 @@ public class PostgreSqlConnector {
             }
         }
         try {
-            return DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException exception) {
             logger.error("load mysql database error.", exception);
         }
-        return null;
     }
 }

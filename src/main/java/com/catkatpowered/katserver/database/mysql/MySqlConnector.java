@@ -1,6 +1,8 @@
 package com.catkatpowered.katserver.database.mysql;
 
 import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.database.interfaces.KatDatabaseConnector;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,11 +14,12 @@ import java.sql.SQLException;
  * @author hanbings
  * @author suibing112233
  */
-public class MySqlConnector {
+public class MySqlConnector implements KatDatabaseConnector {
+    Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
+    Connection connection;
 
-    public Connection getMysqlConnection(String url, String username, String password) {
-        var logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
-
+    @Override
+    public void loadDatabase(String url, String username, String password) {
         // 先处理 8.x 版本的 Mysql JDBC
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,10 +32,9 @@ public class MySqlConnector {
             }
         }
         try {
-            return DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException exception) {
             logger.error("load mysql database error.", exception);
         }
-        return null;
     }
 }
