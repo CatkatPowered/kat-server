@@ -9,11 +9,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class PostgreSqlConnector implements KatDatabaseConnector {
+public class PostgreSqlConnector{
     Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
     Connection connection;
 
-    @Override
     public void loadDatabase(String url, String username, String password) {
         // 先处理 8.x 版本的 Mysql JDBC
         try {

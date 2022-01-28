@@ -3,9 +3,6 @@ package com.catkatpowered.katserver.database;
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.database.interfaces.DatabaseType;
 import com.catkatpowered.katserver.database.interfaces.KatDatabaseConnector;
-import com.catkatpowered.katserver.database.mongodb.MongoDBConnector;
-import com.catkatpowered.katserver.database.mysql.MySqlConnector;
-import com.catkatpowered.katserver.database.postgresql.PostgreSqlConnector;
 import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
 
 /**
@@ -17,6 +14,7 @@ public class KatDatabaseManager {
     // 这会还得 Controller 暂存连接器
     static KatDatabaseConnector connector;
 
+    @SuppressWarnings("all")
     public static void init() {
         // 加载数据库
         // 读配置文件
@@ -27,15 +25,8 @@ public class KatDatabaseManager {
 
         switch (type) {
             case SQLite -> connector = new SqliteConnector();
-            case MySQL -> connector = new MySqlConnector();
-            case PostgreSQL -> connector = new PostgreSqlConnector();
         }
 
         connector.loadDatabase(url,username, password);
     }
-
-    public static void create(String table, Object data) {}
-    public static void delete(String table, Object data) {}
-    public static void read(String table, Object data) {}
-    public static void update(String table, Object data) {}
 }

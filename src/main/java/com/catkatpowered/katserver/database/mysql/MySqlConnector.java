@@ -14,11 +14,9 @@ import java.sql.SQLException;
  * @author hanbings
  * @author suibing112233
  */
-public class MySqlConnector implements KatDatabaseConnector {
+public class MySqlConnector{
     Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
     Connection connection;
-
-    @Override
     public void loadDatabase(String url, String username, String password) {
         // 先处理 8.x 版本的 Mysql JDBC
         try {
