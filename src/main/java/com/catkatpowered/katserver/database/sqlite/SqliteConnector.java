@@ -35,50 +35,11 @@ public class SqliteConnector implements KatDatabaseConnector {
 
     @Override
     public void execute(String sql) {
-
+        
     }
 
     @Override
     public void exit() {
-        try {
-            connection.close();
-        } catch (SQLException exception) {
-            logger.error("close error. ", exception);
-        }
-    }
-
-    @Override
-    public boolean check(String table) {
-        return false;
-    }
-
-    @Override
-    public void table(String table, Object template) {
-
-    }
-
-    @Override
-    public void drop(String table) {
-
-    }
-
-    @Override
-    public void create(String table, Object data) {
-
-    }
-
-    @Override
-    public void delete(String table, Object data) {
-
-    }
-
-    @Override
-    public void read(String table, Object data) {
-
-    }
-
-    @Override
-    public void update(String table, Object data) {
 
     }
 }
