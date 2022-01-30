@@ -2,7 +2,7 @@ package com.catkatpowered.katserver.database;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.database.interfaces.DatabaseType;
-import com.catkatpowered.katserver.database.interfaces.KatDatabaseConnector;
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
 
 /**
@@ -12,7 +12,7 @@ import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
  */
 public class KatDatabaseManager {
     // 这会还得 Controller 暂存连接器
-    static KatDatabaseConnector connector;
+    static DatabaseConnector connector;
 
     @SuppressWarnings("all")
     public static void init() {

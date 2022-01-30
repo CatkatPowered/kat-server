@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.database.postgresql;
 
 import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.database.interfaces.KatDatabaseConnector;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;

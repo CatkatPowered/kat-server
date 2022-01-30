@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.database.sqlite;
 
 import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.database.interfaces.KatDatabaseConnector;
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
  *
  * @author hanbings
  */
-public class SqliteConnector implements KatDatabaseConnector {
+public class SqliteConnector implements DatabaseConnector {
     Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
     Connection connection;
 
@@ -35,7 +35,7 @@ public class SqliteConnector implements KatDatabaseConnector {
 
     @Override
     public void execute(String sql) {
-        
+
     }
 
     @Override
