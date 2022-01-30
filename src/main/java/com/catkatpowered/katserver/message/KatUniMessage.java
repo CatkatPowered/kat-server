@@ -33,6 +33,13 @@ public class KatUniMessage {
     public String messageType = KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE;
 
     /**
+     * <b>MessageIdentity</b> 用于本条消息的唯一特征，方便消息存入库处理
+     * </p>
+     */
+    @SerializedName("message_identity")
+    public String messageIdentity;
+
+    /**
      * <b>MessageID</b> 是本级消息的唯一标识符，方便<em>Extension</em>对本层消息的处理以及<em>KatServer</em>对本层消息的存取。</br>
      * <p>
      * <b>MessageID</b> 由<em>KatServer</em>提供算法进行分配。暂定为<em>UUID</em></br>
@@ -84,19 +91,21 @@ public class KatUniMessage {
     @SerializedName("resource_url")
     public String resourceURL;
 
-    public KatUniMessage(String messageType, String messageID, String messageContent,
-        ArrayList<KatUniMessage> messageList, ArrayList<String> extended, String resourceHash,
-        String resourceName, String resourceURL) {
-        this.messageType = messageType;
-        this.messageID = messageID;
-        this.messageContent = messageContent;
-        this.messageList = messageList;
-        this.extended = extended;
-        this.resourceHash = resourceHash;
-        this.resourceName = resourceName;
-        this.resourceURL = resourceURL;
-    }
-
+    /**
+     * 判断是否包含资源信息<br>
+     * <p>
+     * 当前的条件为当<b>MessageType</b>等于以下项目<br>
+     * <ol>
+     *     <li><b>KAT_MESSAGE_TYPE_FILE_MESSAGE</b></li>
+     *     <li><b>KAT_MESSAGE_TYPE_IMAGE_MESSAGE</b></li>
+     *     <li><b>KAT_MESSAGE_TYPE_AUDIO_MESSAGE</b></li>
+     *     <li><b>KAT_MESSAGE_TYPE_VIDEO_MESSAGE</b></li>
+     * </ol>
+     * <p>
+     * 任意之一时则成立
+     *
+     * @return 当包含资源类信息时，返回<b>true</b>，否则返回<b>false</b>
+     */
     public boolean isResource() {
         return
             Objects.equals(this.messageType, KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE)
@@ -114,5 +123,9 @@ public class KatUniMessage {
 
     public boolean isHashed() {
         return this.resourceHash != null;
+    }
+
+    public boolean isIdentified() {
+        return this.messageIdentity != null;
     }
 }
