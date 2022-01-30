@@ -10,12 +10,11 @@ import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.Logger;
 
 /**
  * Kat API 入口
@@ -112,20 +111,6 @@ public class KatServer {
 
     // KatDatabase API
     public static final class KatDatabaseAPI {
-        // 检查表是否存在
-        public static boolean check(String table) {
-            return KatDatabaseManager.check(table);
-        }
-
-        // 创建表
-        public static void table(String table, Object template) {
-            KatDatabaseManager.table(table, template);
-        }
-
-        // 删除表
-        public static void drop(String table) {
-            KatDatabaseManager.drop(table);
-        }
 
         // 增加一行数据
         public static void create(String table, Object data) {

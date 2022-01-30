@@ -1,16 +1,8 @@
 package com.catkatpowered.katserver.database.interfaces;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface DatabaseActions {
-    // 检查表是否存在
-    boolean check(DatabaseConnection connection, String table);
-    // 创建表
-    void table(DatabaseConnection connection, String table, Object template);
-    // 删除表
-    void drop(DatabaseConnection connection, String table);
-
     // 增加一行数据
     void create(DatabaseConnection connection, String table, Object data);
     // 删除一行数据

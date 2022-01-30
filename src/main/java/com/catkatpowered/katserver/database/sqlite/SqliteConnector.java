@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.database.sqlite;
 
 import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 import org.apache.logging.log4j.Logger;
 
@@ -32,6 +33,11 @@ public class SqliteConnector implements DatabaseConnector {
             logger.error("load database error.", exception);
         }
     }
+
+  @Override
+  public DatabaseConnection getConnection() {
+    return new SqliteConnection(connection);
+  }
 
     @Override
     public void exit() {
