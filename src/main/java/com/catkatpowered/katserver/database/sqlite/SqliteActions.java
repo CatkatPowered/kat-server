@@ -1,43 +1,43 @@
 package com.catkatpowered.katserver.database.sqlite;
 
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 
-import java.util.Map;
+import java.util.List;
 
 public class SqliteActions implements DatabaseActions {
+    @Override
+    public boolean check(DatabaseConnection connection, String table) {
+return false;
+    }
 
     @Override
-    public void check(String table) {
+    public void table(DatabaseConnection connection, String table, Object template) {
 
     }
 
     @Override
-    public void table(String table, Object template) {
+    public void drop(DatabaseConnection connection, String table) {
 
     }
 
     @Override
-    public void drop(String table) {
+    public void create(DatabaseConnection connection, String table, Object data) {
 
     }
 
     @Override
-    public void create(String table, Object data) {
+    public void delete(DatabaseConnection connection, String table, Object data) {
 
     }
 
     @Override
-    public void delete(String table, Object data) {
-
+    public <T> List<T> read(DatabaseConnection connection, String table, T data) {
+        return null;
     }
 
     @Override
-    public void read(String table, Object data) {
-
-    }
-
-    @Override
-    public void update(String table, Object data) {
+    public void update(DatabaseConnection connection, String table, Object data) {
 
     }
 }

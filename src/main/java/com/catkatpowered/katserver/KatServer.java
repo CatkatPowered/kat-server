@@ -2,8 +2,6 @@ package com.catkatpowered.katserver;
 
 import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
-import com.catkatpowered.katserver.database.mysql.MySqlConnector;
-import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
 import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.RegisteredListener;
@@ -14,7 +12,7 @@ import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
 
 import java.io.File;
-import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
@@ -114,6 +112,39 @@ public class KatServer {
 
     // KatDatabase API
     public static final class KatDatabaseAPI {
+        // 检查表是否存在
+        public static boolean check(String table) {
+            return KatDatabaseManager.check(table);
+        }
 
+        // 创建表
+        public static void table(String table, Object template) {
+            KatDatabaseManager.table(table, template);
+        }
+
+        // 删除表
+        public static void drop(String table) {
+            KatDatabaseManager.drop(table);
+        }
+
+        // 增加一行数据
+        public static void create(String table, Object data) {
+            KatDatabaseManager.create(table, data);
+        }
+
+        // 删除一行数据
+        public static void delete(String table, Object data) {
+            KatDatabaseManager.delete(table, data);
+        }
+
+        // 查询一组数据
+        public static <T> List<T> read(String table, T data) {
+            return KatDatabaseManager.read(table, data);
+        }
+
+        // 更新一行数据
+        public static void update(String table, Object data) {
+            KatDatabaseManager.update(table, data);
+        }
     }
 }
