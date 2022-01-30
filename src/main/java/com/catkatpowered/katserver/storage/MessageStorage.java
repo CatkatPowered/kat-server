@@ -6,6 +6,6 @@ import org.apache.logging.log4j.Logger;
 
 public class MessageStorage {
 
-    Logger logger = KatServer.KatLoggerAPI.getLogger(KatMiscConstants.KAT_PROJECT_NAME);
+    private final Logger logger = KatServer.KatLoggerAPI.getLogger(KatMiscConstants.KAT_PROJECT_NAME);
 
 }

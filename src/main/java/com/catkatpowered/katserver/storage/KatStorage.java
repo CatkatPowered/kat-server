@@ -2,7 +2,12 @@ package com.catkatpowered.katserver.storage;
 
 public class KatStorage {
 
-    public static void init() {
+    private static final KatStorage Instance = new KatStorage();
 
+    private KatStorage() {
+    }
+
+    public static KatStorage getInstance() {
+        return Instance;
     }
 }

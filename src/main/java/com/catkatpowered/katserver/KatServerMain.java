@@ -6,6 +6,7 @@ import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.network.KatNetworkManager;
 import com.catkatpowered.katserver.storage.KatStorage;
+import com.catkatpowered.katserver.storage.KatStorageManager;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -27,7 +28,7 @@ public class KatServerMain {
         // 启动数据库
         KatDatabaseManager.init();
         // 启动储存模块
-        KatStorage.init();
+        KatStorageManager.init();
         // 启动扩展模块
         KatExtensionManager.init();
 
