@@ -1,6 +1,7 @@
+######################### Network #############################
 network_port: 25565
-data_folder_path: "./data"
 
+######################### Database ############################
 # The SQLite only for development!
 #
 # You can choose those type of database:
@@ -9,6 +10,9 @@ data_folder_path: "./data"
 # 3. mongodb
 # 4. sqlite
 database_type: sqlite
+
+# If you choose sqlite, you don't have to add anything.
+# Twice, it only for development!
 
 # If you choose mongodb, you must add those yaml content
 #
@@ -23,3 +27,14 @@ database_type: sqlite
 #  connection_url:
 #  password:
 #  username:
+
+####################### Storage ###############################
+# The resource file storage
+#
+# You can choose those type of resource_storage
+# 1.local
+resource_storage: local
+
+# If you choose `local`,
+# you can set the resource file where to store.
+data_folder_path: "./data"
