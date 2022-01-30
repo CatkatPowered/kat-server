@@ -34,12 +34,11 @@ public class SqliteConnector implements DatabaseConnector {
     }
 
     @Override
-    public void execute(String sql) {
-
-    }
-
-    @Override
     public void exit() {
-
+        try {
+            connection.close();
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
     }
 }
