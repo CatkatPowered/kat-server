@@ -2,6 +2,11 @@ package com.catkatpowered.katserver.database.interfaces;
 
 import java.util.List;
 
+/**
+ * DatabaseActions 接口和接口实现类是解析注解对象
+ *
+ * @author hanbings
+ */
 public interface DatabaseActions {
     // 增加一行数据
     void create(DatabaseConnection connection, String table, Object data);
