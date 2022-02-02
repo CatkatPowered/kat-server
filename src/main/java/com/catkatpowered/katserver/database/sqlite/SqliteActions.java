@@ -1,9 +1,14 @@
 package com.catkatpowered.katserver.database.sqlite;
 
+import com.catkatpowered.katserver.database.interfaces.ActionsType;
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
+import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
 
+import java.sql.PreparedStatement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 解析 sql 并存储为安全的预编译语句 <br>
@@ -25,10 +30,23 @@ import java.util.List;
  * 3. 注入到预编译语句
  */
 public class SqliteActions implements DatabaseActions {
+    // 预编译缓存 key 为表名
+    // value 为嵌套 Map
+    // - 嵌套 Map key 为 CURD 中的一个操作 value 为预编译的 statement
+    Map<String,  Map<ActionsType, PreparedStatement>> mapping = new HashMap<>();
+    // 动态类型推导器
+    DatabaseTypeTransfer transfer = new SqliteTypeTransfer();
 
     @Override
     public void create(DatabaseConnection connection, String table, Object data) {
-
+        // 判断是否预编译
+        if (mapping.containsKey(table)) {
+            if (mapping.get(table).containsKey(ActionsType.Create)) {
+                // 解析参数
+                PreparedStatement statement = mapping.get(table).get(ActionsType.Create);
+                
+            }
+        }
     }
 
     @Override
