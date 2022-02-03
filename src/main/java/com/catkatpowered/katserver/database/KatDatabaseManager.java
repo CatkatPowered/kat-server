@@ -7,8 +7,6 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseType;
 import com.catkatpowered.katserver.database.sqlite.SqliteActions;
 import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
 
-import java.util.List;
-
 /**
  * 数据库处理层 桥接数据库
  *
@@ -38,20 +36,22 @@ public class KatDatabaseManager {
         connector.loadDatabase(url,username, password);
     }
 
-    // 增加一行数据
-    public static void create(String table, Object data) {
-        actions.create(connector.getConnection(), table, data);
+    // 取得链接器
+    public static DatabaseConnector getConnector() {
+        return connector;
     }
-    // 删除一行数据
-    public static void delete(String table, Object data) {
-        actions.delete(connector.getConnection(), table, data);
+
+    public static DatabaseConnector getConnector(DatabaseType type) {
+        return null;
     }
-    // 查询一组数据
-    public static <T> List<T> read(String table, T data) {
-        return actions.read(connector.getConnection(), table, data);
+
+    // 获取执行器
+    public static DatabaseActions getActions() {
+        return actions;
     }
-    // 更新一行数据
-    public static void update(String table, Object data) {
-        actions.update(connector.getConnection(), table, data);
+
+    public static DatabaseActions getActions(DatabaseType type) {
+        return null;
     }
+
 }

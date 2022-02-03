@@ -44,7 +44,7 @@ public class SqliteActions implements DatabaseActions {
             if (mapping.get(table).containsKey(ActionsType.Create)) {
                 // 解析参数
                 PreparedStatement statement = mapping.get(table).get(ActionsType.Create);
-                
+
             }
         }
     }
