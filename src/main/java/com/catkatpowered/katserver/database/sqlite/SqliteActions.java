@@ -1,13 +1,17 @@
 package com.catkatpowered.katserver.database.sqlite;
 
-import com.catkatpowered.katserver.database.interfaces.ActionsType;
-import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
-import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
-import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.database.interfaces.*;
+import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Field;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -30,22 +34,20 @@ import java.util.Map;
  * 3. 注入到预编译语句
  */
 public class SqliteActions implements DatabaseActions {
+    Logger logger = KatServer.KatLoggerAPI.getLogger("Sqlite Actions");
     // 预编译缓存 key 为表名
     // value 为嵌套 Map
     // - 嵌套 Map key 为 CURD 中的一个操作 value 为预编译的 statement
-    Map<String,  Map<ActionsType, PreparedStatement>> mapping = new HashMap<>();
+    Map<String, Map<ActionsType, PreparedStatement>> mapping = new HashMap<>();
     // 动态类型推导器
     DatabaseTypeTransfer transfer = new SqliteTypeTransfer();
 
     @Override
     public void create(DatabaseConnection connection, String table, Object data) {
-        // 判断是否预编译
-        if (mapping.containsKey(table)) {
-            if (mapping.get(table).containsKey(ActionsType.Create)) {
-                // 解析参数
-                PreparedStatement statement = mapping.get(table).get(ActionsType.Create);
+        Connection jdbc = connection.getJdbcConnection();
+        if (!validateTableExist(jdbc, table)) {
+            // 创建表
 
-            }
         }
     }
 
@@ -62,5 +64,95 @@ public class SqliteActions implements DatabaseActions {
     @Override
     public void update(DatabaseConnection connection, String table, Object data) {
 
+    }
+
+    /**
+     * 判断表是否存在
+     *
+     * @param connection 链接
+     * @param table      表明
+     * @return 是否存在 Boolean 值
+     */
+    public boolean validateTableExist(Connection connection, String table) {
+        try {
+            ResultSet result = connection.getMetaData().getTables(null, null, table, null);
+            return result.next();
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
+        return false;
+    }
+
+    /**
+     * 判断数据存在的注解是否有被标记为主键
+     *
+     * @param fields 变量组
+     * @return 任意变量被标记主键则返回 true
+     */
+    private boolean validatePrimaryKeyExist(Field[] fields) {
+        // 判断是否有任意变量被注解标记为主键
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(SqliteMetadata.class)) {
+                SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
+                if (metadata.isPrimaryKey()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 字符串全小写 遇到大写字母在大写字母前添加下划线并将该字母小写
+     * @param strings 字符串
+     * @return 全小写字符串
+     */
+    private String getColumnName(String strings) {
+        char[] chars = strings.toCharArray();
+        StringBuilder builder = new StringBuilder();
+        for (char c : chars) {
+            if (Character.isUpperCase(c)) {
+                builder.append("_");
+            }
+            builder.append(c);
+        }
+        return builder.toString().toLowerCase(Locale.ROOT);
+    }
+
+    /**
+     * 创建一个表
+     *
+     * @param table 表名
+     * @param data  元数据
+     */
+    private String createTable(String table, Object data) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("CREATE TABLE ").append(table).append(" (");
+        // 反射扫描变量
+        // 获取变量列表
+        Field[] fields = data.getClass().getDeclaredFields();
+        // 遍历添加到 sql 语句中
+        for (int count = 0; count < fields.length; count++) {
+            Field field = fields[count];
+            // 添加分隔符号
+            if (count != 0) {
+                builder.append(", ");
+            }
+            // 获取注解 存在注解则从注解获取数据类型
+            if (field.isAnnotationPresent(SqliteMetadata.class)) {
+                // 存在注解 获取注解
+                SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
+                builder.append(metadata.type()).append(" ").append(metadata.name());
+                // 添加约束
+                
+            } else {
+                // 没有注解 推导类型 使用变量名全小写
+                builder.append(transfer.getDataType(field))
+                        .append(" ")
+                        .append(getColumnName(field.getName()));
+            }
+        }
+        // 生成完成
+        return builder.append(")").toString();
     }
 }

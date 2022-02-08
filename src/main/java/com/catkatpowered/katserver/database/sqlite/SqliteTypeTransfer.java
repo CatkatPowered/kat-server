@@ -1,5 +1,6 @@
 package com.catkatpowered.katserver.database.sqlite;
 
+import com.catkatpowered.katserver.database.interfaces.DataType;
 import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
 
 /**
@@ -10,6 +11,14 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
 public class SqliteTypeTransfer implements DatabaseTypeTransfer {
     @Override
     public String getDataType(Object data) {
-        return null;
+        if (data == null) {
+            return DataType.Sqlite.NULL;
+        }
+        return switch (data.getClass().getSimpleName()) {
+            case "String" -> DataType.Sqlite.TEXT;
+            case "Integer" -> DataType.Sqlite.INTEGER;
+            case "Boolean" -> DataType.Sqlite.REAL;
+            default -> DataType.Sqlite.BLOB;
+        };
     }
 }
