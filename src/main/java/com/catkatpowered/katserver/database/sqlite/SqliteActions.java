@@ -47,7 +47,12 @@ public class SqliteActions implements DatabaseActions {
         Connection jdbc = connection.getJdbcConnection();
         if (!validateTableExist(jdbc, table)) {
             // 创建表
-
+            String sql = createTable(table, data);
+            try {
+                jdbc.prepareStatement(sql).execute();
+            } catch (SQLException exception) {
+                logger.error(exception);
+            }
         }
     }
 
@@ -142,17 +147,28 @@ public class SqliteActions implements DatabaseActions {
             if (field.isAnnotationPresent(SqliteMetadata.class)) {
                 // 存在注解 获取注解
                 SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
-                builder.append(metadata.type()).append(" ").append(metadata.name());
+                builder.append(metadata.name()).append(" ").append(metadata.type());
                 // 添加约束
-                
+                if (metadata.isNotNull()) {
+                    builder.append(" NOT NULL");
+                }
+                if (metadata.isPrimaryKey()) {
+                    builder.append(" PRIMARY KEY");
+                }
+                if (metadata.isUnique()) {
+                    builder.append(" UNIQUE");
+                }
+                if (metadata.isAutoincrement()) {
+                    builder.append(" AUTO_INCREMENT");
+                }
             } else {
                 // 没有注解 推导类型 使用变量名全小写
-                builder.append(transfer.getDataType(field))
+                builder.append(getColumnName(field.getName()))
                         .append(" ")
-                        .append(getColumnName(field.getName()));
+                        .append(transfer.getDataType(field));
             }
         }
         // 生成完成
-        return builder.append(")").toString();
+        return builder.append(");").toString();
     }
 }
