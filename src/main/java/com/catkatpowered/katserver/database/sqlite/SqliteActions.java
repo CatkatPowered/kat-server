@@ -54,6 +54,45 @@ public class SqliteActions implements DatabaseActions {
                 logger.error(exception);
             }
         }
+        // 判断是否在 mapping 中缓存
+        if (mapping.containsKey(table)) {
+            if (mapping.get(table).containsKey(ActionsType.Create)) {
+                // 命中缓存 注入变量到预编译语句
+                PreparedStatement statement = this.injectPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
+                try {
+                    statement.executeQuery();
+                    return;
+                } catch (SQLException exception) {
+                    logger.error(exception);
+                }
+            }
+        } else {
+            mapping.put(table, new HashMap<>());
+        }
+        // 没有缓存 则创建预编译语句
+        StringBuilder builder = new StringBuilder();
+        builder.append("INSERT INTO ").append(table).append("VALUES(");
+        for (int i = 0; i < data.getClass().getFields().length; i++) {
+            if (i != 0) {
+                builder.append(", ");
+            }
+            builder.append("?");
+        }
+        builder.append(");");
+        try {
+            PreparedStatement statement = connection.getJdbcConnection().prepareStatement(builder.toString());
+            mapping.get(table).put(ActionsType.Create, statement);
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
+        // 注入变量到预编译语句
+        // 命中缓存 注入变量到预编译语句
+        PreparedStatement statement = this.injectPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
+        try {
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
     }
 
     @Override
@@ -69,6 +108,26 @@ public class SqliteActions implements DatabaseActions {
     @Override
     public void update(DatabaseConnection connection, String table, Object data) {
 
+    }
+
+    /**
+     * 注入变量到预编译语句
+     *
+     * @param statement 预编译语句
+     * @param data      数据实体
+     * @return 注入完成的语句
+     */
+    private PreparedStatement injectPreparedStatement(PreparedStatement statement, Object data) {
+        Field[] fields = data.getClass().getDeclaredFields();
+        for (int count = 0; count < fields.length; count++) {
+            try {
+                // 备注下 statement 的索引从 1 开始
+                statement.setObject(count + 1, fields[count].get(data));
+            } catch (SQLException | IllegalAccessException exception) {
+                logger.error(exception);
+            }
+        }
+        return statement;
     }
 
     /**
