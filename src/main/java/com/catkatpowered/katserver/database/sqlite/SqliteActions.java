@@ -88,7 +88,22 @@ public class SqliteActions implements DatabaseActions {
 
     @Override
     public void delete(DatabaseConnection connection, String table, Object data) {
-
+        // 判断是否在 mapping 中缓存
+        if (!mapping.containsKey(table)) {
+            mapping.put(table, new HashMap<>());
+        }
+        if (!mapping.get(table).containsKey(ActionsType.Delete)) {
+            // 没有缓存 则创建预编译语句
+            // 注入变量到预编译语句
+            String sql = "DELETE FROM " + table + " WHERE ? = ?";
+            try {
+                PreparedStatement statement = connection.getJdbcConnection().prepareStatement(sql);
+                mapping.get(table).put(ActionsType.Create, statement);
+            } catch (SQLException exception) {
+                logger.error(exception);
+            }
+        }
+        // TODO 注入参数
     }
 
     @Override
@@ -99,6 +114,25 @@ public class SqliteActions implements DatabaseActions {
     @Override
     public void update(DatabaseConnection connection, String table, Object data) {
 
+    }
+
+    /**
+     * 反射访问数据实体的变量 是否存在不为 null 的变量
+     * 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值
+     * 返回的是一个 Object 数组 下标 0 为变量名 下标 1 为值
+     */
+    public Object[] validateFieldValueExist(Object data) {
+        Field[] fields = data.getClass().getDeclaredFields();
+        try {
+            for (Field field : fields) {
+                if (field.get(data) != null) {
+                    return new Object[]{field.getName(), field.get(data)};
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
