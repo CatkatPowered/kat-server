@@ -55,37 +55,28 @@ public class SqliteActions implements DatabaseActions {
             }
         }
         // 判断是否在 mapping 中缓存
-        if (mapping.containsKey(table)) {
-            if (mapping.get(table).containsKey(ActionsType.Create)) {
-                // 命中缓存 注入变量到预编译语句
-                PreparedStatement statement = this.injectPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
-                try {
-                    statement.executeQuery();
-                    return;
-                } catch (SQLException exception) {
-                    logger.error(exception);
-                }
-            }
-        } else {
+        if (!mapping.containsKey(table)) {
             mapping.put(table, new HashMap<>());
         }
-        // 没有缓存 则创建预编译语句
-        StringBuilder builder = new StringBuilder();
-        builder.append("INSERT INTO ").append(table).append("VALUES(");
-        for (int i = 0; i < data.getClass().getFields().length; i++) {
-            if (i != 0) {
-                builder.append(", ");
+        if (!mapping.get(table).containsKey(ActionsType.Create)) {
+            // 没有缓存 则创建预编译语句
+            // 注入变量到预编译语句
+            StringBuilder builder = new StringBuilder();
+            builder.append("INSERT INTO ").append(table).append("VALUES(");
+            for (int i = 0; i < data.getClass().getFields().length; i++) {
+                if (i != 0) {
+                    builder.append(", ");
+                }
+                builder.append("?");
             }
-            builder.append("?");
+            builder.append(");");
+            try {
+                PreparedStatement statement = connection.getJdbcConnection().prepareStatement(builder.toString());
+                mapping.get(table).put(ActionsType.Create, statement);
+            } catch (SQLException exception) {
+                logger.error(exception);
+            }
         }
-        builder.append(");");
-        try {
-            PreparedStatement statement = connection.getJdbcConnection().prepareStatement(builder.toString());
-            mapping.get(table).put(ActionsType.Create, statement);
-        } catch (SQLException exception) {
-            logger.error(exception);
-        }
-        // 注入变量到预编译语句
         // 命中缓存 注入变量到预编译语句
         PreparedStatement statement = this.injectPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
         try {
