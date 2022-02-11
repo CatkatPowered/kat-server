@@ -78,7 +78,7 @@ public class SqliteActions implements DatabaseActions {
             }
         }
         // 命中缓存 注入变量到预编译语句
-        PreparedStatement statement = this.injectPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
+        PreparedStatement statement = this.injectInsertDataToPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
         try {
             statement.executeQuery();
         } catch (SQLException exception) {
@@ -98,12 +98,22 @@ public class SqliteActions implements DatabaseActions {
             String sql = "DELETE FROM " + table + " WHERE ? = ?";
             try {
                 PreparedStatement statement = connection.getJdbcConnection().prepareStatement(sql);
-                mapping.get(table).put(ActionsType.Create, statement);
+                mapping.get(table).put(ActionsType.Delete, statement);
             } catch (SQLException exception) {
                 logger.error(exception);
             }
         }
-        // TODO 注入参数
+        Object[] values = this.validateFieldValueExist(data);
+        if (values == null) {
+            return;
+        }
+        // 命中缓存 注入变量到预编译语句
+        PreparedStatement statement = this.injectDeleteDataToPreparedStatement(mapping.get(table).get(ActionsType.Delete), values);
+        try {
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
     }
 
     @Override
@@ -117,32 +127,13 @@ public class SqliteActions implements DatabaseActions {
     }
 
     /**
-     * 反射访问数据实体的变量 是否存在不为 null 的变量
-     * 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值
-     * 返回的是一个 Object 数组 下标 0 为变量名 下标 1 为值
-     */
-    public Object[] validateFieldValueExist(Object data) {
-        Field[] fields = data.getClass().getDeclaredFields();
-        try {
-            for (Field field : fields) {
-                if (field.get(data) != null) {
-                    return new Object[]{field.getName(), field.get(data)};
-                }
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 注入变量到预编译语句
+     * 创建一行数据时注入变量到预编译语句
      *
      * @param statement 预编译语句
      * @param data      数据实体
      * @return 注入完成的语句
      */
-    private PreparedStatement injectPreparedStatement(PreparedStatement statement, Object data) {
+    private PreparedStatement injectInsertDataToPreparedStatement(PreparedStatement statement, Object data) {
         Field[] fields = data.getClass().getDeclaredFields();
         for (int count = 0; count < fields.length; count++) {
             try {
@@ -156,13 +147,31 @@ public class SqliteActions implements DatabaseActions {
     }
 
     /**
+     * 删除某行数据时注入变量到预编译语句
+     * 只需要注入一个参数
+     * @param statement 预编译语句
+     * @param data      列名和数据内容
+     * @return 注入完成的语句
+     */
+    private PreparedStatement injectDeleteDataToPreparedStatement(PreparedStatement statement, Object[] data) {
+        try {
+            // 备注下 statement 的索引从 1 开始
+            statement.setObject(1, data[0]);
+            statement.setObject(2, data[1]);
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
+        return statement;
+    }
+
+    /**
      * 判断表是否存在
      *
      * @param connection 链接
      * @param table      表明
      * @return 是否存在 Boolean 值
      */
-    public boolean validateTableExist(Connection connection, String table) {
+    private boolean validateTableExist(Connection connection, String table) {
         try {
             ResultSet result = connection.getMetaData().getTables(null, null, table, null);
             return result.next();
@@ -170,42 +179,6 @@ public class SqliteActions implements DatabaseActions {
             logger.error(exception);
         }
         return false;
-    }
-
-    /**
-     * 判断数据存在的注解是否有被标记为主键
-     *
-     * @param fields 变量组
-     * @return 任意变量被标记主键则返回 true
-     */
-    private boolean validatePrimaryKeyExist(Field[] fields) {
-        // 判断是否有任意变量被注解标记为主键
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(SqliteMetadata.class)) {
-                SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
-                if (metadata.isPrimaryKey()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 字符串全小写 遇到大写字母在大写字母前添加下划线并将该字母小写
-     * @param strings 字符串
-     * @return 全小写字符串
-     */
-    private String getColumnName(String strings) {
-        char[] chars = strings.toCharArray();
-        StringBuilder builder = new StringBuilder();
-        for (char c : chars) {
-            if (Character.isUpperCase(c)) {
-                builder.append("_");
-            }
-            builder.append(c);
-        }
-        return builder.toString().toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -255,4 +228,61 @@ public class SqliteActions implements DatabaseActions {
         // 生成完成
         return builder.append(");").toString();
     }
+
+    /**
+     * 判断数据存在的注解是否有被标记为主键
+     *
+     * @param fields 变量组
+     * @return 任意变量被标记主键则返回 true
+     */
+    private boolean validatePrimaryKeyExist(Field[] fields) {
+        // 判断是否有任意变量被注解标记为主键
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(SqliteMetadata.class)) {
+                SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
+                if (metadata.isPrimaryKey()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 反射访问数据实体的变量 是否存在不为 null 的变量
+     * 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值
+     * 返回的是一个 Object 数组 下标 0 为列名 下标 1 为值
+     */
+    public Object[] validateFieldValueExist(Object data) {
+        Field[] fields = data.getClass().getDeclaredFields();
+        try {
+            for (Field field : fields) {
+                if (field.get(data) != null) {
+                    return new Object[]{getColumnName(field.getName()), field.get(data)};
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 字符串全小写 遇到大写字母在大写字母前添加下划线并将该字母小写
+     *
+     * @param strings 字符串
+     * @return 全小写字符串
+     */
+    private String getColumnName(String strings) {
+        char[] chars = strings.toCharArray();
+        StringBuilder builder = new StringBuilder();
+        for (char c : chars) {
+            if (Character.isUpperCase(c)) {
+                builder.append("_");
+            }
+            builder.append(c);
+        }
+        return builder.toString().toLowerCase(Locale.ROOT);
+    }
+
 }
