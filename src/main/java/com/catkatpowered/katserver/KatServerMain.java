@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver;
 
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
-import com.catkatpowered.katserver.database.KatDatabase;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
