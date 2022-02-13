@@ -88,7 +88,7 @@ public class KatServer {
     // KatConfig API
     public static final class KatConfigAPI {
 
-        public static Map<String, Object> getAllConfig() {
+        public static Map<String, Object> getConfig() {
             return KatConfigManager.getAllConfig();
         }
 
