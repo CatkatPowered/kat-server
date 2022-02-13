@@ -33,14 +33,15 @@ public class KatUniMessage {
     public String messageType = KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE;
 
     /**
-     * <b>MessageIdentity</b> 用于本条消息的聚合特征，方便消息存入库处理
+     * <b>MessageGroup</b> 用于本条消息的聚合特征，方便消息存入库处理
      * </p>
      */
-    @SerializedName("message_identity")
-    public String messageIdentity;
+    @SerializedName("message_group")
+    public String messageGroup;
 
     /**
-     * <b>MessageID</b> 是本级消息的唯一标识符，方便<em>Extension</em>对本层消息的处理以及<em>KatServer</em>对本层消息的存取。</br>
+     * <b>MessageID</b>
+     * 是本级消息的唯一标识符，方便<em>Extension</em>对本层消息的处理以及<em>KatServer</em>对本层消息的存取。</br>
      * <p>
      * <b>MessageID</b> 由<em>KatServer</em>提供算法进行分配。暂定为<em>UUID</em></br>
      */
@@ -58,8 +59,8 @@ public class KatUniMessage {
      * <p>
      * 当前假设情况如下</br>
      * <ol>
-     *     <li>如果<b>MessageType</b>为<b>KAT_MESSAGE_TYPE_MIXED_MESSAGE</b>，则<b>MessageList</b>中为顺序化的呈现</li>
-     *     <li>如果<b>MessageType</b>为<b>KAT_MESSAGE_TYPE_COLLECTION_MESSAGE</b>，则<b>MessageList</b>中为消息转发消息的列表</li>
+     * <li>如果<b>MessageType</b>为<b>KAT_MESSAGE_TYPE_MIXED_MESSAGE</b>，则<b>MessageList</b>中为顺序化的呈现</li>
+     * <li>如果<b>MessageType</b>为<b>KAT_MESSAGE_TYPE_COLLECTION_MESSAGE</b>，则<b>MessageList</b>中为消息转发消息的列表</li>
      * </ol>
      */
     @SerializedName("message_list")
@@ -93,7 +94,7 @@ public class KatUniMessage {
 
     public KatUniMessage(
         String messageType,
-        String messageIdentity,
+        String messageGroup,
         String messageID,
         String messageContent,
         ArrayList<KatUniMessage> messageList,
@@ -102,7 +103,7 @@ public class KatUniMessage {
         String resourceName,
         String resourceURL) {
         this.messageType = messageType;
-        this.messageIdentity = messageIdentity;
+        this.messageGroup = messageGroup;
         this.messageID = messageID;
         this.messageContent = messageContent;
         this.messageList = messageList;
@@ -117,10 +118,10 @@ public class KatUniMessage {
      * <p>
      * 当前的条件为当<b>MessageType</b>等于以下项目<br>
      * <ol>
-     *     <li><b>KAT_MESSAGE_TYPE_FILE_MESSAGE</b></li>
-     *     <li><b>KAT_MESSAGE_TYPE_IMAGE_MESSAGE</b></li>
-     *     <li><b>KAT_MESSAGE_TYPE_AUDIO_MESSAGE</b></li>
-     *     <li><b>KAT_MESSAGE_TYPE_VIDEO_MESSAGE</b></li>
+     * <li><b>KAT_MESSAGE_TYPE_FILE_MESSAGE</b></li>
+     * <li><b>KAT_MESSAGE_TYPE_IMAGE_MESSAGE</b></li>
+     * <li><b>KAT_MESSAGE_TYPE_AUDIO_MESSAGE</b></li>
+     * <li><b>KAT_MESSAGE_TYPE_VIDEO_MESSAGE</b></li>
      * </ol>
      * <p>
      * 任意之一时则成立
@@ -147,6 +148,6 @@ public class KatUniMessage {
     }
 
     public boolean isIdentified() {
-        return this.messageIdentity != null;
+        return this.messageGroup != null;
     }
 }
