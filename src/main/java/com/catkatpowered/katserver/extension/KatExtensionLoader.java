@@ -80,7 +80,7 @@ public class KatExtensionLoader {
             // 新对象
             Object extension = clazz.getDeclaredConstructor().newInstance();
             extensions.put(info, extension);
-            // 获取方法 -> 注入日志 -> 按顺序调用
+            // 获取方法 -> 按顺序调用
             clazz.getMethod("onLoad").invoke(extension);
             clazz.getMethod("onEnable").invoke(extension);
         } catch (InstantiationException

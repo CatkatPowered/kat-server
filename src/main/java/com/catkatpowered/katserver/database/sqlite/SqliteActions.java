@@ -1,11 +1,6 @@
 package com.catkatpowered.katserver.database.sqlite;
 
-import com.catkatpowered.katserver.database.interfaces.ActionsType;
-import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
-import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
-import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
-import com.catkatpowered.katserver.database.interfaces.SqliteMetadata;
-
+import com.catkatpowered.katserver.database.interfaces.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -152,6 +147,10 @@ public class SqliteActions implements DatabaseActions {
         List<T> result = new ArrayList<>();
         try {
             ResultSet set = statement.executeQuery();
+            // 注入结果集到对象
+            while (set.next()) {
+                result.add(injectResultSetToData(set, data));
+            }
         } catch (SQLException exception) {
             log.error(String.valueOf(exception));
         }
@@ -215,6 +214,27 @@ public class SqliteActions implements DatabaseActions {
             log.error(String.valueOf(exception));
         }
         return statement;
+    }
+
+    /**
+     * 回写数据库返回的数据值到数据实体
+     */
+    private <T> T injectResultSetToData(ResultSet set, T data) {
+        // 获取数据实体变量
+        Field[] fields = data.getClass().getDeclaredFields();
+        // 遍历变量
+        try {
+            for (Field field : fields) {
+                // 获取变量名对应的列名
+                String columnName = field.isAnnotationPresent(SqliteMetadata.class)
+                        ? field.getAnnotation(SqliteMetadata.class).name() : field.getName();
+                // 从结果集中获取数据
+                field.set(data, set.getObject(columnName));
+            }
+        } catch (SQLException | IllegalAccessException e) {
+            log.error(String.valueOf(e));
+        }
+        return data;
     }
 
     /**
