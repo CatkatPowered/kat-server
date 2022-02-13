@@ -33,7 +33,7 @@ public class KatUniMessage {
     public String messageType = KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE;
 
     /**
-     * <b>MessageIdentity</b> 用于本条消息的唯一特征，方便消息存入库处理
+     * <b>MessageIdentity</b> 用于本条消息的聚合特征，方便消息存入库处理
      * </p>
      */
     @SerializedName("message_identity")
@@ -90,6 +90,27 @@ public class KatUniMessage {
      */
     @SerializedName("resource_url")
     public String resourceURL;
+
+    public KatUniMessage(
+        String messageType,
+        String messageIdentity,
+        String messageID,
+        String messageContent,
+        ArrayList<KatUniMessage> messageList,
+        ArrayList<String> extended,
+        String resourceHash,
+        String resourceName,
+        String resourceURL) {
+        this.messageType = messageType;
+        this.messageIdentity = messageIdentity;
+        this.messageID = messageID;
+        this.messageContent = messageContent;
+        this.messageList = messageList;
+        this.extended = extended;
+        this.resourceHash = resourceHash;
+        this.resourceName = resourceName;
+        this.resourceURL = resourceURL;
+    }
 
     /**
      * 判断是否包含资源信息<br>
