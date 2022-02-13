@@ -17,7 +17,6 @@ public class KatDatabaseManager {
     static DatabaseConnector connector;
     static DatabaseActions actions;
 
-    @SuppressWarnings("all")
     public static void init() {
         // 加载数据库
         // 读配置文件
@@ -26,12 +25,8 @@ public class KatDatabaseManager {
         String username = (String) KatServer.KatConfigAPI.getConfig("database_username");
         String password = (String) KatServer.KatConfigAPI.getConfig("database_password");
 
-        switch (type) {
-            case SQLite -> {
-                connector = new SqliteConnector();
-                actions = new SqliteActions();
-            }
-        }
+        connector = pickConnector(type);
+        actions = pickActions(type);
 
         connector.loadDatabase(url,username, password);
     }
@@ -42,7 +37,7 @@ public class KatDatabaseManager {
     }
 
     public static DatabaseConnector getConnector(DatabaseType type) {
-        return null;
+        return pickConnector(type);
     }
 
     // 获取执行器
@@ -51,7 +46,31 @@ public class KatDatabaseManager {
     }
 
     public static DatabaseActions getActions(DatabaseType type) {
+        return pickActions(type);
+    }
+
+    /**
+     * 根据数据库类型返回实例
+     */
+    private static DatabaseConnector pickConnector(DatabaseType type) {
+        switch (type) {
+            case MySQL, PostgreSQL, MongoDB -> {
+            }
+            case SQLite -> {
+                return new SqliteConnector();
+            }
+        }
         return null;
     }
 
+    private static DatabaseActions pickActions(DatabaseType type) {
+        switch (type) {
+            case MySQL, PostgreSQL, MongoDB -> {
+            }
+            case SQLite -> {
+                return new SqliteActions();
+            }
+        }
+        return null;
+    }
 }

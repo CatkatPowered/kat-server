@@ -9,10 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 解析 sql 并存储为安全的预编译语句 <br>
@@ -118,7 +115,34 @@ public class SqliteActions implements DatabaseActions {
 
     @Override
     public <T> List<T> read(DatabaseConnection connection, String table, T data) {
-        return null;
+        // 判断是否在 mapping 中缓存
+        if (!mapping.containsKey(table)) {
+            mapping.put(table, new HashMap<>());
+        }
+        if (!mapping.get(table).containsKey(ActionsType.Read)) {
+            // 没有缓存 则创建预编译语句
+            // 注入变量到预编译语句
+            String sql = "SELECT * FROM " + table + " WHERE ? = ?";
+            try {
+                PreparedStatement statement = connection.getJdbcConnection().prepareStatement(sql);
+                mapping.get(table).put(ActionsType.Read, statement);
+            } catch (SQLException exception) {
+                logger.error(exception);
+            }
+        }
+        Object[] values = this.validateFieldValueExist(data);
+        if (values == null) {
+            return null;
+        }
+        // 命中缓存 注入变量到预编译语句
+        PreparedStatement statement = this.injectReadDataToPreparedStatement(mapping.get(table).get(ActionsType.Read), values);
+        List<T> result = new ArrayList<>();
+        try {
+            ResultSet set = statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
+        return result;
     }
 
     @Override
@@ -154,6 +178,20 @@ public class SqliteActions implements DatabaseActions {
      * @return 注入完成的语句
      */
     private PreparedStatement injectDeleteDataToPreparedStatement(PreparedStatement statement, Object[] data) {
+        try {
+            // 备注下 statement 的索引从 1 开始
+            statement.setObject(1, data[0]);
+            statement.setObject(2, data[1]);
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
+        return statement;
+    }
+
+    /**
+     * 读取某行数据时注入变量到预编译语句
+     */
+    private PreparedStatement injectReadDataToPreparedStatement(PreparedStatement statement, Object[] data) {
         try {
             // 备注下 statement 的索引从 1 开始
             statement.setObject(1, data[0]);
