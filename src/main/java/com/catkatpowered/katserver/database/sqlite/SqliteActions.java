@@ -1,9 +1,10 @@
 package com.catkatpowered.katserver.database.sqlite;
 
-import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.database.interfaces.*;
-import org.apache.logging.log4j.Logger;
-
+import com.catkatpowered.katserver.database.interfaces.ActionsType;
+import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
+import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
+import com.catkatpowered.katserver.database.interfaces.SqliteMetadata;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,28 +14,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 解析 sql 并存储为安全的预编译语句 <br>
- * 执行一句语句流程 <br>
- * 1. 初始化预编译缓存 <br>
- * 2. 解析实体类 注入参数 <br>
- * 3. 提交至数据库 <br><br>
- *
- * 初始化预编译时需要 <br>
- * 1. 判断表是否存在 <br>
- * 2. 解析数据实体将 Java 数据类型动态推导为 sql 类型 <br>
- *    数据注解 -> 无注解自然语序数据 读取到的第一个变量为主键 <br>
- * 3. 拼接 sql 进行预编译 <br><br>
- *
- * 解析实体类 <br>
- * 1. 判断是否为主键类型的 CURD 仅有主键作为索引的实体类有预编译缓存 <br>
- * 2. 扫描注解 提取数据 <br>
- *    数据注解 -> 无注解自然语序数据 读取到的第一个变量为主键 <br>
- * 3. 注入到预编译语句
+ * 解析 sql 并存储为安全的预编译语句 <br> 执行一句语句流程 <br> 1. 初始化预编译缓存 <br> 2. 解析实体类 注入参数 <br> 3. 提交至数据库 <br><br>
+ * <p>
+ * 初始化预编译时需要 <br> 1. 判断表是否存在 <br> 2. 解析数据实体将 Java 数据类型动态推导为 sql 类型 <br> 数据注解 -> 无注解自然语序数据
+ * 读取到的第一个变量为主键 <br> 3. 拼接 sql 进行预编译 <br><br>
+ * <p>
+ * 解析实体类 <br> 1. 判断是否为主键类型的 CURD 仅有主键作为索引的实体类有预编译缓存 <br> 2. 扫描注解 提取数据 <br> 数据注解 -> 无注解自然语序数据
+ * 读取到的第一个变量为主键 <br> 3. 注入到预编译语句
  */
+@Slf4j
 public class SqliteActions implements DatabaseActions {
-    Logger logger = KatServer.KatLoggerAPI.getLogger("Sqlite Actions");
+
     // 预编译缓存 key 为表名
     // value 为嵌套 Map
     // - 嵌套 Map key 为 CURD 中的一个操作 value 为预编译的 statement
@@ -51,7 +44,7 @@ public class SqliteActions implements DatabaseActions {
             try {
                 jdbc.prepareStatement(sql).execute();
             } catch (SQLException exception) {
-                logger.error(exception);
+                log.error(String.valueOf(exception));
             }
         }
         // 判断是否在 mapping 中缓存
@@ -71,18 +64,20 @@ public class SqliteActions implements DatabaseActions {
             }
             builder.append(");");
             try {
-                PreparedStatement statement = connection.getJdbcConnection().prepareStatement(builder.toString());
+                PreparedStatement statement = connection.getJdbcConnection()
+                    .prepareStatement(builder.toString());
                 mapping.get(table).put(ActionsType.Create, statement);
             } catch (SQLException exception) {
-                logger.error(exception);
+                log.error(String.valueOf(exception));
             }
         }
         // 命中缓存 注入变量到预编译语句
-        PreparedStatement statement = this.injectInsertDataToPreparedStatement(mapping.get(table).get(ActionsType.Create), data);
+        PreparedStatement statement = this.injectInsertDataToPreparedStatement(
+            mapping.get(table).get(ActionsType.Create), data);
         try {
             statement.executeQuery();
         } catch (SQLException exception) {
-            logger.error(exception);
+            log.error(String.valueOf(exception));
         }
     }
 
@@ -100,7 +95,7 @@ public class SqliteActions implements DatabaseActions {
                 PreparedStatement statement = connection.getJdbcConnection().prepareStatement(sql);
                 mapping.get(table).put(ActionsType.Delete, statement);
             } catch (SQLException exception) {
-                logger.error(exception);
+                log.error(String.valueOf(exception));
             }
         }
         Object[] values = this.validateFieldValueExist(data);
@@ -108,11 +103,12 @@ public class SqliteActions implements DatabaseActions {
             return;
         }
         // 命中缓存 注入变量到预编译语句
-        PreparedStatement statement = this.injectDeleteDataToPreparedStatement(mapping.get(table).get(ActionsType.Delete), values);
+        PreparedStatement statement = this.injectDeleteDataToPreparedStatement(
+            mapping.get(table).get(ActionsType.Delete), values);
         try {
             statement.executeQuery();
         } catch (SQLException exception) {
-            logger.error(exception);
+            log.error(String.valueOf(exception));
         }
     }
 
@@ -133,33 +129,35 @@ public class SqliteActions implements DatabaseActions {
      * @param data      数据实体
      * @return 注入完成的语句
      */
-    private PreparedStatement injectInsertDataToPreparedStatement(PreparedStatement statement, Object data) {
+    private PreparedStatement injectInsertDataToPreparedStatement(PreparedStatement statement,
+        Object data) {
         Field[] fields = data.getClass().getDeclaredFields();
         for (int count = 0; count < fields.length; count++) {
             try {
                 // 备注下 statement 的索引从 1 开始
                 statement.setObject(count + 1, fields[count].get(data));
             } catch (SQLException | IllegalAccessException exception) {
-                logger.error(exception);
+                log.error(String.valueOf(exception));
             }
         }
         return statement;
     }
 
     /**
-     * 删除某行数据时注入变量到预编译语句
-     * 只需要注入一个参数
+     * 删除某行数据时注入变量到预编译语句 只需要注入一个参数
+     *
      * @param statement 预编译语句
      * @param data      列名和数据内容
      * @return 注入完成的语句
      */
-    private PreparedStatement injectDeleteDataToPreparedStatement(PreparedStatement statement, Object[] data) {
+    private PreparedStatement injectDeleteDataToPreparedStatement(PreparedStatement statement,
+        Object[] data) {
         try {
             // 备注下 statement 的索引从 1 开始
             statement.setObject(1, data[0]);
             statement.setObject(2, data[1]);
         } catch (SQLException exception) {
-            logger.error(exception);
+            log.error(String.valueOf(exception));
         }
         return statement;
     }
@@ -176,7 +174,7 @@ public class SqliteActions implements DatabaseActions {
             ResultSet result = connection.getMetaData().getTables(null, null, table, null);
             return result.next();
         } catch (SQLException exception) {
-            logger.error(exception);
+            log.error(String.valueOf(exception));
         }
         return false;
     }
@@ -221,8 +219,8 @@ public class SqliteActions implements DatabaseActions {
             } else {
                 // 没有注解 推导类型 使用变量名全小写
                 builder.append(getColumnName(field.getName()))
-                        .append(" ")
-                        .append(transfer.getDataType(field));
+                    .append(" ")
+                    .append(transfer.getDataType(field));
             }
         }
         // 生成完成
@@ -249,9 +247,8 @@ public class SqliteActions implements DatabaseActions {
     }
 
     /**
-     * 反射访问数据实体的变量 是否存在不为 null 的变量
-     * 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值
-     * 返回的是一个 Object 数组 下标 0 为列名 下标 1 为值
+     * 反射访问数据实体的变量 是否存在不为 null 的变量 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值 返回的是一个 Object 数组 下标 0 为列名 下标
+     * 1 为值
      */
     public Object[] validateFieldValueExist(Object data) {
         Field[] fields = data.getClass().getDeclaredFields();

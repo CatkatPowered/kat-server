@@ -1,21 +1,20 @@
 package com.catkatpowered.katserver.database.sqlite;
 
-import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
-import org.apache.logging.log4j.Logger;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Sqlite 连接器 负责获取 JDBC 连接桥
  *
  * @author hanbings
  */
+@Slf4j
 public class SqliteConnector implements DatabaseConnector {
-    Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
+
     Connection connection;
 
     @Override
@@ -24,27 +23,27 @@ public class SqliteConnector implements DatabaseConnector {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException exception) {
-            logger.error("load sqlite jdbc error.", exception);
+            log.error("load sqlite jdbc error.", exception);
         }
         // 获取连接
         try {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException exception) {
-            logger.error("load database error.", exception);
+            log.error("load database error.", exception);
         }
     }
 
-  @Override
-  public DatabaseConnection getConnection() {
-    return new SqliteConnection(connection);
-  }
+    @Override
+    public DatabaseConnection getConnection() {
+        return new SqliteConnection(connection);
+    }
 
     @Override
     public void exit() {
         try {
             connection.close();
         } catch (SQLException exception) {
-            logger.error(exception);
+            log.error(String.valueOf(exception));
         }
     }
 }

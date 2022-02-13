@@ -5,21 +5,19 @@ import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.network.KatNetworkManager;
-import com.catkatpowered.katserver.storage.KatStorage;
 import com.catkatpowered.katserver.storage.KatStorageManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 本项目采用 AGPL v3 进行开源 请遵循开源协议
  */
+@Slf4j
 public class KatServerMain {
-
-    static Logger logger = KatServer.KatLoggerAPI.getLogger(KatMiscConstants.KAT_PROJECT_NAME);
 
     public static void main(String[] args) {
 
         // 画大饼
-        logger.info(KatMiscConstants.KAT_SERVER_LOGO);
+        log.info(KatMiscConstants.KAT_SERVER_LOGO);
 
         // 启动事件总线模块
         KatEventManager.init();
@@ -33,6 +31,6 @@ public class KatServerMain {
         KatExtensionManager.init();
 
         // 启动完成
-        logger.info("Started!");
+        log.info("Started!");
     }
 }

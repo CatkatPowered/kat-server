@@ -1,15 +1,14 @@
 package com.catkatpowered.katserver.database.postgresql;
 
-import com.catkatpowered.katserver.KatServer;
-import org.apache.logging.log4j.Logger;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class PostgreSqlConnector{
-    Logger logger = KatServer.KatLoggerAPI.getLogger("Database Manager");
+@Slf4j
+public class PostgreSqlConnector {
+
     Connection connection;
 
     public void loadDatabase(String url, String username, String password) {
@@ -21,13 +20,13 @@ public class PostgreSqlConnector{
             try {
                 Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException exception) {
-                logger.error("load jdbc error.", exception);
+                log.error("load jdbc error.", exception);
             }
         }
         try {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException exception) {
-            logger.error("load mysql database error.", exception);
+            log.error("load mysql database error.", exception);
         }
     }
 }

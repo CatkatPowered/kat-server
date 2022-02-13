@@ -1,10 +1,7 @@
 package com.catkatpowered.katserver.config;
 
-import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 import com.catkatpowered.katserver.common.utils.KatWorkingDir;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,7 +12,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
 import lombok.Getter;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -24,12 +21,10 @@ import org.yaml.snakeyaml.Yaml;
  * @author CatMoe
  * @author suibing112233
  */
+@Slf4j
 public class KatConfig {
 
     private static final KatConfig Instance = new KatConfig();
-
-    private final Logger logger = KatServer.KatLoggerAPI
-        .getLogger(KatMiscConstants.KAT_PROJECT_NAME);
 
     @Getter
     private Integer katNetworkPort = 25565;
@@ -63,7 +58,7 @@ public class KatConfig {
                     inputStream.close();
 
                 } else {
-                    logger.fatal("Unable to write config file!");
+                    log.error("Unable to write config file!");
                 }
             }
 
@@ -79,7 +74,7 @@ public class KatConfig {
             }
 
         } catch (Exception e) {
-            KatLoggerManager.getLogger().fatal(e.getStackTrace());
+            log.error(String.valueOf(e));
         }
     }
 

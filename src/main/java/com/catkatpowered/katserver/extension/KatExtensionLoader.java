@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.extension;
 
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,23 +18,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 读取 扩展 排序 并按依赖排序加载
  *
  * @author hanbings
+ * @author suibing112233
  */
+@Slf4j
 public class KatExtensionLoader {
 
-    private final Logger logger = KatLoggerManager.getLogger("Kat Extension Loader");
+    private static final KatExtensionLoader Instance = new KatExtensionLoader();
     private final Gson gson = new Gson();
     // 扩展映射图与扩展实例图以及一个描述文件索引
     private final Map<String, KatExtensionInfo> index = new HashMap<>();
     private final Map<KatExtensionInfo, Class<?>> mapping = new HashMap<>();
     private final Map<KatExtensionInfo, Object> extensions = new HashMap<>();
-
-    private static final KatExtensionLoader Instance = new KatExtensionLoader();
 
     private KatExtensionLoader() {
     }
@@ -45,9 +44,15 @@ public class KatExtensionLoader {
     }
 
     /**
-     * 加载扩展流程 <br> 扫描扩展目录 找到文件名符合的扩展 <br> -> 读取扩展的描述文件 <br> -> TODO: 根据描述文件中所定义的依赖顺序排列扩展加载顺序 <br> ->
-     * 通过 ClassLoader 加载描述文件中所定义的主类 <br> -> 在 onLoad 以前注入所需的模块 <br> -> 分别执行 onLoad onEnable
-     * onDisable <br> -> 释放无用资源 <br> 加载完成 <br>
+     * 加载扩展流程 <br>
+     * 扫描扩展目录 找到文件名符合的扩展 <br>
+     * -> 读取扩展的描述文件 <br>
+     * -> TODO: 根据描述文件中所定义的依赖顺序排列扩展加载顺序 <br>
+     * -> 通过 ClassLoader 加载描述文件中所定义的主类 <br>
+     * -> 在 onLoad 以前注入所需的模块 <br>
+     * -> 分别执行 onLoad onEnable onDisable <br>
+     * -> 释放无用资源 <br>
+     * 加载完成 <br>
      * <p>
      * 此方法为入口方法
      */
@@ -76,15 +81,13 @@ public class KatExtensionLoader {
             Object extension = clazz.getDeclaredConstructor().newInstance();
             extensions.put(info, extension);
             // 获取方法 -> 注入日志 -> 按顺序调用
-            clazz.getMethod("setLogger", Logger.class)
-                .invoke(extension, KatLoggerManager.getLogger(info.extension));
             clazz.getMethod("onLoad").invoke(extension);
             clazz.getMethod("onEnable").invoke(extension);
         } catch (InstantiationException
-            | IllegalAccessException
-            | InvocationTargetException
-            | NoSuchMethodException exception) {
-            logger.error("unknown error. cloud not load {} extension.", info.extension, exception);
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException exception) {
+            log.error("unknown error. cloud not load {} extension.", info.extension, exception);
         }
     }
 
@@ -111,7 +114,7 @@ public class KatExtensionLoader {
             mapping.remove(info);
             index.remove(extension);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
-            logger.error("unload {} extension error.", info.extension, exception);
+            log.error("unload {} extension error.", info.extension, exception);
         }
     }
 
@@ -123,10 +126,10 @@ public class KatExtensionLoader {
     public void unloadExtension(KatExtension extension) {
         // extension 表获取描述文件实体类
         KatExtensionInfo info = (KatExtensionInfo) extensions.entrySet()
-            .stream()
-            .filter(kvEntry -> Objects.equals(kvEntry.getValue(), extension))
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toSet());
+                .stream()
+                .filter(kvEntry -> Objects.equals(kvEntry.getValue(), extension))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
         try {
             mapping.get(info).getMethod("onDisable").invoke(extensions.get(info));
             // 卸载成功后移除索引与图
@@ -134,7 +137,7 @@ public class KatExtensionLoader {
             mapping.remove(info);
             index.remove(info.extension);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
-            logger.error("unload {} extension error.", info.extension, exception);
+            log.error("unload {} extension error.", info.extension, exception);
         }
     }
 
@@ -147,10 +150,10 @@ public class KatExtensionLoader {
      */
     public Class<?> loadJar(File extension, String main) {
         try {
-            URLClassLoader loader = new URLClassLoader(new URL[]{extension.toURI().toURL()});
+            URLClassLoader loader = new URLClassLoader(new URL[] { extension.toURI().toURL() });
             return loader.loadClass(main);
         } catch (MalformedURLException | ClassNotFoundException exception) {
-            logger.error("cloud not load {} extension.", extension.getName(), exception);
+            log.error("cloud not load {} extension.", extension.getName(), exception);
         }
         return null;
     }
@@ -168,17 +171,18 @@ public class KatExtensionLoader {
             InputStream stream = jar.getInputStream(jar.getJarEntry("extension.json"));
             // 转 String
             String json = new BufferedReader(new InputStreamReader(stream))
-                .lines().collect(Collectors.joining(System.lineSeparator()));
+                    .lines().collect(Collectors.joining(System.lineSeparator()));
             // 注入依赖
             return gson.fromJson(json, KatExtensionInfo.class);
         } catch (IOException exception) {
-            logger.error("Are you ready {} is a extension?", extension.getName(), exception);
+            log.error("Are you ready {} is a extension?", extension.getName(), exception);
         }
         return null;
     }
 
     /**
-     * 扫描扩展目录 寻找可加载扩展 <br> 这里仅检查文件后缀名
+     * 扫描扩展目录 寻找可加载扩展 <br>
+     * 这里仅检查文件后缀名
      *
      * @return 包含符合要求可能的扩展文件
      */

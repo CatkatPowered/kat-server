@@ -11,10 +11,7 @@ import com.catkatpowered.katserver.event.RegisteredListener;
 import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
-import com.catkatpowered.katserver.log.KatLoggerManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.util.Map;
 
@@ -79,17 +76,6 @@ public class KatServer {
         }
     }
 
-    // 日志 API
-    public static final class KatLoggerAPI {
-
-        public static Logger getLogger() {
-            return KatLoggerManager.getLogger();
-        }
-
-        public static Logger getLogger(String loggerName) {
-            return KatLoggerManager.getLogger(loggerName);
-        }
-    }
 
     // KatUniMessageType API
     public static final class KatUniMessageTypeAPI {
@@ -115,13 +101,21 @@ public class KatServer {
     public static final class KatDatabaseAPI {
 
         // 取得链接器
-        public static DatabaseConnector getConnector() { return KatDatabaseManager.getConnector(); }
+        public static DatabaseConnector getConnector() {
+            return KatDatabaseManager.getConnector();
+        }
 
-        public static DatabaseConnector getConnector(DatabaseType type) { return KatDatabaseManager.getConnector(type); }
+        public static DatabaseConnector getConnector(DatabaseType type) {
+            return KatDatabaseManager.getConnector(type);
+        }
 
         // 获取执行器
-        public static DatabaseActions getActions() { return KatDatabaseManager.getActions(); }
+        public static DatabaseActions getActions() {
+            return KatDatabaseManager.getActions();
+        }
 
-        public static DatabaseActions getActions(DatabaseType type) { return KatDatabaseManager.getActions(type); }
+        public static DatabaseActions getActions(DatabaseType type) {
+            return KatDatabaseManager.getActions(type);
+        }
     }
 }
