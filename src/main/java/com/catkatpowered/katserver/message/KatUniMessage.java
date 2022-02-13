@@ -139,6 +139,13 @@ public class KatUniMessage {
                 KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
     }
 
+    /**
+     * 判断是否为全索引，当<b>KatUniMessage.messageID</b>和<b>KatUniMessage.messageGroup</b>均有值时则为全索引
+     */
+    public boolean isFullIndex() {
+        return (this.messageGroup == null || this.messageID == null);
+    }
+
     public boolean isDownloadable() {
         return this.resourceURL != null;
     }

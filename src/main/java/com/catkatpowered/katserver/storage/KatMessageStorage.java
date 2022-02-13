@@ -38,12 +38,41 @@ public class KatMessageStorage {
      * @param newContent 新消息记录
      */
     public static void updateMessage(KatUniMessage oldContent, KatUniMessage newContent) {
-
         KatServer.KatDatabaseAPI.getActions().update(
             KatServer.KatDatabaseAPI.getConnector().getConnection(),
             oldContent.messageGroup,
             newContent
         );
 
+    }
+
+    /**
+     * 删除消息记录
+     *
+     * @param indexMsg 必须包含<b>KatUniMessage.messageGroup</b>和<b>KatUniMessage.messageID</b>
+     */
+    public static void deleteMessage(KatUniMessage indexMsg) {
+        if (indexMsg.isFullIndex()) {
+            KatServer.KatDatabaseAPI.getActions().delete(
+                KatServer.KatDatabaseAPI.getConnector().getConnection(),
+                indexMsg.messageGroup,
+                indexMsg
+            );
+        }
+    }
+
+    /**
+     * 存放新的消息
+     *
+     * @param indexMsg 准备存放的信息
+     */
+    public static void creatMessage(KatUniMessage indexMsg) {
+        if (indexMsg.isFullIndex()) {
+            KatServer.KatDatabaseAPI.getActions().create(
+                KatServer.KatDatabaseAPI.getConnector().getConnection(),
+                indexMsg.messageGroup,
+                indexMsg
+            );
+        }
     }
 }
