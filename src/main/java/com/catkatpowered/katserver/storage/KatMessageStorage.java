@@ -67,7 +67,7 @@ public class KatMessageStorage {
      *
      * @param indexMsg 准备存放的信息
      */
-    public static void creatMessage(@NotNull KatUniMessage indexMsg) {
+    public static void createMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
             KatServer.KatDatabaseAPI.getActions().create(
                 KatServer.KatDatabaseAPI.getConnector().getConnection(),
