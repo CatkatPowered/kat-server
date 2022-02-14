@@ -5,6 +5,12 @@ on:
     branches: [ main ]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "! contains(github.event.head_commit.message, '#Skip')"
+    steps:
+      - uses: actions/checkout@v2
+        
   publish:
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, '#Publish')"
