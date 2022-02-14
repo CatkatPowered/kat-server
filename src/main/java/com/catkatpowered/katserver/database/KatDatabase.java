@@ -44,7 +44,7 @@ public class KatDatabase {
      */
     DatabaseConnector pickConnector(DatabaseType type) {
         switch (type) {
-            case MySQL, PostgreSQL, MongoDB -> {
+            case MySQL, PostGreSQL, MongoDB -> {
             }
             case SQLite -> {
                 return new SQLiteConnector();
@@ -55,7 +55,7 @@ public class KatDatabase {
 
     DatabaseActions pickActions(DatabaseType type) {
         switch (type) {
-            case MySQL, PostgreSQL, MongoDB -> {
+            case MySQL, PostGreSQL, MongoDB -> {
             }
             case SQLite -> {
                 return new SQLiteActions();
