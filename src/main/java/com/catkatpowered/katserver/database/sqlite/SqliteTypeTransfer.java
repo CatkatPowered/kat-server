@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.database.sqlite;
 
-import com.catkatpowered.katserver.database.interfaces.DataType;
+import com.catkatpowered.katserver.database.type.DataType;
 import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
 
 /**

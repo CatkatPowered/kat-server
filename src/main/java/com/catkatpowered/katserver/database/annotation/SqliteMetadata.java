@@ -1,4 +1,6 @@
-package com.catkatpowered.katserver.database.interfaces;
+package com.catkatpowered.katserver.database.annotation;
+
+import com.catkatpowered.katserver.database.type.DataType;
 
 import java.lang.annotation.*;
 

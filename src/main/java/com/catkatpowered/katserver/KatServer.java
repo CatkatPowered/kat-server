@@ -4,7 +4,7 @@ import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
-import com.catkatpowered.katserver.database.interfaces.DatabaseType;
+import com.catkatpowered.katserver.database.type.DatabaseType;
 import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.RegisteredListener;

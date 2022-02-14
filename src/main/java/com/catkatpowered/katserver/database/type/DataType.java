@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.database.interfaces;
+package com.catkatpowered.katserver.database.type;
 
 public class DataType {
     public static final class Sqlite {

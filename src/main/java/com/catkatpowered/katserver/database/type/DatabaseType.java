@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.database.interfaces;
+package com.catkatpowered.katserver.database.type;
 
 @SuppressWarnings("SpellCheckingInspection")
 public enum DatabaseType {

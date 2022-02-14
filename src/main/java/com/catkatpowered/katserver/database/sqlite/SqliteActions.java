@@ -1,6 +1,8 @@
 package com.catkatpowered.katserver.database.sqlite;
 
+import com.catkatpowered.katserver.database.annotation.SqliteMetadata;
 import com.catkatpowered.katserver.database.interfaces.*;
+import com.catkatpowered.katserver.database.type.ActionsType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -300,25 +302,6 @@ public class SqliteActions implements DatabaseActions {
         }
         // 生成完成
         return builder.append(");").toString();
-    }
-
-    /**
-     * 判断数据存在的注解是否有被标记为主键
-     *
-     * @param fields 变量组
-     * @return 任意变量被标记主键则返回 true
-     */
-    private boolean validatePrimaryKeyExist(Field[] fields) {
-        // 判断是否有任意变量被注解标记为主键
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(SqliteMetadata.class)) {
-                SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
-                if (metadata.isPrimaryKey()) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**

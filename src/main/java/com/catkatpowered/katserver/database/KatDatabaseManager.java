@@ -2,7 +2,7 @@ package com.catkatpowered.katserver.database;
 
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
-import com.catkatpowered.katserver.database.interfaces.DatabaseType;
+import com.catkatpowered.katserver.database.type.DatabaseType;
 
 /**
  * 数据库处理层 桥接数据库
@@ -12,6 +12,7 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseType;
  */
 public class KatDatabaseManager {
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void init() {
         KatDatabase.getInstance();
     }
