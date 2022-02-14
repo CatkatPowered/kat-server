@@ -4,6 +4,7 @@ import com.catkatpowered.katserver.event.interfaces.Blockable;
 import com.catkatpowered.katserver.event.interfaces.Cancellable;
 import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -29,9 +30,10 @@ public class EventBus {
                 if (event instanceof Blockable && ((Blockable) event).isBlocked()) {
                     return;
                 }
+                // isIgnoreCancelled为 true 时继续执行
                 if (event instanceof Cancellable
-                    && ((Cancellable) event).isCancelled()
-                    && handler.isIgnoreCancelled()) {
+                        && ((Cancellable) event).isCancelled()
+                        && !handler.isIgnoreCancelled()) {
                     continue;
                 }
                 try {
