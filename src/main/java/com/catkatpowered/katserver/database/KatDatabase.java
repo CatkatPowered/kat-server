@@ -4,8 +4,8 @@ import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 import com.catkatpowered.katserver.database.type.DatabaseType;
-import com.catkatpowered.katserver.database.sqlite.SqliteActions;
-import com.catkatpowered.katserver.database.sqlite.SqliteConnector;
+import com.catkatpowered.katserver.database.sqlite.SQLiteActions;
+import com.catkatpowered.katserver.database.sqlite.SQLiteConnector;
 import lombok.Getter;
 
 public class KatDatabase {
@@ -47,7 +47,7 @@ public class KatDatabase {
             case MySQL, PostgreSQL, MongoDB -> {
             }
             case SQLite -> {
-                return new SqliteConnector();
+                return new SQLiteConnector();
             }
         }
         return null;
@@ -58,7 +58,7 @@ public class KatDatabase {
             case MySQL, PostgreSQL, MongoDB -> {
             }
             case SQLite -> {
-                return new SqliteActions();
+                return new SQLiteActions();
             }
         }
         return null;

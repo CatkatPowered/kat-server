@@ -2,7 +2,7 @@ package com.catkatpowered.katserver.database.type;
 
 @SuppressWarnings("SpellCheckingInspection")
 public enum DatabaseType {
-    MySQL, SQLite, PostgreSQL, MongoDB;
+    MySQL, SQLite, PostGreSQL, MongoDB;
 
     public static DatabaseType lookup(String database) {
         for (DatabaseType type : DatabaseType.values()) {

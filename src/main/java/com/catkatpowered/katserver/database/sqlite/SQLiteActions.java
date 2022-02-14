@@ -38,14 +38,14 @@ import java.util.*;
  * 3. 注入到预编译语句
  */
 @Slf4j
-public class SqliteActions implements DatabaseActions {
+public class SQLiteActions implements DatabaseActions {
 
     // 预编译缓存 key 为表名
     // value 为嵌套 Map
     // - 嵌套 Map key 为 CURD 中的一个操作 value 为预编译的 statement
     Map<String, Map<ActionsType, PreparedStatement>> mapping = new HashMap<>();
     // 动态类型推导器
-    DatabaseTypeTransfer transfer = new SqliteTypeTransfer();
+    DatabaseTypeTransfer transfer = new SQLiteTypeTransfer();
 
     @Override
     public <T> void create(DatabaseConnection connection, String table, T data) {
@@ -63,7 +63,7 @@ public class SqliteActions implements DatabaseActions {
         if (!mapping.containsKey(table)) {
             mapping.put(table, new HashMap<>());
         }
-        if (!mapping.get(table).containsKey(ActionsType.Create)) {
+        if (!mapping.get(table).containsKey(ActionsType.CREATE)) {
             // 没有缓存 则创建预编译语句
             // 注入变量到预编译语句
             StringBuilder builder = new StringBuilder();
@@ -78,14 +78,14 @@ public class SqliteActions implements DatabaseActions {
             try {
                 PreparedStatement statement = connection.getJdbcConnection()
                         .prepareStatement(builder.toString());
-                mapping.get(table).put(ActionsType.Create, statement);
+                mapping.get(table).put(ActionsType.CREATE, statement);
             } catch (SQLException exception) {
                 log.error(String.valueOf(exception));
             }
         }
         // 命中缓存 注入变量到预编译语句
         PreparedStatement statement = this.injectInsertDataToPreparedStatement(
-                mapping.get(table).get(ActionsType.Create), data);
+                mapping.get(table).get(ActionsType.CREATE), data);
         try {
             statement.executeQuery();
         } catch (SQLException exception) {
@@ -99,13 +99,13 @@ public class SqliteActions implements DatabaseActions {
         if (!mapping.containsKey(table)) {
             mapping.put(table, new HashMap<>());
         }
-        if (!mapping.get(table).containsKey(ActionsType.Delete)) {
+        if (!mapping.get(table).containsKey(ActionsType.DELETE)) {
             // 没有缓存 则创建预编译语句
             // 注入变量到预编译语句
             String sql = "DELETE FROM " + table + " WHERE ? = ?";
             try {
                 PreparedStatement statement = connection.getJdbcConnection().prepareStatement(sql);
-                mapping.get(table).put(ActionsType.Delete, statement);
+                mapping.get(table).put(ActionsType.DELETE, statement);
             } catch (SQLException exception) {
                 log.error(String.valueOf(exception));
             }
@@ -116,7 +116,7 @@ public class SqliteActions implements DatabaseActions {
         }
         // 命中缓存 注入变量到预编译语句
         PreparedStatement statement = this.injectDeleteDataToPreparedStatement(
-                mapping.get(table).get(ActionsType.Delete), values);
+                mapping.get(table).get(ActionsType.DELETE), values);
         try {
             statement.executeQuery();
         } catch (SQLException exception) {
@@ -130,13 +130,13 @@ public class SqliteActions implements DatabaseActions {
         if (!mapping.containsKey(table)) {
             mapping.put(table, new HashMap<>());
         }
-        if (!mapping.get(table).containsKey(ActionsType.Read)) {
+        if (!mapping.get(table).containsKey(ActionsType.READ)) {
             // 没有缓存 则创建预编译语句
             // 注入变量到预编译语句
             String sql = "SELECT * FROM " + table + " WHERE ? = ?";
             try {
                 PreparedStatement statement = connection.getJdbcConnection().prepareStatement(sql);
-                mapping.get(table).put(ActionsType.Read, statement);
+                mapping.get(table).put(ActionsType.READ, statement);
             } catch (SQLException exception) {
                 log.error(String.valueOf(exception));
             }
@@ -146,7 +146,7 @@ public class SqliteActions implements DatabaseActions {
             return null;
         }
         // 命中缓存 注入变量到预编译语句
-        PreparedStatement statement = this.injectReadDataToPreparedStatement(mapping.get(table).get(ActionsType.Read),
+        PreparedStatement statement = this.injectReadDataToPreparedStatement(mapping.get(table).get(ActionsType.READ),
                 values);
         List<T> result = new ArrayList<>();
         try {
@@ -167,7 +167,7 @@ public class SqliteActions implements DatabaseActions {
         if (!mapping.containsKey(table)) {
             mapping.put(table, new HashMap<>());
         }
-        if (!mapping.get(table).containsKey(ActionsType.Update)) {
+        if (!mapping.get(table).containsKey(ActionsType.UPDATE)) {
             StringBuilder builder = new StringBuilder("UPDATE ").append(table).append(" SET ");
             // 没有缓存 则创建预编译语句
             Field[] fields = data.getClass().getDeclaredFields();
@@ -184,14 +184,14 @@ public class SqliteActions implements DatabaseActions {
             try {
                 PreparedStatement statement = connection.getJdbcConnection()
                         .prepareStatement(builder.toString());
-                mapping.get(table).put(ActionsType.Update, statement);
+                mapping.get(table).put(ActionsType.UPDATE, statement);
             } catch (SQLException exception) {
                 log.error(String.valueOf(exception));
             }
         }
         // 命中缓存 注入变量到预编译语句
         PreparedStatement statement = this.injectUpdateDataToPreparedStatement(
-                mapping.get(table).get(ActionsType.Update)
+                mapping.get(table).get(ActionsType.UPDATE)
                 , data);
         try {
             statement.executeQuery();
@@ -409,18 +409,15 @@ public class SqliteActions implements DatabaseActions {
                     builder.append(" AUTO_INCREMENT");
                 }
                 // 特殊情况 任意变量中注解中没有标记主键
-                if (count == 0 && !havePrimaryKey) {
-                    builder.append(" PRIMARY KEY");
-                }
             } else {
                 // 没有注解 推导类型 使用变量名全小写
                 builder.append(getColumnName(field.getName()))
                         .append(" ")
                         .append(transfer.getDataType(field));
                 // 没有注解 指定第一个变量为主键
-                if (count == 0 && !havePrimaryKey) {
-                    builder.append(" PRIMARY KEY");
-                }
+            }
+            if (count == 0 && !havePrimaryKey) {
+                builder.append(" PRIMARY KEY");
             }
         }
         // 生成完成

@@ -8,7 +8,7 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
  *
  * @author hanbings
  */
-public class SqliteTypeTransfer implements DatabaseTypeTransfer {
+public class SQLiteTypeTransfer implements DatabaseTypeTransfer {
     @Override
     public String getDataType(Object data) {
         if (data == null) {

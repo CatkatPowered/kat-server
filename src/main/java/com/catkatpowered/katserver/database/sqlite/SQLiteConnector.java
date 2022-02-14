@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author hanbings
  */
 @Slf4j
-public class SqliteConnector implements DatabaseConnector {
+public class SQLiteConnector implements DatabaseConnector {
 
     Connection connection;
 
@@ -35,7 +35,7 @@ public class SqliteConnector implements DatabaseConnector {
 
     @Override
     public DatabaseConnection getConnection() {
-        return new SqliteConnection(connection);
+        return new SQLiteConnection(connection);
     }
 
     @Override

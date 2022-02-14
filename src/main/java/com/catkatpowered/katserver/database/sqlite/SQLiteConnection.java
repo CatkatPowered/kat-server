@@ -4,12 +4,12 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 
 import java.sql.Connection;
 
-public class SqliteConnection implements DatabaseConnection {
+public class SQLiteConnection implements DatabaseConnection {
   Connection jdbcConnection;
 
-  private SqliteConnection() {}
+  private SQLiteConnection() {}
 
-  public SqliteConnection(Connection connection) {
+  public SQLiteConnection(Connection connection) {
     jdbcConnection = connection;
   }
 
