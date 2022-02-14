@@ -172,6 +172,9 @@ public class KatExtensionLoader {
             // 转 String
             String json = new BufferedReader(new InputStreamReader(stream))
                     .lines().collect(Collectors.joining(System.lineSeparator()));
+            // 关闭流
+            stream.close();
+            jar.close();
             // 注入依赖
             return gson.fromJson(json, KatExtensionInfo.class);
         } catch (IOException exception) {
