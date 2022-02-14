@@ -1,7 +1,9 @@
 package com.catkatpowered.katserver.database.sqlite;
 
 import com.catkatpowered.katserver.database.annotation.SqliteMetadata;
-import com.catkatpowered.katserver.database.interfaces.*;
+import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
+import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
 import com.catkatpowered.katserver.database.type.ActionsType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +48,7 @@ public class SqliteActions implements DatabaseActions {
     DatabaseTypeTransfer transfer = new SqliteTypeTransfer();
 
     @Override
-    public void create(DatabaseConnection connection, String table, Object data) {
+    public <T> void create(DatabaseConnection connection, String table, T data) {
         Connection jdbc = connection.getJdbcConnection();
         if (!validateTableExist(jdbc, table)) {
             // 创建表
@@ -92,7 +94,7 @@ public class SqliteActions implements DatabaseActions {
     }
 
     @Override
-    public void delete(DatabaseConnection connection, String table, Object data) {
+    public <T> void delete(DatabaseConnection connection, String table, T data) {
         // 判断是否在 mapping 中缓存
         if (!mapping.containsKey(table)) {
             mapping.put(table, new HashMap<>());
@@ -160,8 +162,42 @@ public class SqliteActions implements DatabaseActions {
     }
 
     @Override
-    public void update(DatabaseConnection connection, String table, Object data) {
-
+    public <T> void update(DatabaseConnection connection, String table, T data) {
+        // 判断是否在 mapping 中缓存
+        if (!mapping.containsKey(table)) {
+            mapping.put(table, new HashMap<>());
+        }
+        if (!mapping.get(table).containsKey(ActionsType.Update)) {
+            StringBuilder builder = new StringBuilder("UPDATE ").append(table).append(" SET ");
+            // 没有缓存 则创建预编译语句
+            Field[] fields = data.getClass().getDeclaredFields();
+            for (int count = 0; count < fields.length; count++) {
+                Field field = fields[count];
+                if (count != 0) {
+                    builder.append(", ");
+                }
+                if (field.isAnnotationPresent(SqliteMetadata.class)) {
+                    builder.append(field.getAnnotation(SqliteMetadata.class).name()).append(" = ?");
+                }
+            }
+            builder.append(" WHERE ? = ?");
+            try {
+                PreparedStatement statement = connection.getJdbcConnection()
+                        .prepareStatement(builder.toString());
+                mapping.get(table).put(ActionsType.Update, statement);
+            } catch (SQLException exception) {
+                log.error(String.valueOf(exception));
+            }
+        }
+        // 命中缓存 注入变量到预编译语句
+        PreparedStatement statement = this.injectUpdateDataToPreparedStatement(
+                mapping.get(table).get(ActionsType.Update)
+                , data);
+        try {
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            log.error(String.valueOf(exception));
+        }
     }
 
     /**
@@ -219,6 +255,44 @@ public class SqliteActions implements DatabaseActions {
     }
 
     /**
+     * 更新数据时注入变量到预编译语句
+     *
+     * @param statement 预编译语句
+     * @param data      数据实体
+     * @return 注入完成的语句
+     */
+    private PreparedStatement injectUpdateDataToPreparedStatement(PreparedStatement statement, Object data) {
+        Field[] fields = data.getClass().getDeclaredFields();
+        boolean havePrimaryKey = this.validatePrimaryKeyExist(fields);
+        for (int count = 0; count < fields.length; count++) {
+            Field field = fields[count];
+            try {
+                if (count == 0 && !havePrimaryKey) {
+                    // 查询注解 查看是否有列名
+                    if (field.isAnnotationPresent(SqliteMetadata.class)) {
+                        statement.setObject(count, field.getAnnotation(SqliteMetadata.class).name());
+                        statement.setObject(count + 1, field.get(data));
+                    } else {
+                        // 没有列名 则使用字段名
+                        statement.setObject(count, transfer.getDataType(field.getName()));
+                        statement.setObject(count + 1, field.get(data));
+                    }
+                }
+                if (havePrimaryKey) {
+                    SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
+                    statement.setObject(fields.length, metadata.name());
+                    statement.setObject(fields.length + 1, field.get(data));
+                }
+                // 备注下 statement 的索引从 1 开始
+                statement.setObject(count + 1, field.get(data));
+            } catch (SQLException | IllegalAccessException exception) {
+                log.error(String.valueOf(exception));
+            }
+        }
+        return statement;
+    }
+
+    /**
      * 回写数据库返回的数据值到数据实体
      */
     private <T> T injectResultSetToData(ResultSet set, T data) {
@@ -257,6 +331,44 @@ public class SqliteActions implements DatabaseActions {
     }
 
     /**
+     * 反射访问数据实体的变量 是否存在不为 null 的变量 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值 返回的是一个
+     * Object 数组 下标 0 为列名 下标
+     * 1 为值
+     */
+    private Object[] validateFieldValueExist(Object data) {
+        Field[] fields = data.getClass().getDeclaredFields();
+        try {
+            for (Field field : fields) {
+                if (field.get(data) != null) {
+                    return new Object[]{getColumnName(field.getName()), field.get(data)};
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 判断数据存在的注解是否有被标记为主键
+     *
+     * @param fields 变量组
+     * @return 任意变量被标记主键则返回 true
+     */
+    private boolean validatePrimaryKeyExist(Field[] fields) {
+        // 判断是否有任意变量被注解标记为主键
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(SqliteMetadata.class)) {
+                SqliteMetadata metadata = field.getAnnotation(SqliteMetadata.class);
+                if (metadata.isPrimaryKey()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 创建一个表
      *
      * @param table 表名
@@ -264,10 +376,13 @@ public class SqliteActions implements DatabaseActions {
      */
     private String createTable(String table, Object data) {
         StringBuilder builder = new StringBuilder();
-        builder.append("CREATE TABLE ").append(table).append(" (");
         // 反射扫描变量
         // 获取变量列表
         Field[] fields = data.getClass().getDeclaredFields();
+        // 判断是否存在主键
+        boolean havePrimaryKey = this.validatePrimaryKeyExist(fields);
+        builder.append("CREATE TABLE ").append(table).append(" (");
+
         // 遍历添加到 sql 语句中
         for (int count = 0; count < fields.length; count++) {
             Field field = fields[count];
@@ -293,34 +408,23 @@ public class SqliteActions implements DatabaseActions {
                 if (metadata.isAutoincrement()) {
                     builder.append(" AUTO_INCREMENT");
                 }
+                // 特殊情况 任意变量中注解中没有标记主键
+                if (count == 0 && !havePrimaryKey) {
+                    builder.append(" PRIMARY KEY");
+                }
             } else {
                 // 没有注解 推导类型 使用变量名全小写
                 builder.append(getColumnName(field.getName()))
                         .append(" ")
                         .append(transfer.getDataType(field));
+                // 没有注解 指定第一个变量为主键
+                if (count == 0 && !havePrimaryKey) {
+                    builder.append(" PRIMARY KEY");
+                }
             }
         }
         // 生成完成
         return builder.append(");").toString();
-    }
-
-    /**
-     * 反射访问数据实体的变量 是否存在不为 null 的变量 不存在则返回 null 存在则返回第一个不为 null 变量的变量名和值 返回的是一个
-     * Object 数组 下标 0 为列名 下标
-     * 1 为值
-     */
-    public Object[] validateFieldValueExist(Object data) {
-        Field[] fields = data.getClass().getDeclaredFields();
-        try {
-            for (Field field : fields) {
-                if (field.get(data) != null) {
-                    return new Object[] { getColumnName(field.getName()), field.get(data) };
-                }
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
