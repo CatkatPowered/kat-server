@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+// TODO 使用流重构
 @SuppressWarnings("unused")
 public class EventBus {
 
