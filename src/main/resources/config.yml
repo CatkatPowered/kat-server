@@ -35,3 +35,6 @@ resource_storage: local
 # If you choose `local`,
 # you can set the resource file where to store.
 data_folder_path: "./data"
+
+####################### ExecThreads ############################
+exec_threads: 16
