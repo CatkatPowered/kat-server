@@ -18,15 +18,15 @@ public interface KatExtension {
     /**
      * 在插件被时执行此方法 抽象方法 由扩展实现
      */
-    public void onLoad();
+    void onLoad();
 
     /**
      * 在插件被开启时执行此方法 抽象方法 由扩展实现
      */
-    public void onEnable();
+    void onEnable();
 
     /**
      * 在插件被卸载时执行此方法 抽象方法 由扩展实现
      */
-    public void onDisable();
+    void onDisable();
 }
