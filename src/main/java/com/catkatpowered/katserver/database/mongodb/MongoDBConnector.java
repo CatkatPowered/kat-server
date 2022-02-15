@@ -1,9 +1,6 @@
 package com.catkatpowered.katserver.database.mongodb;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import com.mongodb.client.MongoDatabase;
 
 @SuppressWarnings("SpellCheckingInspection")

@@ -3,8 +3,6 @@ package com.catkatpowered.katserver.database;
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
-import com.catkatpowered.katserver.database.mongodb.MongoDBActions;
-import com.catkatpowered.katserver.database.mongodb.MongoDBConnector;
 import com.catkatpowered.katserver.database.type.DatabaseType;
 import com.catkatpowered.katserver.database.sqlite.SQLiteActions;
 import com.catkatpowered.katserver.database.sqlite.SQLiteConnector;
@@ -47,13 +45,10 @@ public class KatDatabase {
      */
     DatabaseConnector pickConnector(DatabaseType type) {
         switch (type) {
-            case MySQL, PostGreSQL -> {
+            case MySQL, PostGreSQL, MongoDB -> {
             }
             case SQLite -> {
                 return new SQLiteConnector();
-            }
-            case MongoDB -> {
-                return new MongoDBConnector();
             }
         }
         return null;
@@ -61,13 +56,10 @@ public class KatDatabase {
 
     DatabaseActions pickActions(DatabaseType type) {
         switch (type) {
-            case MySQL, PostGreSQL -> {
+            case MySQL, PostGreSQL, MongoDB -> {
             }
             case SQLite -> {
                 return new SQLiteActions();
-            }
-            case MongoDB -> {
-                return new MongoDBActions();
             }
         }
         return null;
