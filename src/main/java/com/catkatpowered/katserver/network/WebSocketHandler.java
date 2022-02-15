@@ -1,11 +1,7 @@
 package com.catkatpowered.katserver.network;
 
+import io.javalin.websocket.WsConfig;
 
-import io.javalin.websocket.WsMessageContext;
+public class WebSocketHandler extends WsConfig {
 
-public class WebSocketHandler {
-
-    public static void WebSocketMessageHandler(WsMessageContext ctx) {
-
-    }
 }

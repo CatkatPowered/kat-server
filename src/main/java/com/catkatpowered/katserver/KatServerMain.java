@@ -6,10 +6,11 @@ import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.network.KatNetworkManager;
 import com.catkatpowered.katserver.storage.KatStorageManager;
+import com.catkatpowered.katserver.task.KatTaskManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 本项目采用 AGPL v3 进行开源 请遵循开源协议
+ * 本项目采用 AGpl v3 进行开源 请遵循开源协议
  */
 @Slf4j
 public class KatServerMain {
@@ -27,6 +28,8 @@ public class KatServerMain {
         KatDatabaseManager.init();
         // 启动储存模块
         KatStorageManager.init();
+        // 启动多线程模块
+        KatTaskManager.init();
         // 启动扩展模块
         KatExtensionManager.init();
 
