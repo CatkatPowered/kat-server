@@ -1,9 +1,5 @@
 package com.catkatpowered.katserver.extension;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.logging.log4j.Logger;
-
 /**
  * 定义一个 Kat Server 扩展 <br>
  * 加载顺序 onLoad -> onEnable -> onDisable <br>

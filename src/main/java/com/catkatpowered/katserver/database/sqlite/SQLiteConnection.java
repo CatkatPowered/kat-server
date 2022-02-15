@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.database.sqlite;
 
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
-
 import java.sql.Connection;
 
 public class SQLiteConnection implements DatabaseConnection {

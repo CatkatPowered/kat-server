@@ -1,8 +1,11 @@
 package com.catkatpowered.katserver.event.interfaces;
 
 import com.catkatpowered.katserver.event.EventPriority;
-
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

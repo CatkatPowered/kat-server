@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.event;
 
 import com.catkatpowered.katserver.event.interfaces.Listener;
-
 import java.lang.reflect.Method;
 
 @SuppressWarnings("unused")

@@ -4,7 +4,6 @@ import com.catkatpowered.katserver.event.interfaces.Blockable;
 import com.catkatpowered.katserver.event.interfaces.Cancellable;
 import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;

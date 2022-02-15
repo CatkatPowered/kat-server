@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.database.sqlite;
 
-import com.catkatpowered.katserver.database.type.DataType;
 import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
+import com.catkatpowered.katserver.database.type.DataType;
 
 /**
  * 用于将 Java 类型数据推导至 Sql 类型

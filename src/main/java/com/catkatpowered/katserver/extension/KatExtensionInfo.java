@@ -1,11 +1,7 @@
 package com.catkatpowered.katserver.extension;
 
-import com.google.gson.annotations.SerializedName;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
+import lombok.Data;
 
 /**
  * 实体类 存放扩展描述文件

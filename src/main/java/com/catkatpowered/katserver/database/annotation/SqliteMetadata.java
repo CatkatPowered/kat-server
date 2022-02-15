@@ -1,8 +1,11 @@
 package com.catkatpowered.katserver.database.annotation;
 
 import com.catkatpowered.katserver.database.type.DataType;
-
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 被 Metadata 注解后 将一个字段标记为被扫描字段 <br>
