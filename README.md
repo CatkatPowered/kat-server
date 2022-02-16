@@ -1,4 +1,5 @@
 ![Kat Server](https://s2.loli.net/2022/01/14/ApdrzBoIeFl6Mh8.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server?ref=badge_shield)
 
 <h1 align="center">🕊 Kat Server</h1>
 
@@ -28,3 +29,7 @@ AGPLv3 -- 这意味着基于本项目开发或者二次开发本项目以及与�
 
 本项目不会对您的行为负责，请自觉遵守**中华人民共和国法律以及当地法律**
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server?ref=badge_large)
