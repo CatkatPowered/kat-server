@@ -1,5 +1,7 @@
 package com.catkatpowered.katserver.database.interfaces;
 
+import com.mongodb.client.MongoDatabase;
+
 import java.sql.Connection;
 
 /**
@@ -7,6 +9,8 @@ import java.sql.Connection;
  *
  * @author hanbings
  */
+@SuppressWarnings("SpellCheckingInspection")
 public interface DatabaseConnection {
     Connection getJdbcConnection();
+    MongoDatabase getMongoConnection();
 }
