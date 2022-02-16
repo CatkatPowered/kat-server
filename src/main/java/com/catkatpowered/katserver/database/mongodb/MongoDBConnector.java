@@ -6,7 +6,12 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import lombok.extern.slf4j.Slf4j;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+@Slf4j
 @SuppressWarnings("SpellCheckingInspection")
 public class MongoDBConnector implements DatabaseConnector {
 
@@ -15,17 +20,22 @@ public class MongoDBConnector implements DatabaseConnector {
 
     @Override
     public void loadDatabase(String url, String username, String password) {
-        MongoClientURI uri = new MongoClientURI(url);
-        connection = new MongoClient(
-                new ServerAddress(uri.getURI()),
-                MongoCredential.createCredential(
-                        uri.getUsername() != null ? uri.getUsername() : username,
-                        uri.getDatabase() != null ? uri.getDatabase() : "test",
-                        uri.getPassword() != null ? uri.getPassword() : password.toCharArray()
-                ),
-                uri.getOptions()
-        );
-        database = uri.getDatabase();
+        MongoClientURI resource = new MongoClientURI(url);
+        try {
+            URI uri = new URI(url);
+            connection = new MongoClient(
+                    uri.getPort() == -1 ? new ServerAddress(uri.getHost()) : new ServerAddress(uri.getHost(), uri.getPort()),
+                    MongoCredential.createCredential(
+                            resource.getUsername() != null ? resource.getUsername() : username,
+                            resource.getDatabase() != null ? resource.getDatabase() : "test",
+                            resource.getPassword() != null ? resource.getPassword() : password.toCharArray()
+                    ),
+                    resource.getOptions()
+            );
+            database = resource.getDatabase();
+        } catch (URISyntaxException exception) {
+            log.error(exception.getMessage());
+        }
     }
 
     @Override
