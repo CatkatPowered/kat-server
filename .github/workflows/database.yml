@@ -30,4 +30,4 @@ jobs:
           mongodb-db: kat-server
 
       - name: Run Gradle test
-        run: ./gradlew test --tests "com.catkatpowered.katserver.database.MongoDBDatabaseTest"
+        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.database.MongoDBDatabaseTest"
