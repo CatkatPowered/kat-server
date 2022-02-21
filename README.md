@@ -18,8 +18,6 @@
 
 我们在参考的聊天软件有 QQ 微信 钉钉 Discord Telegram 还有更多在各个领域中大放异彩的社交平台
 
-**🚧 正在开发中**
-
 
 
 ## 👷 构建状态
@@ -35,6 +33,18 @@
 ## 🍉 协议与声明
 
 本项目具有 [隐私协议](https://project.catkatpowered.com/#/privacy-policy) 、[用户协议](https://project.catkatpowered.com/#/terms-of-use) 和 [开源声明](https://project.catkatpowered.com/#/open-source-license)
+
+
+
+## ✨ Quick Start
+
+[千里之行，始于 Quick Start](https://project.catkatpowered.com/#/kat-server-quick-start) 将描述如何快速启动和调试 Kat Server
+
+
+
+## 📝 文档
+
+在 [这里](https://project.catkatpowered.com/#/README) 开始阅读完整文档，文档包含各个模块的设计思路、如何编写文档等内容
 
 
 
