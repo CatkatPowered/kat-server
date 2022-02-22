@@ -42,7 +42,7 @@
 
 ## 📝 文档
 
-在 [这里](https://project.catkatpowered.com/#/README) 开始阅读完整文档，文档包含各个模块的设计思路、如何编写文档等内容
+在 [这里](https://project.catkatpowered.com/#/README) 开始阅读完整文档，文档包含各个模块的设计思路、如何编写扩展等内容
 
 
 
