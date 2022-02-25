@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author hanbings
  */
+@SuppressWarnings("unused")
 public class KatShaUtils {
     public String sha256(File file) {
         if (file == null || file.length() == 0) {
