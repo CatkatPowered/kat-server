@@ -13,16 +13,17 @@
 
         <!-- console logging - logs to stdout -->
         <Console name="SysOut" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d{yyyy-MM-dd}][%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+            <PatternLayout pattern="[%d{yyyy-MM-dd}][%d{HH:mm:ss}] %highlight{[%t/%level]}: %msg%n"
+                           disableAnsi="false"/>
         </Console>
 
         <!-- file logging - stuff under the logs/ dir -->
         <RollingRandomAccessFile name="File" fileName="logs/latest.log"
                                  filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
-            <PatternLayout pattern="[%d{yyyy-MM-dd}][%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+            <PatternLayout pattern="[%d{yyyy-MM-dd}][%d{HH:mm:ss}] [%t/%level]: %msg%n"/>
             <Policies>
-                <TimeBasedTriggeringPolicy />
-                <OnStartupTriggeringPolicy />
+                <TimeBasedTriggeringPolicy/>
+                <OnStartupTriggeringPolicy/>
                 <!-- <SizeBasedTriggeringPolicy size="250 MB"/> -->
             </Policies>
             <!-- keep up to 20 files before removing them -->
@@ -31,7 +32,7 @@
 
         <!-- legacy logging - logs to server.log -->
         <File name="LegacyServerLog" fileName="logs/server.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%level] %msg%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%level] %msg%n"/>
         </File>
 
     </Appenders>
@@ -42,7 +43,7 @@
 
             <filters>
                 <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY"
-                              onMismatch="NEUTRAL" />
+                              onMismatch="NEUTRAL"/>
             </filters>
             <AppenderRef ref="SysOut"/>
             <AppenderRef ref="File"/>
