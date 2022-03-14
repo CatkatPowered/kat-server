@@ -27,6 +27,9 @@ public class KatUniMessageType {
         this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE);
         this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
         this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_MIXED_MESSAGE);
+        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_EXTENSION_DESCRIPTION_MESSAGE);
+        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_SERVER_DESCRIPTION_MESSAGE);
+        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_RESOURCE_TOKEN_MESSAGE);
     }
 
     public static KatUniMessageType getInstance() {

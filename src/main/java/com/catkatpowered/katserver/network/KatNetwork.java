@@ -16,7 +16,7 @@ public class KatNetwork {
     private KatNetwork() {
         Javalin server = Javalin.create();
         // HTTP Handlers
-        server.get("/", new HTTPHandler());
+        server.get("/resource", new HTTPHandler());
 
         // WebSocket Handlers
         server.ws("/websocket", ws -> {
