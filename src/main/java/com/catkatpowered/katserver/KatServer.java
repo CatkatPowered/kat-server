@@ -12,6 +12,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+
 import java.io.File;
 import java.util.Map;
 

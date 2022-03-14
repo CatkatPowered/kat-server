@@ -2,6 +2,10 @@ package com.catkatpowered.katserver.config;
 
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.utils.KatWorkingDir;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,9 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Kat Server 的配置文件项
@@ -47,9 +48,9 @@ public class KatConfig {
                 if (katConfigFile.createNewFile()) {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
                     outputStream.write(Objects.requireNonNull(KatConfig.class
-                            .getClassLoader()
-                            .getResourceAsStream("config.yml"))
-                        .readAllBytes());
+                                    .getClassLoader()
+                                    .getResourceAsStream("config.yml"))
+                            .readAllBytes());
                     outputStream.flush();
                     outputStream.close();
                     Yaml yaml = new Yaml();
@@ -64,9 +65,9 @@ public class KatConfig {
 
             // 开始获取常量
             katNetworkPort = Integer.parseInt(
-                configContent.get(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).toString());
+                    configContent.get(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).toString());
             katDataFolderPath = configContent.get(
-                KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH).toString();
+                    KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH).toString();
 
             // 检测数据储存文件夹状态并处理
             if (!Files.exists(Path.of(KatWorkingDir.fixPath(katDataFolderPath)))) {

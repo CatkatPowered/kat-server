@@ -1,7 +1,8 @@
 package com.catkatpowered.katserver.extension;
 
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 实体类 存放扩展描述文件

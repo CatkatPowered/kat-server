@@ -9,7 +9,8 @@ public class SQLiteConnection implements DatabaseConnection {
     Connection jdbcConnection;
 
     @SuppressWarnings("unused")
-    private SQLiteConnection() {}
+    private SQLiteConnection() {
+    }
 
     public SQLiteConnection(Connection connection) {
         jdbcConnection = connection;
@@ -20,7 +21,9 @@ public class SQLiteConnection implements DatabaseConnection {
         return jdbcConnection;
     }
 
-    @Override @Deprecated @SuppressWarnings("SpellCheckingInspection")
+    @Override
+    @Deprecated
+    @SuppressWarnings("SpellCheckingInspection")
     public MongoDatabase getMongoConnection() {
         return null;
     }

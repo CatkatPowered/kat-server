@@ -1,9 +1,10 @@
 package com.catkatpowered.katserver.database.mysql;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 谁在乎 JDBC 版本啊 <br> 一个 try catch 抹平 JDBC 对应 Mysql 版本问题

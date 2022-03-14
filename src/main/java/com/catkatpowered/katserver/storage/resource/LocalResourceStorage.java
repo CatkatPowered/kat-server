@@ -2,18 +2,19 @@ package com.catkatpowered.katserver.storage.resource;
 
 import com.catkatpowered.katserver.config.KatConfig;
 import com.catkatpowered.katserver.message.KatUniMessage;
-import java.io.File;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public class LocalResourceStorage implements ResourceStorage {
 
     @Override
     public File getResource(@NotNull String hash) {
         File resource = new File(KatConfig.getInstance().getKatDataFolderPath()
-            + "/media/"
-            + hash.substring(0, 3)
-            + "/"
-            + hash);
+                + "/media/"
+                + hash.substring(0, 3)
+                + "/"
+                + hash);
         return resource.exists() ? resource : null;
     }
 
@@ -25,10 +26,10 @@ public class LocalResourceStorage implements ResourceStorage {
         }
 
         File resource = new File(KatConfig.getInstance().getKatDataFolderPath()
-            + "/media/"
-            + msg.getResourceHash().substring(0, 3)
-            + "/"
-            + msg.getResourceHash());
+                + "/media/"
+                + msg.getResourceHash().substring(0, 3)
+                + "/"
+                + msg.getResourceHash());
         return resource.exists() ? resource : null;
     }
 

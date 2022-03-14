@@ -2,11 +2,12 @@ package com.catkatpowered.katserver.message;
 
 import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
 import com.google.gson.annotations.SerializedName;
-import java.util.ArrayList;
-import java.util.Objects;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Kat 聚合消息
@@ -93,15 +94,15 @@ public class KatUniMessage {
     public String resourceURL;
 
     public KatUniMessage(
-        String messageType,
-        String messageGroup,
-        String messageID,
-        String messageContent,
-        ArrayList<KatUniMessage> messageList,
-        ArrayList<String> extended,
-        String resourceHash,
-        String resourceName,
-        String resourceURL) {
+            String messageType,
+            String messageGroup,
+            String messageID,
+            String messageContent,
+            ArrayList<KatUniMessage> messageList,
+            ArrayList<String> extended,
+            String resourceHash,
+            String resourceName,
+            String resourceURL) {
         this.messageType = messageType;
         this.messageGroup = messageGroup;
         this.messageID = messageID;
@@ -130,13 +131,13 @@ public class KatUniMessage {
      */
     public boolean isResource() {
         return
-            Objects.equals(this.messageType, KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE)
-                || Objects.equals(this.messageType,
-                KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE)
-                || Objects.equals(this.messageType,
-                KatMessageTypeConstants.KAT_MESSAGE_TYPE_AUDIO_MESSAGE)
-                || Objects.equals(this.messageType,
-                KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
+                Objects.equals(this.messageType, KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE)
+                        || Objects.equals(this.messageType,
+                        KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE)
+                        || Objects.equals(this.messageType,
+                        KatMessageTypeConstants.KAT_MESSAGE_TYPE_AUDIO_MESSAGE)
+                        || Objects.equals(this.messageType,
+                        KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
     }
 
     /**

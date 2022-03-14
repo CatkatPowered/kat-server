@@ -12,5 +12,6 @@ import java.sql.Connection;
 @SuppressWarnings("SpellCheckingInspection")
 public interface DatabaseConnection {
     Connection getJdbcConnection();
+
     MongoDatabase getMongoConnection();
 }

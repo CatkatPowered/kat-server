@@ -7,12 +7,12 @@ package com.catkatpowered.katserver.database.interfaces;
  * @author hanbings
  */
 public interface DatabaseConnector {
-  // 加载驱动
-  void loadDatabase(String url, String username, String password);
+    // 加载驱动
+    void loadDatabase(String url, String username, String password);
 
-  // 获取链接
-  DatabaseConnection getConnection();
+    // 获取链接
+    DatabaseConnection getConnection();
 
-  // 断开链接
-  void exit();
+    // 断开链接
+    void exit();
 }

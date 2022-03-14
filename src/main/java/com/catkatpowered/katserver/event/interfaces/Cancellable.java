@@ -8,6 +8,7 @@ package com.catkatpowered.katserver.event.interfaces;
  */
 @SuppressWarnings("unused SpellCheckingInspection")
 public interface Cancellable {
-    void setCancelled(boolean cancel);
     boolean isCancelled();
+
+    void setCancelled(boolean cancel);
 }

@@ -2,11 +2,12 @@ package com.catkatpowered.katserver.storage;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.message.KatUniMessage;
-import java.util.List;
-import java.util.Optional;
 import jdk.jfr.Experimental;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("unused")
 @Experimental
@@ -23,12 +24,12 @@ public class KatMessageStorage {
 
     public static Optional<List<KatUniMessage>> getMessage(@NotNull KatUniMessage indexMsg) {
         return Optional.ofNullable(
-            KatServer.KatDatabaseAPI
-                .getActions()
-                .read(
-                    KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                    indexMsg.messageGroup,
-                    indexMsg)
+                KatServer.KatDatabaseAPI
+                        .getActions()
+                        .read(
+                                KatServer.KatDatabaseAPI.getConnector().getConnection(),
+                                indexMsg.messageGroup,
+                                indexMsg)
         );
     }
 
@@ -40,9 +41,9 @@ public class KatMessageStorage {
      */
     public static void updateMessage(@NotNull KatUniMessage oldContent, KatUniMessage newContent) {
         KatServer.KatDatabaseAPI.getActions().update(
-            KatServer.KatDatabaseAPI.getConnector().getConnection(),
-            oldContent.messageGroup,
-            newContent
+                KatServer.KatDatabaseAPI.getConnector().getConnection(),
+                oldContent.messageGroup,
+                newContent
         );
 
     }
@@ -55,9 +56,9 @@ public class KatMessageStorage {
     public static void deleteMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
             KatServer.KatDatabaseAPI.getActions().delete(
-                KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                indexMsg.messageGroup,
-                indexMsg
+                    KatServer.KatDatabaseAPI.getConnector().getConnection(),
+                    indexMsg.messageGroup,
+                    indexMsg
             );
         }
     }
@@ -70,9 +71,9 @@ public class KatMessageStorage {
     public static void createMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
             KatServer.KatDatabaseAPI.getActions().create(
-                KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                indexMsg.messageGroup,
-                indexMsg
+                    KatServer.KatDatabaseAPI.getConnector().getConnection(),
+                    indexMsg.messageGroup,
+                    indexMsg
             );
         }
     }

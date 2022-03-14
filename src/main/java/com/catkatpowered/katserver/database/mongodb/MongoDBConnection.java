@@ -12,14 +12,16 @@ public class MongoDBConnection implements DatabaseConnection {
     String database;
 
     @SuppressWarnings("unused")
-    private MongoDBConnection() {}
+    private MongoDBConnection() {
+    }
 
     public MongoDBConnection(MongoClient client, String database) {
         this.mongoClient = client;
         this.database = database;
     }
 
-    @Override @Deprecated
+    @Override
+    @Deprecated
     public Connection getJdbcConnection() {
         return null;
     }

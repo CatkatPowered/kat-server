@@ -6,5 +6,5 @@ public class KatConfigNodeConstants {
 
     public static final String KAT_CONFIG_NETWORK_PORT = "network_port";
 
-    public static final String KAT_CONFIG_EXEC_THREADS="exec_threads";
+    public static final String KAT_CONFIG_EXEC_THREADS = "exec_threads";
 }

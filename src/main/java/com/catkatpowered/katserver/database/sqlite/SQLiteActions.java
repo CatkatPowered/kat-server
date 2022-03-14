@@ -5,6 +5,8 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 import com.catkatpowered.katserver.database.interfaces.DatabaseTypeTransfer;
 import com.catkatpowered.katserver.database.type.ActionsType;
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 解析 sql 并存储为安全的预编译语句 <br>
@@ -211,7 +212,7 @@ public class SQLiteActions implements DatabaseActions {
      * @return 注入完成的语句
      */
     private PreparedStatement injectInsertDataToPreparedStatement(PreparedStatement statement,
-            Object data) {
+                                                                  Object data) {
         Field[] fields = data.getClass().getDeclaredFields();
         for (int count = 0; count < fields.length; count++) {
             try {
@@ -232,7 +233,7 @@ public class SQLiteActions implements DatabaseActions {
      * @return 注入完成的语句
      */
     private PreparedStatement injectDeleteDataToPreparedStatement(PreparedStatement statement,
-            Object[] data) {
+                                                                  Object[] data) {
         try {
             // 备注下 statement 的索引从 1 开始
             statement.setObject(1, data[0]);

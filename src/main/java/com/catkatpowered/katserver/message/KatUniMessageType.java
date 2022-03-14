@@ -1,9 +1,10 @@
 package com.catkatpowered.katserver.message;
 
 import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
-import java.util.HashSet;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
 
 /**
  * Kat 消息类型管理器

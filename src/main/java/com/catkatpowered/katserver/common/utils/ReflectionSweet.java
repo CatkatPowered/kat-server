@@ -24,6 +24,7 @@ public class ReflectionSweet {
 
     /**
      * 初始化一个类型
+     *
      * @param name 类名
      * @return 工具类引用
      */
@@ -38,6 +39,7 @@ public class ReflectionSweet {
 
     /**
      * 给予访问权限
+     *
      * @return 工具类引用
      */
     public ReflectionSweet access() {
@@ -48,6 +50,7 @@ public class ReflectionSweet {
 
     /**
      * 给予类型某个变量或某个方法访问权限
+     *
      * @param name 变量名
      * @return 工具类引用
      */
@@ -63,6 +66,7 @@ public class ReflectionSweet {
 
     /**
      * 获取类型的所有变量
+     *
      * @return 变量数组
      */
     public Field[] fields() {
@@ -100,6 +104,7 @@ public class ReflectionSweet {
 
     /**
      * 判断类型是否包含某个注解
+     *
      * @param annotation 注解
      * @return 是否包含
      */
@@ -109,6 +114,7 @@ public class ReflectionSweet {
 
     /**
      * 获取包含某个注解的变量
+     *
      * @param annotation 注解
      * @return 变量数组
      */
@@ -120,6 +126,7 @@ public class ReflectionSweet {
 
     /**
      * 获取包含某个注解的方法
+     *
      * @param annotation 注解
      * @return 方法数组
      */

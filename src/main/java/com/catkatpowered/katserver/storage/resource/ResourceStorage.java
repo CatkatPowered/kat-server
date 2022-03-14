@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.storage.resource;
 
 import com.catkatpowered.katserver.message.KatUniMessage;
+
 import java.io.File;
 
 public interface ResourceStorage {

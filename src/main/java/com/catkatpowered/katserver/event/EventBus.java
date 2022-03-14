@@ -4,6 +4,7 @@ import com.catkatpowered.katserver.event.interfaces.Blockable;
 import com.catkatpowered.katserver.event.interfaces.Cancellable;
 import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EventBus {
 
     private static final EventBus instance = new EventBus();
+    private final Map<Class<? extends Event>, RegisteredListener> handlers = new ConcurrentHashMap<>();
 
     private EventBus() {
     }
@@ -21,8 +23,6 @@ public class EventBus {
     public static EventBus getInstance() {
         return instance;
     }
-
-    private final Map<Class<? extends Event>, RegisteredListener> handlers = new ConcurrentHashMap<>();
 
     public void callEvent(Event event) {
         if (handlers.containsKey(event.getClass())) {
@@ -69,8 +69,8 @@ public class EventBus {
                 if (handlers.containsKey(event)) {
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
                     handlers.get(event).addHandler(
-                        new RegisteredHandler(annotation.priority()
-                            , annotation.ignoreCancelled(), listener, method));
+                            new RegisteredHandler(annotation.priority()
+                                    , annotation.ignoreCancelled(), listener, method));
                 }
             }
         }
@@ -86,8 +86,8 @@ public class EventBus {
                 if (handlers.containsKey(event)) {
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
                     handlers.get(event).removeHandler(
-                        new RegisteredHandler(annotation.priority()
-                            , annotation.ignoreCancelled(), listener, method));
+                            new RegisteredHandler(annotation.priority()
+                                    , annotation.ignoreCancelled(), listener, method));
                 }
             }
         }

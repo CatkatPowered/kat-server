@@ -14,18 +14,21 @@ public class KatNetwork {
     private static Javalin network;
 
     private KatNetwork() {
-        Javalin katserver = Javalin.create();
+        Javalin server = Javalin.create();
         // HTTP Handlers
-        katserver.get("/", new HTTPHandler());
+        server.get("/", new HTTPHandler());
 
         // WebSocket Handlers
-        katserver.ws("/websocket", ws -> {
-            ws.onConnect(wsConnectContext -> {});
-            ws.onClose(wsCloseContext -> {});
-            ws.onMessage(wsMessageContext -> {});
+        server.ws("/websocket", ws -> {
+            ws.onConnect(wsConnectContext -> {
+            });
+            ws.onClose(wsCloseContext -> {
+            });
+            ws.onMessage(wsMessageContext -> {
+            });
         });
 
-        network = katserver.start(KatConfig.getInstance().getKatNetworkPort());
+        network = server.start(KatConfig.getInstance().getKatNetworkPort());
     }
 
 

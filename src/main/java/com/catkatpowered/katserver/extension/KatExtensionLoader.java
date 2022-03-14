@@ -2,6 +2,8 @@ package com.catkatpowered.katserver.extension;
 
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 读取 扩展 排序 并按依赖排序加载
@@ -150,7 +151,7 @@ public class KatExtensionLoader {
      */
     public Class<?> loadJar(File extension, String main) {
         try {
-            URLClassLoader loader = new URLClassLoader(new URL[] { extension.toURI().toURL() });
+            URLClassLoader loader = new URLClassLoader(new URL[]{extension.toURI().toURL()});
             return loader.loadClass(main);
         } catch (MalformedURLException | ClassNotFoundException exception) {
             log.error("cloud not load {} extension.", extension.getName(), exception);
