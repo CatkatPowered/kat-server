@@ -48,7 +48,7 @@ public class KatServer {
             return KatEventManager.getEventHandler(event);
         }
 
-        public void registerEvent(Event event) {
+        public static void registerEvent(Event event) {
             KatEventManager.registerEvent(event);
         }
     }

@@ -1,5 +1,13 @@
 package com.catkatpowered.katserver.extension;
 
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.event.Event;
+import com.catkatpowered.katserver.extension.event.DisableExtensionEvent;
+import com.catkatpowered.katserver.extension.event.EnableExtensionEvent;
+import com.catkatpowered.katserver.extension.event.ExtensionEvent;
+import com.catkatpowered.katserver.extension.event.LoadExtensionEvent;
+import org.checkerframework.checker.units.qual.K;
+
 import java.io.File;
 
 /**
@@ -10,6 +18,13 @@ import java.io.File;
 public class KatExtensionManager {
 
     public static void init() {
+        // 注册 Event
+        KatServer.KatEventBusAPI.registerEvent(new ExtensionEvent(new KatExtensionInfo()));
+        KatServer.KatEventBusAPI.registerEvent(new LoadExtensionEvent(new KatExtensionInfo()));
+        KatServer.KatEventBusAPI.registerEvent(new EnableExtensionEvent(new KatExtensionInfo()));
+        KatServer.KatEventBusAPI.registerEvent(new DisableExtensionEvent(new KatExtensionInfo()));
+
+        // 加载所有扩展
         KatExtensionManager.loadExtensions();
     }
 

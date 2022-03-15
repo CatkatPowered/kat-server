@@ -1,6 +1,10 @@
 package com.catkatpowered.katserver.extension;
 
+import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
+import com.catkatpowered.katserver.extension.event.DisableExtensionEvent;
+import com.catkatpowered.katserver.extension.event.EnableExtensionEvent;
+import com.catkatpowered.katserver.extension.event.LoadExtensionEvent;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,7 +86,11 @@ public class KatExtensionLoader {
             Object extension = clazz.getDeclaredConstructor().newInstance();
             extensions.put(info, extension);
             // 获取方法 -> 按顺序调用
+            // 广播事件
+            KatServer.KatEventBusAPI.callEvent(new LoadExtensionEvent(info));
             clazz.getMethod("onLoad").invoke(extension);
+            // 广播事件
+            KatServer.KatEventBusAPI.callEvent(new EnableExtensionEvent(info));
             clazz.getMethod("onEnable").invoke(extension);
         } catch (InstantiationException
                 | IllegalAccessException
@@ -109,6 +117,10 @@ public class KatExtensionLoader {
     public void unloadExtension(String extension) {
         KatExtensionInfo info = index.get(extension);
         try {
+            if (index.containsKey(extension)) {
+                // 获取扩展
+                KatServer.KatEventBusAPI.callEvent(new DisableExtensionEvent(info));
+            }
             mapping.get(info).getMethod("onDisable").invoke(extensions.get(info));
             // 卸载成功后移除索引与图
             extensions.remove(info);
@@ -131,6 +143,7 @@ public class KatExtensionLoader {
                 .filter(kvEntry -> Objects.equals(kvEntry.getValue(), extension))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
+        KatServer.KatEventBusAPI.callEvent(new DisableExtensionEvent(info));
         try {
             mapping.get(info).getMethod("onDisable").invoke(extensions.get(info));
             // 卸载成功后移除索引与图
