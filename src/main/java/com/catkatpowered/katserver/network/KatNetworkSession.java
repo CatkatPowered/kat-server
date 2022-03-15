@@ -15,7 +15,7 @@ public class KatNetworkSession {
 
     public String generateToken(Session session) {
         String token = UUID.randomUUID().toString();
-        WebSocketSession.put(session,token);
+        WebSocketSession.put(session, token);
         return token;
     }
 

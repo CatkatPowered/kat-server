@@ -9,7 +9,4 @@ public class KatMessageTypeConstants {
     public static final String KAT_MESSAGE_TYPE_AUDIO_MESSAGE = "AudioMessage";
     public static final String KAT_MESSAGE_TYPE_VIDEO_MESSAGE = "VideoMessage";
     public static final String KAT_MESSAGE_TYPE_MIXED_MESSAGE = "MixedMessage";
-    public static final String KAT_MESSAGE_TYPE_EXTENSION_DESCRIPTION_MESSAGE = "ExtensionDescriptionMessage";
-    public static final String KAT_MESSAGE_TYPE_SERVER_DESCRIPTION_MESSAGE = "ServerDescriptionMessage";
-    public static final String KAT_MESSAGE_TYPE_RESOURCE_TOKEN_MESSAGE = "ResourceTokenMessage";
 }
