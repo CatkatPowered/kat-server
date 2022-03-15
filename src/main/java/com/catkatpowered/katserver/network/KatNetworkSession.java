@@ -6,12 +6,8 @@ import org.eclipse.jetty.websocket.api.Session;
 import java.util.HashMap;
 import java.util.UUID;
 
-@Builder
 public class KatNetworkSession {
-    private HashMap<Session, String> WebSocketSession = new HashMap<>();
-
-    public KatNetworkSession() {
-    }
+    final HashMap<Session, String> WebSocketSession = new HashMap<>();
 
     public String generateToken(Session session) {
         String token = UUID.randomUUID().toString();
@@ -22,4 +18,5 @@ public class KatNetworkSession {
     public void revokeToken(Session session) {
         WebSocketSession.remove(session);
     }
+
 }
