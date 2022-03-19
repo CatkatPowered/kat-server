@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.extension.event;
 
 import com.catkatpowered.katserver.event.Event;
-import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionInfo;
 import lombok.Getter;
 

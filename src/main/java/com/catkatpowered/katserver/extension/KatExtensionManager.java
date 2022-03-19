@@ -1,13 +1,10 @@
 package com.catkatpowered.katserver.extension;
 
 import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.extension.event.DisableExtensionEvent;
 import com.catkatpowered.katserver.extension.event.EnableExtensionEvent;
 import com.catkatpowered.katserver.extension.event.ExtensionEvent;
 import com.catkatpowered.katserver.extension.event.LoadExtensionEvent;
-import org.checkerframework.checker.units.qual.K;
-
 import java.io.File;
 
 /**
