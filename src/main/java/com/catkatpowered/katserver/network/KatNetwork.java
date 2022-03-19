@@ -8,6 +8,12 @@ import com.google.gson.Gson;
 import io.javalin.Javalin;
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+
+import java.security.KeyStore;
 
 public class KatNetwork {
 
@@ -18,7 +24,20 @@ public class KatNetwork {
     private static Javalin network;
 
     private KatNetwork() {
-        Javalin server = Javalin.create();
+        Javalin server = Javalin.create(config -> {
+            config.server(() -> {
+                Server app = new Server();
+                SslContextFactory sslContextFactory = new SslContextFactory.Server();
+                KeyStore keyStore = KatCertUtil.getKeyStore();
+                sslContextFactory.setKeyStore(keyStore);
+                sslContextFactory.setKeyStorePassword("catmoe");
+
+                ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
+                sslConnector.setPort(KatConfig.getInstance().getKatNetworkPort());
+                app.setConnectors(new Connector[]{sslConnector});
+                return app;
+            });
+        });
         KatNetworkSession katNetworkSession = new KatNetworkSession();
         Gson gson = new Gson();
         // HTTP Handlers
@@ -38,13 +57,13 @@ public class KatNetwork {
             });
             ws.onMessage(wsMessageContext -> {
                 WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(), WebSocketMessagePacket.class);
+
                 // TODO: 根据extensionId获取扩展然后发送
                 // TODO: 异步保存消息到数据库
             });
         });
 
-
-        network = server.start(KatConfig.getInstance().getKatNetworkPort());
+        network = server.start();
     }
 
 
