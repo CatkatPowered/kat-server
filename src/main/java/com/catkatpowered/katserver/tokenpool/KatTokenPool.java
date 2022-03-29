@@ -3,8 +3,10 @@ package com.catkatpowered.katserver.tokenpool;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.catkatpowered.katserver.KatServer;
+
 /**
- * TODO 需要设计Token池的各种机制
+ * TODO：需要设计Token池的各种机制
  */
 public class KatTokenPool {
     private static KatTokenPool INSTANCE = new KatTokenPool();

@@ -8,7 +8,7 @@ import com.catkatpowered.katserver.storage.resource.ResourceStorage;
 
 import jdk.jfr.Experimental;
 
-// TODO 编写选择储存方案的逻辑
+// TODO：编写选择储存方案的逻辑
 @Experimental
 public class KatStorage {
 

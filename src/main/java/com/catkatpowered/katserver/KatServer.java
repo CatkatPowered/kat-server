@@ -77,7 +77,6 @@ public class KatServer {
         }
     }
 
-
     // KatUniMessageType API
     public static final class KatUniMessageTypeAPI {
 
@@ -118,5 +117,9 @@ public class KatServer {
         public static DatabaseActions getActions(DatabaseType type) {
             return KatDatabaseManager.getActions(type);
         }
+    }
+
+    public static final class KatTaskAPI {
+
     }
 }
