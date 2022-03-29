@@ -1,15 +1,12 @@
 package com.catkatpowered.katserver.storage.resource;
 
-import com.catkatpowered.katserver.message.KatUniMessage;
+import java.util.Optional;
 
-import java.io.File;
+import com.catkatpowered.katserver.message.KatUniMessage;
+import com.catkatpowered.katserver.storage.KatResource;
 
 public interface ResourceStorage {
 
-    File getResource(String hash);
-
-    File getResource(KatUniMessage msg);
-
-    File getResource(KatUniMessage msg, boolean download);
+    Optional<KatResource> getResource(KatUniMessage msg, ResourceAction action);
 
 }
