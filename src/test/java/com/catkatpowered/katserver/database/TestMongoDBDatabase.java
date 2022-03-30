@@ -5,7 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MongoDBDatabaseTest {
+public class TestMongoDBDatabase {
     @Test
     public void connect() {
         // 生成连接器
