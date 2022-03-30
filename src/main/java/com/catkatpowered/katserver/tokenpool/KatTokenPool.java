@@ -1,9 +1,8 @@
 package com.catkatpowered.katserver.tokenpool;
 
-import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.catkatpowered.katserver.KatServer;
 
 /**
  * TODO：需要设计Token池的各种机制
@@ -14,18 +13,24 @@ public class KatTokenPool {
     private KatTokenPool() {
     }
 
-    private ConcurrentHashMap<String, Date> tokenPool = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Long> tokenPool = new ConcurrentHashMap<>();
 
     public static KatTokenPool getINSTANCE() {
         return INSTANCE;
     }
 
     public String genToken() {
-        return null;
+        var uuid = UUID.randomUUID();
+        this.tokenPool.put(uuid.toString(), System.currentTimeMillis());
+        return uuid.toString();
+    }
+
+    public boolean checkToken(String token) {
+        return this.tokenPool.containsKey(token);
     }
 
     public boolean destroyToken(String token) {
-        return true;
+        return !Optional.of(this.tokenPool.remove(token)).isEmpty();
     }
 
     public void cleanTokens(ClearAction action) {
