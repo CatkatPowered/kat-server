@@ -70,12 +70,17 @@ public class TestKatConfig {
         Map<String, Object> yml = new Yaml().load(defaultConfig);
         KatConfig.getInstance().setConfigContent(yml);
 
+        // Get undefined or null config node
         var undefinedNode = KatServer.KatConfigAPI.getConfig("undefined");
         assertEquals(Optional.empty(), undefinedNode);
 
         var nullNode = KatServer.KatConfigAPI.getConfig("");
         assertEquals(Optional.empty(), nullNode);
 
+        var nullConfigNode = KatServer.KatConfigAPI.getConfig(null);
+        assertEquals(Optional.empty(), nullConfigNode);
+
+        // Get already exist config node
         var network = KatServer.KatConfigAPI.<Map<String, Object>>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK);
         assertEquals(25565, network.get().get("network_port"));
 
