@@ -1,7 +1,7 @@
 package com.catkatpowered.katserver.common.constants;
 
+import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.utils.KatWorkingDir;
-import com.catkatpowered.katserver.config.KatConfig;
 
 /**
  * 提供常量
@@ -20,7 +20,7 @@ public class KatMiscConstants {
 
     // Kat Server 字符画
     public static final String KAT_SERVER_LOGO = """
-             
+
              _  __     _    _____                         \s
             | |/ /    | |  / ____|                        \s
             | ' / __ _| |_| (___   ___ _ ____   _____ _ __\s
@@ -42,6 +42,7 @@ public class KatMiscConstants {
     public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkingDir.fixPath("/extension/config");
 
     // SQLite 数据库存储路径
-    public static final String KAT_DATABASE_PATH = KatWorkingDir.fixPath(KatConfig.getInstance().getKatDataFolderPath() + "/database.db");
+    public static final String KAT_DATABASE_PATH = KatWorkingDir.fixPath(
+            KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH) + "/database.db");
 
 }

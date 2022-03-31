@@ -1,20 +1,20 @@
 package com.catkatpowered.katserver.config;
 
-import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.common.utils.KatWorkingDir;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
+
+import com.catkatpowered.katserver.common.utils.KatWorkingDir;
+
+import org.yaml.snakeyaml.Yaml;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Kat Server 的配置文件项
@@ -28,10 +28,7 @@ public class KatConfig {
     private static final KatConfig Instance = new KatConfig();
 
     @Getter
-    private Integer katNetworkPort = 25565;
-    @Getter
-    private String katDataFolderPath = "";
-    @Getter
+    @Setter
     private Map<String, Object> configContent;
 
     private KatConfig() {
@@ -48,8 +45,8 @@ public class KatConfig {
                 if (katConfigFile.createNewFile()) {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
                     outputStream.write(Objects.requireNonNull(KatConfig.class
-                                    .getClassLoader()
-                                    .getResourceAsStream("config.yml"))
+                            .getClassLoader()
+                            .getResourceAsStream("config.yml"))
                             .readAllBytes());
                     outputStream.flush();
                     outputStream.close();
@@ -61,17 +58,6 @@ public class KatConfig {
                 } else {
                     log.error("Unable to write config file!");
                 }
-            }
-
-            // 开始获取常量
-            katNetworkPort = Integer.parseInt(
-                    configContent.get(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).toString());
-            katDataFolderPath = configContent.get(
-                    KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH).toString();
-
-            // 检测数据储存文件夹状态并处理
-            if (!Files.exists(Path.of(KatWorkingDir.fixPath(katDataFolderPath)))) {
-                Files.createDirectory(Path.of(KatWorkingDir.fixPath(katDataFolderPath)));
             }
 
         } catch (Exception e) {

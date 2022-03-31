@@ -15,7 +15,7 @@ public class KatTask {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(
             Integer.parseInt(
-                    (String) KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_EXEC_THREADS)));
+                    (String) KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_EXEC_THREADS).get()));
 
     private KatTask() {
     }

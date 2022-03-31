@@ -1,5 +1,9 @@
 package com.catkatpowered.katserver;
 
+import java.io.File;
+import java.util.Map;
+import java.util.Optional;
+
 import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
@@ -12,9 +16,6 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
-
-import java.io.File;
-import java.util.Map;
 
 /**
  * Kat API 入口
@@ -92,8 +93,8 @@ public class KatServer {
             return KatConfigManager.getAllConfig();
         }
 
-        public static Object getConfig(String configNode) {
-            return KatConfigManager.getConfig(configNode);
+        public static <T> Optional<T> getConfig(String configNode) {
+            return KatConfigManager.<T>getConfig(configNode);
         }
     }
 
