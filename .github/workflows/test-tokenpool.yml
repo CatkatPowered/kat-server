@@ -1,4 +1,4 @@
-name: Database Test Github Actions
+name: Tests for TokenPool
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
           mongodb-version: 4.4
 
       - name: Run Gradle test
-        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.database.TestMongoDBDatabase"
+        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.database.TestKatTokenPool"
 
       - name: Upload fail reports
         uses: actions/upload-artifact@v2
