@@ -1,4 +1,4 @@
-name: Tests for config
+name: Tests for Config
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main, ci]
 
 jobs:
-  mongodb:
+  config:
     runs-on: ubuntu-latest
     if: "! contains(github.event.head_commit.message, '#Skip')"
     steps:
@@ -21,11 +21,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Set up MongoDB 4.4
-        uses: supercharge/mongodb-github-action@1.7.0
-        with:
-          mongodb-version: 4.4
-
       - name: Run Gradle test
         run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.config.TestKatConfig"
 
@@ -33,5 +28,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: mongodb-test-failure
+          name: config-test-failure
           path: build/reports
