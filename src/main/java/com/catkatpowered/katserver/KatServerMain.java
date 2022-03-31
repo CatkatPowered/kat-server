@@ -21,7 +21,7 @@ public class KatServerMain {
 
         // 画大饼
         log.info(KatMiscConstants.KAT_SERVER_LOGO);
-        // 启动事件总线模块
+        // 启动配置文件模块
         KatConfigManager.init();
         // 启动事件总线模块
         KatEventManager.init();
