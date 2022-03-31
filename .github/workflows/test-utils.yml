@@ -1,4 +1,4 @@
-name: Utils Test Github Actions
+name: Tests for Utils
 
 on:
   push:
