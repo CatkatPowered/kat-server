@@ -1,19 +1,22 @@
 package com.catkatpowered.katserver.network;
 
-import com.catkatpowered.katserver.config.KatConfig;
+import java.security.KeyStore;
+
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.network.packet.HttpResourceTokenPacket;
 import com.catkatpowered.katserver.network.packet.ServerDescriptionPacket;
 import com.catkatpowered.katserver.network.packet.WebSocketMessagePacket;
 import com.google.gson.Gson;
-import io.javalin.Javalin;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
-import java.security.KeyStore;
+import io.javalin.Javalin;
+import lombok.Getter;
+import lombok.Setter;
 
 public class KatNetwork {
 
@@ -33,8 +36,9 @@ public class KatNetwork {
                 sslContextFactory.setKeyStorePassword("catmoe");
 
                 ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
-                sslConnector.setPort(KatConfig.getInstance().getKatNetworkPort());
-                app.setConnectors(new Connector[]{sslConnector});
+                sslConnector.setPort(KatServer.KatConfigAPI
+                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get());
+                app.setConnectors(new Connector[] { sslConnector });
                 return app;
             });
         });
@@ -56,7 +60,8 @@ public class KatNetwork {
                 katNetworkSession.revokeToken(wsCloseContext.session);
             });
             ws.onMessage(wsMessageContext -> {
-                WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(), WebSocketMessagePacket.class);
+                WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
+                        WebSocketMessagePacket.class);
 
                 // TODO: 根据extensionId获取扩展然后发送
                 // TODO: 异步保存消息到数据库
@@ -65,7 +70,6 @@ public class KatNetwork {
 
         network = server.start();
     }
-
 
     public static KatNetwork getInstance() {
         return Instance;

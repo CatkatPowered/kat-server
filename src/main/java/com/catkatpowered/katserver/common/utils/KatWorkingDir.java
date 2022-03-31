@@ -1,5 +1,7 @@
 package com.catkatpowered.katserver.common.utils;
 
+import java.nio.file.Path;
+
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 
 /**
@@ -19,6 +21,8 @@ public class KatWorkingDir {
     }
 
     public static String fixPath(String path) {
-        return KatWorkingDir.getWorkingDir() + path;
+        return Path.of(path).isAbsolute()
+                ? path
+                : KatWorkingDir.getWorkingDir() + path;
     }
 }

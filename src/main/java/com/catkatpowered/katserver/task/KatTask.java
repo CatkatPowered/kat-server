@@ -1,5 +1,6 @@
 package com.catkatpowered.katserver.task;
 
+import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.KatServer.KatConfigAPI;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 
@@ -14,8 +15,7 @@ public class KatTask {
     private static final KatTask Instance = new KatTask();
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(
-            Integer.parseInt(
-                    (String) KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_EXEC_THREADS)));
+            KatServer.KatConfigAPI.<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_EXEC_THREADS).get());
 
     private KatTask() {
     }

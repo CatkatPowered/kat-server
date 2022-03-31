@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.database;
 
 import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 import com.catkatpowered.katserver.database.mongodb.MongoDBActions;
@@ -20,16 +21,19 @@ public class KatDatabase {
     @Getter
     private final DatabaseActions actions;
 
-
     private KatDatabase() {
 
         // 加载数据库
         // 读配置文件
         DatabaseType type = DatabaseType.lookup(
-                (String) KatServer.KatConfigAPI.getConfig("database_type"));
-        String url = (String) KatServer.KatConfigAPI.getConfig("database_url");
-        String username = (String) KatServer.KatConfigAPI.getConfig("database_username");
-        String password = (String) KatServer.KatConfigAPI.getConfig("database_password");
+                KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_TYPE)
+                        .get());
+        String url = KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_URL)
+                .get();
+        String username = KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_USER_NAME)
+                .get();
+        String password = KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_PASSWORD)
+                .get();
 
         connector = pickConnector(type);
         actions = pickActions(type);
