@@ -19,7 +19,7 @@ public class KatTokenPool {
         return INSTANCE;
     }
 
-    public String genToken() {
+    public String newToken() {
         var uuid = UUID.randomUUID();
         this.tokenPool.put(uuid.toString(), System.currentTimeMillis());
         return uuid.toString();
