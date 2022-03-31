@@ -77,8 +77,11 @@ public class TestKatConfig {
         var nullNode = KatServer.KatConfigAPI.getConfig("");
         assertEquals(Optional.empty(), nullNode);
 
-        var nullConfigNode = KatServer.KatConfigAPI.getConfig(null);
+        var nullConfigNode = KatServer.KatConfigAPI.getConfig(null); // 炒饭
         assertEquals(Optional.empty(), nullConfigNode);
+
+        // Try worn type cast
+        KatServer.KatConfigAPI.<Test>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE); // 炒饭，酒吧没炸就行
 
         // Get already exist config node
         var network = KatServer.KatConfigAPI.<Map<String, Object>>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK);

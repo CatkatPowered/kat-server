@@ -31,14 +31,17 @@ public class KatConfigManager {
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> getConfig(String configNode) {
         var optionalConfigNode = Optional.ofNullable(configNode);
+
         if (optionalConfigNode.isEmpty()) {
             return Optional.empty();
         }
+
         var nodes = optionalConfigNode.get().split("\\.");
         Map<String, Object> res = KatConfig.getInstance().getConfigContent();
         for (int i = 0; i < nodes.length - 1; i++) {
             res = (Map<String, Object>) res.get(nodes[i]);
         }
+
         return Optional.ofNullable((T) res.get(nodes[nodes.length - 1]));
     }
 
