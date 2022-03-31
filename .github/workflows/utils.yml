@@ -2,9 +2,9 @@ name: Utils Test Github Actions
 
 on:
   push:
-    branches: [main]
+    branches: [main, ci]
   pull_request:
-    branches: [main]
+    branches: [main, ci]
 
 jobs:
   sha-utils:

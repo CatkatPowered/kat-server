@@ -2,7 +2,7 @@ name: Publish Github Actions
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, ci]
 
 jobs:
   build:
