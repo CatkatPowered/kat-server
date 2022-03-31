@@ -2,9 +2,9 @@ name: Database Test Github Actions
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, ci]
   pull_request:
-    branches: [ main ]
+    branches: [main, ci]
 
 jobs:
   mongodb:
@@ -27,7 +27,7 @@ jobs:
           mongodb-version: 4.4
 
       - name: Run Gradle test
-        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.database.MongoDBDatabaseTest"
+        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.database.TestMongoDBDatabase"
 
       - name: Upload fail reports
         uses: actions/upload-artifact@v2
