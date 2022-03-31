@@ -3,6 +3,8 @@ package com.catkatpowered.katserver.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.catkatpowered.katserver.event.interfaces.Listener;
+
 @SuppressWarnings("unused")
 public class RegisteredListener {
     private final List<RegisteredHandler> handlerList = new ArrayList<>();
@@ -29,6 +31,10 @@ public class RegisteredListener {
 
     public void removeHandler(RegisteredHandler handler) {
         handlerList.removeIf(registeredHandler -> registeredHandler.getListener().equals(handler.getListener()));
+    }
+
+    public void removeHandler(Listener listener) {
+        handlerList.removeIf(registeredHandler -> registeredHandler.getListener().equals(listener));
     }
 
     private int getPriorityShadow(EventPriority priority) {
