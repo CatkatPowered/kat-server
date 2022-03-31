@@ -2,9 +2,9 @@ name: Utils Test Github Actions
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   sha-utils:
@@ -22,7 +22,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Gradle test
-        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.common.utils.ShaUtilsTest"
+        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.common.utils.TestShaUtils"
 
       - name: Upload fail reports
         uses: actions/upload-artifact@v2
