@@ -9,8 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 // TODO：使用流重构
+// TODO：编写单元测试
 @SuppressWarnings("unused")
 public class EventBus {
 
@@ -60,36 +62,73 @@ public class EventBus {
     }
 
     public void registerListener(Listener listener) {
-        Class<?> clazz = listener.getClass();
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(EventHandler.class)) {
-                final Class<?> event;
-                method.setAccessible(true);
-                event = method.getParameterTypes()[0];
-                if (handlers.containsKey(event)) {
+        // Class<?> clazz = listener.getClass();
+        // for (Method method : clazz.getDeclaredMethods()) {
+        //     if (method.isAnnotationPresent(EventHandler.class)) {
+        //         final Class<?> event;
+        //         method.setAccessible(true);
+        //         event = method.getParameterTypes()[0];
+        //         if (handlers.containsKey(event)) {
+        //             EventHandler annotation = method.getAnnotation(EventHandler.class);
+        //             handlers.get(event).addHandler(
+                            // new RegisteredHandler(
+        //                             annotation.priority(),
+        //                             annotation.ignoreCancelled(),
+        //                             listener,
+        //                             method));
+        //         }
+        //     }
+        // }
+
+        Stream.of(listener.getClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(EventHandler.class))
+                .filter(method -> handlers.containsKey(method.getParameterTypes()[0]))
+                .forEach(method -> {
+                    method.setAccessible(true);
+
+                    var event = method.getParameterTypes()[0];
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
                     handlers.get(event).addHandler(
-                            new RegisteredHandler(annotation.priority()
-                                    , annotation.ignoreCancelled(), listener, method));
-                }
-            }
-        }
+                            new RegisteredHandler(
+                                    annotation.priority(),
+                                    annotation.ignoreCancelled(),
+                                    listener,
+                                    method));
+
+                    method.setAccessible(false);
+                });
     }
 
     public void unregisterListener(Listener listener) {
-        Class<?> clazz = listener.getClass();
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(EventHandler.class)) {
-                final Class<?> event;
-                method.setAccessible(true);
-                event = method.getParameterTypes()[0];
-                if (handlers.containsKey(event)) {
+        // Class<?> clazz = listener.getClass();
+        // for (Method method : clazz.getDeclaredMethods()) {
+        //     if (method.isAnnotationPresent(EventHandler.class)) {
+        //         final Class<?> event;
+        //         method.setAccessible(true);
+        //         event = method.getParameterTypes()[0];
+        //         if (handlers.containsKey(event)) {
+        //             EventHandler annotation = method.getAnnotation(EventHandler.class);
+        //             handlers.get(event).removeHandler(
+        //                     new RegisteredHandler(
+        //                             annotation.priority(),
+        //                             annotation.ignoreCancelled(),
+        //                             listener,
+        //                             method));
+        //         }
+        //     }
+        // }
+
+        Stream.of(listener.getClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(EventHandler.class))
+                .filter(method -> handlers.containsKey(method.getParameterTypes()[0]))
+                .forEach(method -> {
+                    method.setAccessible(true);
+
+                    var event = method.getParameterTypes()[0];
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
-                    handlers.get(event).removeHandler(
-                            new RegisteredHandler(annotation.priority()
-                                    , annotation.ignoreCancelled(), listener, method));
-                }
-            }
-        }
+                    handlers.get(event).removeHandler(listener);
+
+                    method.setAccessible(false);
+                });
     }
 }
