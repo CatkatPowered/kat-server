@@ -9,7 +9,6 @@ import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.var;
 
 /**
  * TODO：需要设计Token池的各种机制
