@@ -2,6 +2,8 @@ package com.catkatpowered.katserver.tokenpool;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.catkatpowered.katserver.config.KatConfig;
+import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.tokenpool.KatTokenPool.ClearAction;
 
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,7 @@ public class TestKatTokenPool {
 
     @Test
     public void cleanTokensForClearOutdated() {
+        KatConfigManager.init();
 
         var token1 = KatTokenPool.getINSTANCE().newToken();// -10s | Outdated
         var token2 = KatTokenPool.getINSTANCE().newToken();// -5s |
