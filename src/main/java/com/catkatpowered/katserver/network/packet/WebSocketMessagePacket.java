@@ -14,7 +14,6 @@ public class WebSocketMessagePacket {
         "message": {}
     }
      */
-    String boundTo;
     // 平台标识符
     @SerializedName("extension_id")
     String extensionId;
@@ -26,8 +25,7 @@ public class WebSocketMessagePacket {
     private String type = KatPacketTypeConstants.MESSAGE_PACKET;
 
     @Builder
-    public WebSocketMessagePacket(String boundTo, String extensionId, KatUniMessage message) {
-        this.boundTo = boundTo;
+    public WebSocketMessagePacket(String extensionId, KatUniMessage message) {
         this.extensionId = extensionId;
         this.message = message;
     }

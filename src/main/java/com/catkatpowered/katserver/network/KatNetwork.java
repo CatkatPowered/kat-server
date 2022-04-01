@@ -1,30 +1,31 @@
 package com.catkatpowered.katserver.network;
 
-import java.security.KeyStore;
-
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.network.packet.HttpResourceTokenPacket;
+import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.network.packet.ServerDescriptionPacket;
 import com.catkatpowered.katserver.network.packet.WebSocketMessagePacket;
 import com.google.gson.Gson;
-
+import io.javalin.Javalin;
+import lombok.Getter;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.websocket.api.Session;
 
-import io.javalin.Javalin;
-import lombok.Getter;
-import lombok.Setter;
+import java.security.KeyStore;
+import java.util.List;
 
 public class KatNetwork {
 
     private static final KatNetwork Instance = new KatNetwork();
 
     @Getter
-    @Setter
     private static Javalin network;
+
+    @Getter
+    private static List<Session> sessions;
 
     private KatNetwork() {
         Javalin server = Javalin.create(config -> {
@@ -42,7 +43,6 @@ public class KatNetwork {
                 return app;
             });
         });
-        KatNetworkSession katNetworkSession = new KatNetworkSession();
         Gson gson = new Gson();
         // HTTP Handlers
         server.get("/resource", new HttpHandler());
@@ -50,20 +50,20 @@ public class KatNetwork {
         // WebSocket Handlers
         server.ws("/websocket", ws -> {
             ws.onConnect(wsConnectContext -> {
-                String token = katNetworkSession.generateToken(wsConnectContext.session);
                 // 发送服务端描述包
                 wsConnectContext.send(gson.toJson(ServerDescriptionPacket.builder().build()));
-                // 发送Token包
-                wsConnectContext.send(gson.toJson(HttpResourceTokenPacket.builder().token(token).build()));
+                sessions.add(wsConnectContext.session);
             });
             ws.onClose(wsCloseContext -> {
-                katNetworkSession.revokeToken(wsCloseContext.session);
+                // TODO: tokenpool实现
+                // katNetworkSession.revokeToken(wsCloseContext.session);
             });
             ws.onMessage(wsMessageContext -> {
                 WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
                         WebSocketMessagePacket.class);
 
-                // TODO: 根据extensionId获取扩展然后发送
+                // 处理消息发送事件
+                KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(),webSocketMessagePacket.getMessage()));
                 // TODO: 异步保存消息到数据库
             });
         });

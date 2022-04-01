@@ -10,6 +10,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 public class KatEventManager {
 
     public static void init() {
+        // TODO: 注册所以events包下的event
     }
 
     public static void callEvent(Event event) {
