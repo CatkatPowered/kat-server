@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 // TODO：使用流重构
-// TODO：编写单元测试
 @SuppressWarnings("unused")
 public class EventBus {
 
