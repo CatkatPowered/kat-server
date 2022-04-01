@@ -2,11 +2,32 @@ package com.catkatpowered.katserver.tokenpool;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Map;
+
+import com.catkatpowered.katserver.config.KatConfig;
 import com.catkatpowered.katserver.tokenpool.KatTokenPool.ClearAction;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
 public class TestKatTokenPool {
+
+    static String defaultConfig = """
+                ####################### TokenPool ##############################
+                # This section are the settings of token pool
+
+                tokenpool:
+                  # You can set the token how long to live
+                  outdate: 10000
+            """;
+
+    @BeforeAll
+    public static void initTest() {
+        Map<String, Object> yml = new Yaml().load(defaultConfig);
+        KatConfig.getInstance().setConfigContent(yml);
+    }
+
     @Test
     public void newToken() {
         var token = KatTokenPool.getINSTANCE().newToken();
