@@ -14,7 +14,7 @@ public class TestKatTokenPool {
     }
 
     @Test
-    public void cleanTokensForClearAll() {
+    public void cleanTokensForAll() {
 
         KatTokenPool.getINSTANCE().newToken();
         KatTokenPool.getINSTANCE().newToken();
@@ -28,7 +28,7 @@ public class TestKatTokenPool {
     }
 
     @Test
-    public void cleanTokensForClearOutdated() {
+    public void cleanTokensForOutdated() {
 
         var token1 = KatTokenPool.getINSTANCE().newToken();// -10s | Outdated
         var token2 = KatTokenPool.getINSTANCE().newToken();// -5s |
