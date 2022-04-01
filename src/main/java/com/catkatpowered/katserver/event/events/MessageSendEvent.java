@@ -10,8 +10,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MessageSendEvent extends Event {
-    private static String extensionId;
-    private static KatUniMessage message;
+    String extensionId;
+    KatUniMessage message;
 
     @Builder
     public MessageSendEvent(String extensionId, KatUniMessage message) {
