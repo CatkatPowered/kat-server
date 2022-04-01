@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Map;
 
 import com.catkatpowered.katserver.config.KatConfig;
-
 import com.catkatpowered.katserver.tokenpool.KatTokenPool.ClearAction;
 
 import org.junit.jupiter.api.BeforeAll;
