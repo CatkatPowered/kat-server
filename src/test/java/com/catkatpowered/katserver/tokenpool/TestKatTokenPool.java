@@ -39,9 +39,9 @@ public class TestKatTokenPool {
         var pool = KatTokenPool.getINSTANCE().getTokenPool();
 
         pool.put(token1, pool.get(token1) - 10 * 1000);
-        pool.put(token2, pool.get(token2) - 5 * 1000);
-        pool.put(token3, pool.get(token3) + 0 * 1000);
-        pool.put(token4, pool.get(token4) + 5 * 1000);
+        pool.put(token2, pool.get(token2) - 05 * 1000);
+        pool.put(token3, pool.get(token3) + 00 * 1000);
+        pool.put(token4, pool.get(token4) + 05 * 1000);
         pool.put(token5, pool.get(token5) + 10 * 1000);
 
         KatTokenPool.getINSTANCE().setTokenPool(pool);
