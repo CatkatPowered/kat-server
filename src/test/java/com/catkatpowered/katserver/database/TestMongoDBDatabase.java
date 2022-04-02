@@ -27,6 +27,8 @@ public class TestMongoDBDatabase {
     public void connect() {
         // 生成连接器
         MongodbConnector connector = new MongodbConnector("mongodb://localhost:27017/kat-server", null, null);
+        // 连接
+        connector.open();
         // 获取连接
         MongodbConnection connection = (MongodbConnection) connector.connection();
         // 写入数据
