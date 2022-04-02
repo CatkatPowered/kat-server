@@ -1,5 +1,7 @@
 package com.catkatpowered.katserver.database;
 
+import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,52 +18,56 @@ public class KatDatabaseManager {
         KatDatabase.getInstance();
     }
 
-    public static void create(String database, String collection, Object data) {
+    public static void register(DatabaseConnector connector) {
+        KatDatabase.getInstance().register(connector);
+    }
+
+    public static void create(String collection, Object data) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .create(database, collection, data);
+                .create(collection, data);
     }
 
-    void update(String database, String collection, Map<String, Object> index, Object data) {
+    public static void update(String collection, Map<String, Object> index, Object data) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .update(database, collection, index, data);
+                .update(collection, index, data);
     }
 
-    void delete(String database, String collection, Map<String, Object> index) {
+    public static void delete(String collection, Map<String, Object> index) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .delete(database, collection, index);
+                .delete(collection, index);
     }
 
-    <T> List<T> read(String database, String collection, Map<String, Object> index, Class<T> type) {
+    public static <T> List<T> read(String collection, Map<String, Object> index, Class<T> type) {
         return KatDatabase.getInstance()
                 .connector
                 .connection()
-                .read(database, collection, index, type);
+                .read(collection, index, type);
     }
 
-    public void createMany(String database, String collection, List<Object> data) {
+    public static void createMany(String collection, List<Object> data) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .createMany(database, collection, data);
+                .createMany(collection, data);
     }
 
-    void updateOne(String database, String collection, Map<String, Object> index, Object data) {
+    public static void updateOne(String collection, Map<String, Object> index, Object data) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .updateOne(database, collection, index, data);
+                .updateOne(collection, index, data);
     }
 
-    void deleteOne(String database, String collection, Map<String, Object> index) {
+    public static void deleteOne(String collection, Map<String, Object> index) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .deleteOne(database, collection, index);
+                .deleteOne(collection, index);
     }
 }

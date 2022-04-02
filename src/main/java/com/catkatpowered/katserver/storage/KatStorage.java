@@ -12,20 +12,23 @@ import java.util.HashMap;
 public class KatStorage {
 
     private static final KatStorage Instance = new KatStorage();
+
     private KatStorage() {
+    }
+
+    public static KatStorage getInstance() {
+        return Instance;
     }    private final HashMap<String, ResourceStorage> storageTarget = new HashMap<String, ResourceStorage>() {
         {
             storageTarget.put(KatStorageTypeConstants.KAT_STORAGE_TYPE_LOCAL, new ResourceLocalStorage());
         }
     };
 
-    public static KatStorage getInstance() {
-        return Instance;
-    }
-
     public void addStorage(String resourceName, ResourceStorage storage) {
         this.storageTarget.put(resourceName, storage);
     }
+
+
 
 
 }
