@@ -26,14 +26,15 @@ public record MongodbConnection(Gson gson, MongoClient client, String database) 
     @Override
     public void update(String collection, Map<String, Object> index, Object data) {
         client.getDatabase(database).getCollection(collection).updateMany(
-                Document.parse(gson.toJson(index)),
+                Document.parse(gson.toJsonTree(index, Map.class).toString()),
                 Document.parse(gson.toJson(data))
         );
     }
 
     @Override
     public void delete(String collection, Map<String, Object> index) {
-        client.getDatabase(database).getCollection(collection).deleteMany(Document.parse(gson.toJson(index)));
+        client.getDatabase(database).getCollection(collection)
+                .deleteMany(Document.parse(gson.toJsonTree(index, Map.class).toString()));
     }
 
     @Override
@@ -41,7 +42,7 @@ public record MongodbConnection(Gson gson, MongoClient client, String database) 
         List<T> list = new ArrayList<>();
         // 获取数据库连接
         client.getDatabase(database).getCollection(collection)
-                .find(Document.parse(gson.toJson(index)))
+                .find(Document.parse(gson.toJsonTree(index, Map.class).toString()))
                 .iterator()
                 .forEachRemaining(document -> {
                     // 将 document 转换回对象

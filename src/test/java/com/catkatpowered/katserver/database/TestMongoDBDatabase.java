@@ -42,11 +42,12 @@ public class TestMongoDBDatabase {
                         }},
                         new String[]{"1", "1", "4", "5", "1", "4"})
         );
-        // 创建索引
-        Map<String, Object> map = new HashMap<>();
-        map.put("message", "点一份炒饭");
         // 读取数据
-        List<Data> data = connection.read("test", map, Data.class);
+        List<Data> data = connection.read("test",
+                new HashMap<>() {{
+                    put("message", "点一份炒饭");
+                }},
+                Data.class);
         // 测试数据
         assertEquals("点一份炒饭", data.get(0).message);
         assertEquals(1919810, data.get(0).number);
