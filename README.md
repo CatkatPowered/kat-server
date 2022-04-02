@@ -30,7 +30,8 @@
 
 ## 🍉 条款与声明
 
-本项目具有 [隐私政策](https://project.catkatpowered.com/#/privacy-policy)、[使用条款](https://project.catkatpowered.com/#/terms-of-use) 和 [开源声明](https://project.catkatpowered.com/#/open-source-license)
+本项目具有 [隐私政策](https://project.catkatpowered.com/#/privacy-policy)、[使用条款](https://project.catkatpowered.com/#/terms-of-use)
+和 [开源声明](https://project.catkatpowered.com/#/open-source-license)
 
 ## ✨ Quick Start
 

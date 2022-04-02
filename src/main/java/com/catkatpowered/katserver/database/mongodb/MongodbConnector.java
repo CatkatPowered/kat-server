@@ -2,6 +2,7 @@ package com.catkatpowered.katserver.database.mongodb;
 
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
+import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
@@ -12,14 +13,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Slf4j
-@SuppressWarnings("SpellCheckingInspection")
-public class MongoDBConnector implements DatabaseConnector {
-
-    MongoClient connection;
-    String database;
+public record MongodbConnector(String url, String username, String password)
+        implements DatabaseConnector {
+    static MongoClient client;
+    static DatabaseConnection connection;
+    static Gson gson = new Gson();
 
     @Override
-    public void loadDatabase(String url, String username, String password) {
+    public void open() {
         MongoClientURI resource = new MongoClientURI(url);
         String host = "127.0.0.1";
         int port = 27017;
@@ -38,9 +39,9 @@ public class MongoDBConnector implements DatabaseConnector {
             log.warn("No username or password provided. " +
                     "This is not secure, and it is very likely that the physical server " +
                     "can be compromised without the firewall being turned on.");
-            connection = new MongoClient(new ServerAddress(host, port), resource.getOptions());
+            client = new MongoClient(new ServerAddress(host, port), resource.getOptions());
         } else {
-            connection = new MongoClient(
+            client = new MongoClient(
                     new ServerAddress(host, port),
                     // url 的用户名和密码 或 参数的用户名和密码
                     // 按配置文件说明 url 的用户名和密码可不填写 故首选读取参数
@@ -53,16 +54,16 @@ public class MongoDBConnector implements DatabaseConnector {
             );
         }
 
-        database = resource.getDatabase();
+        connection = new MongodbConnection(gson, client, resource.getDatabase());
     }
 
     @Override
-    public DatabaseConnection getConnection() {
-        return new MongoDBConnection(connection, database);
+    public void close() {
+        client.close();
     }
 
     @Override
-    public void exit() {
-        connection.close();
+    public DatabaseConnection connection() {
+        return connection;
     }
 }

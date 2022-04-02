@@ -6,7 +6,6 @@ import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -70,7 +69,7 @@ public class EventBus {
         //         if (handlers.containsKey(event)) {
         //             EventHandler annotation = method.getAnnotation(EventHandler.class);
         //             handlers.get(event).addHandler(
-                            // new RegisteredHandler(
+        // new RegisteredHandler(
         //                             annotation.priority(),
         //                             annotation.ignoreCancelled(),
         //                             listener,

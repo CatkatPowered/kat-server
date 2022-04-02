@@ -1,15 +1,14 @@
 package com.catkatpowered.katserver.tokenpool;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Map;
-
 import com.catkatpowered.katserver.config.KatConfig;
 import com.catkatpowered.katserver.tokenpool.KatTokenPool.ClearAction;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
+
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestKatTokenPool {
 

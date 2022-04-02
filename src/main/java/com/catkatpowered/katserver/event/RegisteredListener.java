@@ -1,9 +1,9 @@
 package com.catkatpowered.katserver.event;
 
+import com.catkatpowered.katserver.event.interfaces.Listener;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.catkatpowered.katserver.event.interfaces.Listener;
 
 @SuppressWarnings("unused")
 public class RegisteredListener {

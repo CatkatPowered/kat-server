@@ -1,8 +1,8 @@
 package com.catkatpowered.katserver.common.utils;
 
-import java.nio.file.Path;
-
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
+
+import java.nio.file.Path;
 
 /**
  * Kat Server的工作目录

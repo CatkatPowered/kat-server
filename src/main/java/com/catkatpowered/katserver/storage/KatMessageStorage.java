@@ -6,6 +6,7 @@ import jdk.jfr.Experimental;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,11 +26,11 @@ public class KatMessageStorage {
     public static Optional<List<KatUniMessage>> getMessage(@NotNull KatUniMessage indexMsg) {
         return Optional.ofNullable(
                 KatServer.KatDatabaseAPI
-                        .getActions()
-                        .read(
-                                KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                                indexMsg.messageGroup,
-                                indexMsg)
+                        .read(indexMsg.getMessageGroup(),
+                                new HashMap<String, Object>() {{
+                                    put("messageID", indexMsg.getMessageID());
+                                }},
+                                KatUniMessage.class)
         );
     }
 
@@ -40,12 +41,12 @@ public class KatMessageStorage {
      * @param newContent 新消息记录
      */
     public static void updateMessage(@NotNull KatUniMessage oldContent, KatUniMessage newContent) {
-        KatServer.KatDatabaseAPI.getActions().update(
-                KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                oldContent.messageGroup,
+        KatServer.KatDatabaseAPI.update(oldContent.getMessageGroup(),
+                new HashMap<String, Object>() {{
+                    put("message_id", oldContent.getMessageID());
+                }},
                 newContent
         );
-
     }
 
     /**
@@ -55,11 +56,10 @@ public class KatMessageStorage {
      */
     public static void deleteMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
-            KatServer.KatDatabaseAPI.getActions().delete(
-                    KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                    indexMsg.messageGroup,
-                    indexMsg
-            );
+            KatServer.KatDatabaseAPI.delete(indexMsg.getMessageGroup(),
+                    new HashMap<String, Object>() {{
+                        put("message_id", indexMsg.getMessageID());
+                    }});
         }
     }
 
@@ -70,11 +70,7 @@ public class KatMessageStorage {
      */
     public static void createMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
-            KatServer.KatDatabaseAPI.getActions().create(
-                    KatServer.KatDatabaseAPI.getConnector().getConnection(),
-                    indexMsg.messageGroup,
-                    indexMsg
-            );
+            KatServer.KatDatabaseAPI.create(indexMsg.getMessageGroup(), indexMsg);
         }
     }
 }

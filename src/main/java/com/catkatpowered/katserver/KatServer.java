@@ -1,14 +1,8 @@
 package com.catkatpowered.katserver;
 
-import java.io.File;
-import java.util.Map;
-import java.util.Optional;
-
 import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
-import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
-import com.catkatpowered.katserver.database.type.DatabaseType;
 import com.catkatpowered.katserver.event.Event;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.RegisteredListener;
@@ -16,6 +10,11 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Kat API 入口
@@ -101,22 +100,28 @@ public class KatServer {
     // KatDatabase API
     public static final class KatDatabaseAPI {
 
-        // 取得链接器
-        public static DatabaseConnector getConnector() {
-            return KatDatabaseManager.getConnector();
+        public static void register(DatabaseConnector connector) {
+            KatDatabaseManager.register(connector);
         }
 
-        public static DatabaseConnector getConnector(DatabaseType type) {
-            return KatDatabaseManager.getConnector(type);
+        public static void create(String collection, Object data) {
+            KatDatabaseManager.create(collection, data);
         }
 
-        // 获取执行器
-        public static DatabaseActions getActions() {
-            return KatDatabaseManager.getActions();
+        public static void create(String collection, List<Object> data) {
+            KatDatabaseManager.create(collection, data);
         }
 
-        public static DatabaseActions getActions(DatabaseType type) {
-            return KatDatabaseManager.getActions(type);
+        public static void update(String collection, Map<String, Object> index, Object data) {
+            KatDatabaseManager.update(collection, index, data);
+        }
+
+        public static void delete(String collection, Map<String, Object> index) {
+            KatDatabaseManager.delete(collection, index);
+        }
+
+        public static <T> List<T> read(String collection, Map<String, Object> index, Class<T> type) {
+            return KatDatabaseManager.read(collection, index, type);
         }
     }
 

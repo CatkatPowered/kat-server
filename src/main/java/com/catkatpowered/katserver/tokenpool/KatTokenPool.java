@@ -1,27 +1,25 @@
 package com.catkatpowered.katserver.tokenpool;
 
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * TODO：需要设计Token池的各种机制
  */
 public class KatTokenPool {
     private static KatTokenPool INSTANCE = new KatTokenPool();
-
-    private KatTokenPool() {
-    }
-
     @Getter
     @Setter
     private ConcurrentHashMap<String, Long> tokenPool = new ConcurrentHashMap<>();
+
+    private KatTokenPool() {
+    }
 
     public static KatTokenPool getINSTANCE() {
         return INSTANCE;
@@ -42,9 +40,8 @@ public class KatTokenPool {
     }
 
     /**
-     * 
      * 通过传入的<em>action</em>判断对<em>TokenPool</em>的操作
-     * 
+     *
      * @param action
      */
     public void cleanTokens(ClearAction action) {

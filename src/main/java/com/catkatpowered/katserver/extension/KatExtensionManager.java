@@ -5,6 +5,7 @@ import com.catkatpowered.katserver.extension.event.DisableExtensionEvent;
 import com.catkatpowered.katserver.extension.event.EnableExtensionEvent;
 import com.catkatpowered.katserver.extension.event.ExtensionEvent;
 import com.catkatpowered.katserver.extension.event.LoadExtensionEvent;
+
 import java.io.File;
 
 /**
