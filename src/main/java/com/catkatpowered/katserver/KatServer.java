@@ -108,6 +108,10 @@ public class KatServer {
             KatDatabaseManager.create(collection, data);
         }
 
+        public static void create(String collection, List<Object> data) {
+            KatDatabaseManager.create(collection, data);
+        }
+
         public static void update(String collection, Map<String, Object> index, Object data) {
             KatDatabaseManager.update(collection, index, data);
         }
@@ -118,18 +122,6 @@ public class KatServer {
 
         public static <T> List<T> read(String collection, Map<String, Object> index, Class<T> type) {
             return KatDatabaseManager.read(collection, index, type);
-        }
-
-        public static void createMany(String collection, List<Object> data) {
-            KatDatabaseManager.createMany(collection, data);
-        }
-
-        public static void updateOne(String collection, Map<String, Object> index, Object data) {
-            KatDatabaseManager.updateOne(collection, index, data);
-        }
-
-        public static void deleteOne(String collection, Map<String, Object> index) {
-            KatDatabaseManager.deleteOne(collection, index);
         }
     }
 

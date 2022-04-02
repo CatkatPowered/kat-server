@@ -13,6 +13,14 @@ public interface DatabaseConnection {
     void create(String collection, Object data);
 
     /**
+     * 创建一打数据集合
+     *
+     * @param collection 目标集合
+     * @param data       数据实体
+     */
+    void create(String collection, List<Object> data);
+
+    /**
      * 更新一些数据文档
      *
      * @param collection 目标集合
@@ -39,29 +47,4 @@ public interface DatabaseConnection {
      * @return 数据实体列表
      */
     <T> List<T> read(String collection, Map<String, Object> index, Class<T> type);
-
-    /**
-     * 创建一打数据集合
-     *
-     * @param collection 目标集合
-     * @param data       数据实体
-     */
-    void createMany(String collection, List<Object> data);
-
-    /**
-     * 更新一个数据文档
-     *
-     * @param collection 目标集合
-     * @param index      数据索引 需要 new 一个目标对应的 Map kv 值 仅写入索引数据 将自动处理为 Bson
-     * @param data       数据实体 需要更新进入数据库的数据实体
-     */
-    void updateOne(String collection, Map<String, Object> index, Object data);
-
-    /**
-     * 删除一个数据文档
-     *
-     * @param collection 目标集合
-     * @param index      数据索引 需要 new 一个目标对应的 Map kv 值 仅写入索引数据 将自动处理为 Bson
-     */
-    void deleteOne(String collection, Map<String, Object> index);
 }

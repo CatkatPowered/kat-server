@@ -50,24 +50,10 @@ public class KatDatabaseManager {
                 .read(collection, index, type);
     }
 
-    public static void createMany(String collection, List<Object> data) {
+    public static void create(String collection, List<Object> data) {
         KatDatabase.getInstance()
                 .connector
                 .connection()
-                .createMany(collection, data);
-    }
-
-    public static void updateOne(String collection, Map<String, Object> index, Object data) {
-        KatDatabase.getInstance()
-                .connector
-                .connection()
-                .updateOne(collection, index, data);
-    }
-
-    public static void deleteOne(String collection, Map<String, Object> index) {
-        KatDatabase.getInstance()
-                .connector
-                .connection()
-                .deleteOne(collection, index);
+                .create(collection, data);
     }
 }
