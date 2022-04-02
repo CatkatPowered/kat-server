@@ -22,13 +22,13 @@ public class KatStorage {
 
     public void addStorage(String resourceName, ResourceStorage storage) {
         this.storageTarget.put(resourceName, storage);
-    }    private final HashMap<String, ResourceStorage> storageTarget = new HashMap<String, ResourceStorage>() {
+    }
+
+    private final HashMap<String, ResourceStorage> storageTarget = new HashMap<String, ResourceStorage>() {
         {
             storageTarget.put(KatStorageTypeConstants.KAT_STORAGE_TYPE_LOCAL, new ResourceLocalStorage());
         }
     };
-
-
 
 
 }
