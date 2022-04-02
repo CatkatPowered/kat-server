@@ -1,16 +1,15 @@
 package com.catkatpowered.katserver.config;
 
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import com.catkatpowered.katserver.common.utils.KatWorkingDir;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
-
-import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.common.utils.KatWorkingDir;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class KatConfigManager {

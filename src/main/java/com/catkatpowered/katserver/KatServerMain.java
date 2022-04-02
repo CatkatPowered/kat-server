@@ -8,7 +8,6 @@ import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.network.KatNetworkManager;
 import com.catkatpowered.katserver.storage.KatStorageManager;
 import com.catkatpowered.katserver.task.KatTaskManager;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**

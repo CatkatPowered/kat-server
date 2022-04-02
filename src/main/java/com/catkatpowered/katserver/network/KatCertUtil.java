@@ -11,13 +11,19 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import java.math.BigInteger;
-import java.security.*;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.util.Calendar;
 import java.util.Random;
 
 public class KatCertUtil {
 
+    @SuppressWarnings("SpellCheckingInspection")
     public static KeyStore getKeyStore() {
         Security.addProvider(new BouncyCastleProvider());
         try {
@@ -30,7 +36,7 @@ public class KatCertUtil {
             Certificate CLcertificate = new JcaX509CertificateConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME).getCertificate(createCertificate("CN=CA", "CN=CA", publicKey, privateKey));
 
             java.security.cert.Certificate[] outChain = {
-                    CLcertificate, CAcertificate };
+                    CLcertificate, CAcertificate};
             KeyStore outStore = KeyStore.getInstance("PKCS12");
             outStore.load(null, "catmoe".toCharArray());
             outStore.setKeyEntry("catmoe", privateKey, "catmoe".toCharArray(),
@@ -57,4 +63,5 @@ public class KatCertUtil {
 
         ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256WithRSA").setProvider("BC").build(privateKey);
         return certificateBuilder.build(contentSigner);
-    }}
+    }
+}

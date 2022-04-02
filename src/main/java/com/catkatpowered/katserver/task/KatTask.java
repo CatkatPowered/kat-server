@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.task;
 
 import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.KatServer.KatConfigAPI;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 
 import java.util.concurrent.Callable;

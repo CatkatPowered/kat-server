@@ -39,7 +39,7 @@ public class KatNetwork {
                 ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
                 sslConnector.setPort(KatServer.KatConfigAPI
                         .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get());
-                app.setConnectors(new Connector[] { sslConnector });
+                app.setConnectors(new Connector[]{sslConnector});
                 return app;
             });
         });
@@ -63,7 +63,7 @@ public class KatNetwork {
                         WebSocketMessagePacket.class);
 
                 // 处理消息发送事件
-                KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(),webSocketMessagePacket.getMessage()));
+                KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(), webSocketMessagePacket.getMessage()));
                 // TODO: 异步保存消息到数据库
             });
         });

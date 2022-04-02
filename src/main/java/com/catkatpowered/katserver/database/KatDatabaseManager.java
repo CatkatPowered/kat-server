@@ -1,8 +1,7 @@
 package com.catkatpowered.katserver.database;
 
-import com.catkatpowered.katserver.database.interfaces.DatabaseActions;
-import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
-import com.catkatpowered.katserver.database.type.DatabaseType;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库处理层 桥接数据库
@@ -17,22 +16,52 @@ public class KatDatabaseManager {
         KatDatabase.getInstance();
     }
 
-    // 取得链接器
-    public static DatabaseConnector getConnector() {
-        return KatDatabase.getInstance().getConnector();
+    public static void create(String database, String collection, Object data) {
+        KatDatabase.getInstance()
+                .connector
+                .connection()
+                .create(database, collection, data);
     }
 
-    public static DatabaseConnector getConnector(DatabaseType type) {
-        return KatDatabase.getInstance().pickConnector(type);
+    void update(String database, String collection, Map<String, Object> index, Object data) {
+        KatDatabase.getInstance()
+                .connector
+                .connection()
+                .update(database, collection, index, data);
     }
 
-    // 获取执行器
-    public static DatabaseActions getActions() {
-        return KatDatabase.getInstance().getActions();
+    void delete(String database, String collection, Map<String, Object> index) {
+        KatDatabase.getInstance()
+                .connector
+                .connection()
+                .delete(database, collection, index);
     }
 
-    public static DatabaseActions getActions(DatabaseType type) {
-        return KatDatabase.getInstance().pickActions(type);
+    <T> List<T> read(String database, String collection, Map<String, Object> index, Class<T> type) {
+        return KatDatabase.getInstance()
+                .connector
+                .connection()
+                .read(database, collection, index, type);
     }
 
+    public void createMany(String database, String collection, List<Object> data) {
+        KatDatabase.getInstance()
+                .connector
+                .connection()
+                .createMany(database, collection, data);
+    }
+
+    void updateOne(String database, String collection, Map<String, Object> index, Object data) {
+        KatDatabase.getInstance()
+                .connector
+                .connection()
+                .updateOne(database, collection, index, data);
+    }
+
+    void deleteOne(String database, String collection, Map<String, Object> index) {
+        KatDatabase.getInstance()
+                .connector
+                .connection()
+                .deleteOne(database, collection, index);
+    }
 }

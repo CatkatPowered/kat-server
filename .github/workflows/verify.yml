@@ -2,9 +2,9 @@ name: Verify Build Github Actions
 
 on:
   push:
-    branches: [main, ci]
+    branches: [ main, ci ]
   pull_request:
-    branches: [main, ci]
+    branches: [ main, ci ]
 
 jobs:
   build:

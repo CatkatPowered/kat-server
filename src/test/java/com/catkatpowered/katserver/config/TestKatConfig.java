@@ -1,15 +1,14 @@
 package com.catkatpowered.katserver.config;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import java.util.Map;
 import java.util.Optional;
 
-import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-
-import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestKatConfig {
     String defaultConfig = """

@@ -1,5 +1,11 @@
 package com.catkatpowered.katserver.config;
 
+import com.catkatpowered.katserver.common.utils.KatWorkingDir;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,14 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 import java.util.Objects;
-
-import com.catkatpowered.katserver.common.utils.KatWorkingDir;
-
-import org.yaml.snakeyaml.Yaml;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Kat Server 的配置文件项
@@ -45,8 +43,8 @@ public class KatConfig {
                 if (katConfigFile.createNewFile()) {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
                     outputStream.write(Objects.requireNonNull(KatConfig.class
-                            .getClassLoader()
-                            .getResourceAsStream("config.yml"))
+                                    .getClassLoader()
+                                    .getResourceAsStream("config.yml"))
                             .readAllBytes());
                     outputStream.flush();
                     outputStream.close();

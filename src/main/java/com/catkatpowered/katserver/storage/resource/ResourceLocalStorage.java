@@ -1,11 +1,10 @@
 package com.catkatpowered.katserver.storage.resource;
 
-import java.util.Optional;
-
 import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.KatResource;
-
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class ResourceLocalStorage implements ResourceStorage {
 
