@@ -10,6 +10,8 @@ public class KatConfigNodeConstants {
     public static final String KAT_CONFIG_NETWORK_CUSTOM_CERT_ENABLED =  KAT_CONFIG_NETWORK + "." + "custom_cert" + "." + "enabled";
     public static final String KAT_CONFIG_NETWORK_CUSTOM_CERT_PATH = KAT_CONFIG_NETWORK + "." + "custom_cert" + "." + "cert_path";
     public static final String KAT_CONFIG_NETWORK_CUSTOM_CERT_PASSWORD = KAT_CONFIG_NETWORK + "." + "custom_cert" + "." + "cert_password";
+    public static final String KAT_CONFIG_NETWORK_SELFGEN_CERT_PASSWORD = KAT_CONFIG_NETWORK + "." + "selfgen_cert" + "." + "cert_password";
+    public static final String KAT_CONFIG_NETWORK_SELFGEN_CERT_ALIAS = KAT_CONFIG_NETWORK + "." + "selfgen_cert" + "." + "cert_alias";
 
     public static final String KAT_CONFIG_EXEC = "exec";
     public static final String KAT_CONFIG_EXEC_THREADS = KAT_CONFIG_EXEC + "." + "exec_threads";

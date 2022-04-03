@@ -27,8 +27,8 @@ import java.util.Random;
 public class KatCertUtil {
 
     public static SslContextFactory getSslContextFactory() {
-        if (Boolean.parseBoolean(KatServer.KatConfigAPI
-                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_CUSTOM_CERT_ENABLED).get())) {
+        if (KatServer.KatConfigAPI
+                .<Boolean>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_CUSTOM_CERT_ENABLED).get()) {
             // 自定义证书
             SslContextFactory sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setKeyStorePath(KatServer.KatConfigAPI
@@ -48,6 +48,10 @@ public class KatCertUtil {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static KeyStore getKeyStore() {
+        String password = KatServer.KatConfigAPI
+                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_SELFGEN_CERT_PASSWORD).get();
+        String alias = KatServer.KatConfigAPI
+                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_SELFGEN_CERT_ALIAS).get();
         Security.addProvider(new BouncyCastleProvider());
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
@@ -61,8 +65,8 @@ public class KatCertUtil {
             java.security.cert.Certificate[] outChain = {
                     CLcertificate, CAcertificate};
             KeyStore outStore = KeyStore.getInstance("PKCS12");
-            outStore.load(null, "catmoe".toCharArray());
-            outStore.setKeyEntry("catmoe", privateKey, "catmoe".toCharArray(),
+            outStore.load(null, password.toCharArray());
+            outStore.setKeyEntry(alias, privateKey, password.toCharArray(),
                     outChain);
             return outStore;
 
