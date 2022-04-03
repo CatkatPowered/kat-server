@@ -2,9 +2,12 @@ package com.catkatpowered.katserver.network;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
+import com.catkatpowered.katserver.network.packet.BasePacket;
 import com.catkatpowered.katserver.network.packet.ServerDescriptionPacket;
 import com.catkatpowered.katserver.network.packet.WebSocketMessagePacket;
+import com.catkatpowered.katserver.network.packet.WebsocketMessageQueryPacket;
 import com.google.gson.Gson;
 import io.javalin.Javalin;
 import lombok.Getter;
@@ -55,12 +58,19 @@ public class KatNetwork {
                 sessions.remove(wsCloseContext.session);
             });
             ws.onMessage(wsMessageContext -> {
-                WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
-                        WebSocketMessagePacket.class);
-
-                // 处理消息发送事件
-                KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(), webSocketMessagePacket.getMessage()));
-                // TODO: 异步保存消息到数据库
+                switch (gson.fromJson(wsMessageContext.message(),
+                        BasePacket.class).getType()) {
+                    case KatPacketTypeConstants.MESSAGE_PACKET:
+                        WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
+                                WebSocketMessagePacket.class);
+                        // TODO: 异步保存消息到数据库
+                        // 处理消息发送事件
+                        KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(), webSocketMessagePacket.getMessage()));
+                    case KatPacketTypeConstants.MESSAGE_QUERY_PACKET:
+                        WebsocketMessageQueryPacket websocketMessageQueryPacket = gson.fromJson(wsMessageContext.message(),
+                                WebsocketMessageQueryPacket.class);
+                        // TODO: 处理消息查询并返回
+                }
             });
         });
 
