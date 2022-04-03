@@ -1,11 +1,10 @@
 package com.catkatpowered.katserver.storage.resource;
 
 import com.catkatpowered.katserver.message.KatUniMessage;
-import com.catkatpowered.katserver.storage.KatResource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-
+// TODO: 完成文件储存部分!!
 public class ResourceLocalStorage implements ResourceStorage {
 
     @Override

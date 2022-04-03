@@ -1,6 +1,11 @@
 ######################### Network #############################
 network:
   network_port: 25565
+  custom_cert:
+    enable: false
+    cert_path: "./cert.jks"
+    cert_password: "catmoe"
+
 
 ######################### Database ############################
 database:
