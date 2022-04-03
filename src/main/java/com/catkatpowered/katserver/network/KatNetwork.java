@@ -4,10 +4,7 @@ import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
-import com.catkatpowered.katserver.network.packet.BasePacket;
-import com.catkatpowered.katserver.network.packet.ServerDescriptionPacket;
-import com.catkatpowered.katserver.network.packet.WebSocketMessagePacket;
-import com.catkatpowered.katserver.network.packet.WebsocketMessageQueryPacket;
+import com.catkatpowered.katserver.network.packet.*;
 import com.google.gson.Gson;
 import io.javalin.Javalin;
 import lombok.Getter;
@@ -58,19 +55,23 @@ public class KatNetwork {
                 sessions.remove(wsCloseContext.session);
             });
             ws.onMessage(wsMessageContext -> {
-                switch (gson.fromJson(wsMessageContext.message(),
-                        BasePacket.class).getType()) {
+                String type = gson.fromJson(wsMessageContext.message(),
+                        BasePacket.class).getType();
+                switch (type) {
                     case KatPacketTypeConstants.MESSAGE_PACKET:
                         WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
                                 WebSocketMessagePacket.class);
                         // TODO: 异步保存消息到数据库
                         // 处理消息发送事件
                         KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(), webSocketMessagePacket.getMessage()));
+                        return;
                     case KatPacketTypeConstants.MESSAGE_QUERY_PACKET:
                         WebsocketMessageQueryPacket websocketMessageQueryPacket = gson.fromJson(wsMessageContext.message(),
                                 WebsocketMessageQueryPacket.class);
                         // TODO: 处理消息查询并返回
+                        return;
                 }
+                wsMessageContext.send(gson.toJson(ErrorPacket.builder().error("Unknown Packet").build()));
             });
         });
 
