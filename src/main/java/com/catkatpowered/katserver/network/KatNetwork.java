@@ -24,6 +24,7 @@ public class KatNetwork {
     @Getter
     private static Javalin network;
 
+    // 包含所有moseeger客户端,实现无限客户端
     @Getter
     private static List<Session> sessions;
 
@@ -31,11 +32,7 @@ public class KatNetwork {
         Javalin server = Javalin.create(config -> {
             config.server(() -> {
                 Server app = new Server();
-                SslContextFactory sslContextFactory = new SslContextFactory.Server();
-                KeyStore keyStore = KatCertUtil.getKeyStore();
-                sslContextFactory.setKeyStore(keyStore);
-                sslContextFactory.setKeyStorePassword("catmoe");
-
+                SslContextFactory sslContextFactory = KatCertUtil.getSslContextFactory();
                 ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
                 sslConnector.setPort(KatServer.KatConfigAPI
                         .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get());
@@ -55,8 +52,7 @@ public class KatNetwork {
                 sessions.add(wsConnectContext.session);
             });
             ws.onClose(wsCloseContext -> {
-                // TODO: tokenpool实现
-                // katNetworkSession.revokeToken(wsCloseContext.session);
+                sessions.remove(wsCloseContext.session);
             });
             ws.onMessage(wsMessageContext -> {
                 WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),

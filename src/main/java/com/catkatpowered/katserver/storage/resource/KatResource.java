@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.storage;
+package com.catkatpowered.katserver.storage.resource;
 
 import lombok.Builder;
 import lombok.Builder.Default;

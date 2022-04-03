@@ -8,6 +8,8 @@ import com.catkatpowered.katserver.storage.KatMessageStorage;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
+// extension -API-> katserver -websocket-> moseeger
+// 此处监听event并转换成网络包发送给moseeger
 @Slf4j
 public class KatNetworkHandler implements Listener {
     @EventHandler
