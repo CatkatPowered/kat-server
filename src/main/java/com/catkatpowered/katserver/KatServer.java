@@ -104,8 +104,16 @@ public class KatServer {
             KatDatabaseManager.register(connector);
         }
 
-        public static void create(String collection, Object data) {
-            KatDatabaseManager.create(collection, data);
+        /**
+         * 在集合中创建新的对象
+         * 
+         * @param collection
+         * @param data
+         */
+        public static void create(String collection, Object... data) {
+            for (Object object : data) {
+                KatDatabaseManager.create(collection, object);
+            }
         }
 
         public static void create(String collection, List<Object> data) {
