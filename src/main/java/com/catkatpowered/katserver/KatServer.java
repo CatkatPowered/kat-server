@@ -10,6 +10,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
 
 import java.io.File;
 import java.util.List;
@@ -171,5 +172,36 @@ public class KatServer {
 
     public static final class KatTaskAPI {
 
+    }
+
+    public static final class KatTokenPoolAPI {
+        /**
+         * 生成新的<em>token</em>
+         * 
+         * @return
+         */
+        public static String newToken() {
+            return KatTokenPoolManager.newToken();
+        }
+
+        /**
+         * 撤销<em>token</em>
+         * 
+         * @param tokeString
+         * @return 是否成功撤销
+         */
+        public static boolean revokeToken(String tokeString) {
+            return KatTokenPoolManager.revokeToken(tokeString);
+        }
+
+        /**
+         * 检查<em>token</em>是否过期
+         * 
+         * @param token
+         * @return
+         */
+        public static boolean checkToken(String token) {
+            return KatTokenPoolManager.checkToken(token);
+        }
     }
 }
