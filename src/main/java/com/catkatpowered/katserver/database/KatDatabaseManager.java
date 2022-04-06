@@ -1,13 +1,12 @@
 package com.catkatpowered.katserver.database;
 
+import java.util.List;
+import java.util.Map;
+
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 import com.catkatpowered.katserver.database.mongodb.MongodbConnector;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * 数据库处理层 桥接数据库
