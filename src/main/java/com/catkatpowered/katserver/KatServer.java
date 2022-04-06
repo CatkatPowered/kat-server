@@ -98,8 +98,16 @@ public class KatServer {
     }
 
     // KatDatabase API
+    /**
+     * 封装对数据库的操作
+     */
     public static final class KatDatabaseAPI {
-
+        /**
+         * 注册自定义<em>connector</em>
+         * 
+         * @param connector
+         * @see DatabaseConnector
+         */
         public static void register(DatabaseConnector connector) {
             KatDatabaseManager.register(connector);
         }
@@ -116,18 +124,46 @@ public class KatServer {
             }
         }
 
+        /**
+         * 在集合中创建新的对象
+         * 
+         * @param collection
+         * @param data
+         */
         public static void create(String collection, List<Object> data) {
             KatDatabaseManager.create(collection, data);
         }
 
+        /**
+         * 更新数据库中的对象
+         * 
+         * @param collection
+         * @param index
+         * @param data
+         */
         public static void update(String collection, Map<String, Object> index, Object data) {
             KatDatabaseManager.update(collection, index, data);
         }
 
+        /**
+         * 删除数据库中的对象
+         * 
+         * @param collection
+         * @param index
+         */
         public static void delete(String collection, Map<String, Object> index) {
             KatDatabaseManager.delete(collection, index);
         }
 
+        /**
+         * 读取数据库中的对象
+         * 
+         * @param <T>
+         * @param collection
+         * @param index
+         * @param type
+         * @return
+         */
         public static <T> List<T> read(String collection, Map<String, Object> index, Class<T> type) {
             return KatDatabaseManager.read(collection, index, type);
         }
