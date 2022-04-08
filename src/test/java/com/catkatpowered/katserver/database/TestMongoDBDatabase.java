@@ -88,7 +88,7 @@ public class TestMongoDBDatabase {
                         new HashMap<>() {{put("锟斤拷", "烫烫烫");}}, new String[]{"1", "1", "4", "5", "1", "4"})
         );
         // 查询数据
-        data = connection.search("test", "number", "114514", "114516", 10, Data.class);
+        data = connection.search("test", "number", 114514, 114516, 10, Data.class);
         // 测试数据
         assertEquals(2, data.size());
     }

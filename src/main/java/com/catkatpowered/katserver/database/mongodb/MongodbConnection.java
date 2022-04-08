@@ -55,7 +55,7 @@ public record MongodbConnection(Gson gson, MongoClient client, String database) 
     }
 
     @Override
-    public <T> List<T> search(String collection, String data, String top, String bottom, int limit, Class<T> type) {
+    public <T, V> List<T> search(String collection, String data, V top, V bottom, int limit, Class<T> type) {
         List<T> list = new ArrayList<>();
         // 获取数据库连接
         client.getDatabase(database).getCollection(collection)

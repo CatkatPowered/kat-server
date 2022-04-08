@@ -49,8 +49,14 @@ public interface DatabaseConnection {
     <T> List<T> read(String collection, Map<String, Object> index, Class<T> type);
 
     /**
-     * 搜索数据集合 符合的结果将进入 List 列表返回 需要提供泛型数据实体类类型
-     * 本方法提供根据某一个字段名称的边界以及限制数量进行搜索的操作
+     * 搜索数据集合 符合的结果将进入 List 列表返回 需要提供泛型数据实体类类型 <br>
+     * 本方法提供根据某一个字段名称的边界以及限制数量进行搜索的操作 <br>
+     * <b>其中 top 与  bottom 值为泛型值类型 指定的字段需与存储数据的类型对应</b> <br>
+     * 举例: <br>
+     * number 存储数据类型为 int <br>
+     * 那么 top 和 bottom 值为 int 类型 即无需双引号的拆箱类型 <br>
+     * 伪代码: <br>
+     * search(String collection, String data, int top, int bottom, int limit, Class<T> type)
      *
      * @param collection 目标集合
      * @param data       字段名称
@@ -61,5 +67,5 @@ public interface DatabaseConnection {
      * @param <T>        返回的数据实体类型
      * @return 数据实体列表
      */
-    <T> List<T> search(String collection, String data, String top, String bottom, int limit, Class<T> type);
+    <T, V> List<T> search(String collection, String data, V top, V bottom, int limit, Class<T> type);
 }
