@@ -54,5 +54,16 @@ public class TestMongoDBDatabase {
         assertTrue(data.get(0).flag);
         assertEquals("烫烫烫", data.get(0).map.get("锟斤拷"));
         assertEquals("1", data.get(0).array[0]);
+        // 删除数据
+        connection.delete("test",
+                new HashMap<>() {{
+                    put("message", "点一份炒饭");
+                }});
+        // 验证删除
+        data = connection.read("test",
+                new HashMap<>() {{
+                    put("message", "点一份炒饭");
+                }}, Data.class);
+        assertEquals(0, data.size());
     }
 }
