@@ -90,6 +90,6 @@ public class TestMongoDBDatabase {
         // 查询数据
         data = connection.search("test", "number", 114514, 114516, 10, Data.class);
         // 测试数据
-        assertEquals(2, data.size());
+        assertEquals(3, data.size());
     }
 }
