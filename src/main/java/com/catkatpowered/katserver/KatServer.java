@@ -10,6 +10,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
 
 import java.io.File;
 import java.util.List;
@@ -98,28 +99,72 @@ public class KatServer {
     }
 
     // KatDatabase API
+    /**
+     * 封装对数据库的操作
+     */
     public static final class KatDatabaseAPI {
-
+        /**
+         * 注册自定义<em>connector</em>
+         * 
+         * @param connector
+         * @see DatabaseConnector
+         */
         public static void register(DatabaseConnector connector) {
             KatDatabaseManager.register(connector);
         }
 
-        public static void create(String collection, Object data) {
-            KatDatabaseManager.create(collection, data);
+        /**
+         * 在集合中创建新的对象
+         * 
+         * @param collection
+         * @param data
+         */
+        public static void create(String collection, Object... data) {
+            for (Object object : data) {
+                KatDatabaseManager.create(collection, object);
+            }
         }
 
+        /**
+         * 在集合中创建新的对象
+         * 
+         * @param collection
+         * @param data
+         */
         public static void create(String collection, List<Object> data) {
             KatDatabaseManager.create(collection, data);
         }
 
+        /**
+         * 更新数据库中的对象
+         * 
+         * @param collection
+         * @param index
+         * @param data
+         */
         public static void update(String collection, Map<String, Object> index, Object data) {
             KatDatabaseManager.update(collection, index, data);
         }
 
+        /**
+         * 删除数据库中的对象
+         * 
+         * @param collection
+         * @param index
+         */
         public static void delete(String collection, Map<String, Object> index) {
             KatDatabaseManager.delete(collection, index);
         }
 
+        /**
+         * 读取数据库中的对象
+         * 
+         * @param <T>
+         * @param collection
+         * @param index
+         * @param type
+         * @return
+         */
         public static <T> List<T> read(String collection, Map<String, Object> index, Class<T> type) {
             return KatDatabaseManager.read(collection, index, type);
         }
@@ -127,5 +172,36 @@ public class KatServer {
 
     public static final class KatTaskAPI {
 
+    }
+
+    public static final class KatTokenPoolAPI {
+        /**
+         * 生成新的<em>token</em>
+         * 
+         * @return
+         */
+        public static String newToken() {
+            return KatTokenPoolManager.newToken();
+        }
+
+        /**
+         * 撤销<em>token</em>
+         * 
+         * @param tokeString
+         * @return 是否成功撤销
+         */
+        public static boolean revokeToken(String tokeString) {
+            return KatTokenPoolManager.revokeToken(tokeString);
+        }
+
+        /**
+         * 检查<em>token</em>是否过期
+         * 
+         * @param token
+         * @return
+         */
+        public static boolean checkToken(String token) {
+            return KatTokenPoolManager.checkToken(token);
+        }
     }
 }

@@ -2,10 +2,13 @@ package com.catkatpowered.katserver.database.mongodb;
 
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnection;
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import org.bson.BsonDocument;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +46,27 @@ public record MongodbConnection(Gson gson, MongoClient client, String database) 
         // 获取数据库连接
         client.getDatabase(database).getCollection(collection)
                 .find(Document.parse(gson.toJsonTree(index, Map.class).toString()))
+                .iterator()
+                .forEachRemaining(document -> {
+                    // 将 document 转换回对象
+                    list.add(gson.fromJson(document.toJson(), type));
+                });
+        return list;
+    }
+
+    @Override
+    public <T, V> List<T> search(String collection, String data, V top, V bottom, int limit, Class<T> type) {
+        List<T> list = new ArrayList<>();
+        // 获取数据库连接
+        client.getDatabase(database).getCollection(collection)
+                .find(new BasicDBObject() {{
+                    put(data, new BasicDBObject() {{
+                        put("$gte", top);
+                        put("$lte", bottom);
+                    }});
+                }})
+                .skip(0)
+                .limit(limit)
                 .iterator()
                 .forEachRemaining(document -> {
                     // 将 document 转换回对象

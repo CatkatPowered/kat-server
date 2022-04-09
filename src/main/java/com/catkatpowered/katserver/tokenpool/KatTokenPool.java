@@ -9,9 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * TODO：需要设计Token池的各种机制
- */
 public class KatTokenPool {
     private static KatTokenPool INSTANCE = new KatTokenPool();
     @Getter
