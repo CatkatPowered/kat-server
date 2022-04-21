@@ -10,7 +10,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
-import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
+import com.catkatpowered.katserver.token.KatTokenPoolManager;
 
 import java.io.File;
 import java.util.List;

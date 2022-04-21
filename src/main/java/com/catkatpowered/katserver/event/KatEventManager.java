@@ -11,6 +11,7 @@ public class KatEventManager {
 
     public static void init() {
         // TODO: 注册所以events包下的event
+        // 扫包大师
     }
 
     public static void callEvent(Event event) {

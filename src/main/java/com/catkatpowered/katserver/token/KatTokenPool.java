@@ -1,11 +1,10 @@
-package com.catkatpowered.katserver.tokenpool;
+package com.catkatpowered.katserver.token;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,23 +32,24 @@ public class KatTokenPool {
     }
 
     public boolean destroyToken(String token) {
-        return !Optional.of(this.tokenPool.remove(token)).isEmpty();
+        this.tokenPool.remove(token);
+        return true;
     }
 
     /**
      * 通过传入的<em>action</em>判断对<em>TokenPool</em>的操作
      *
-     * @param action
+     * @param action 操作类型
      */
     public void cleanTokens(ClearAction action) {
         switch (action) {
             case All -> this.tokenPool.clear();
             case Outdated -> {
-                var outdateTime = KatServer.KatConfigAPI
+                int outdatedTime = KatServer.KatConfigAPI
                         .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_TOKENPOOL_OUTDATE)
                         .get();
                 for (var item : this.tokenPool.entrySet())
-                    if ((System.currentTimeMillis() - item.getValue()) >= outdateTime)
+                    if ((System.currentTimeMillis() - item.getValue()) >= outdatedTime)
                         this.tokenPool.remove(item.getKey());
             }
         }

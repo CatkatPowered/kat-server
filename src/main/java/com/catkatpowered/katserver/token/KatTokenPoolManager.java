@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.tokenpool;
+package com.catkatpowered.katserver.token;
 
 public class KatTokenPoolManager {
     public static void init() {
