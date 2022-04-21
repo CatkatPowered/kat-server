@@ -1,7 +1,7 @@
-package com.catkatpowered.katserver.token;
+package com.catkatpowered.katserver.tokenpool;
 
 import com.catkatpowered.katserver.config.KatConfig;
-import com.catkatpowered.katserver.token.KatTokenPool.ClearAction;
+import com.catkatpowered.katserver.tokenpool.KatTokenPool.ClearAction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;

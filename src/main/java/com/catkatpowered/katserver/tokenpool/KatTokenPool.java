@@ -1,10 +1,11 @@
-package com.catkatpowered.katserver.token;
+package com.catkatpowered.katserver.tokenpool;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,8 +33,7 @@ public class KatTokenPool {
     }
 
     public boolean destroyToken(String token) {
-        this.tokenPool.remove(token);
-        return true;
+        return !Optional.of(this.tokenPool.remove(token)).isEmpty();
     }
 
     /**
