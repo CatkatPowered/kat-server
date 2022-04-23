@@ -39,17 +39,17 @@ public class KatTokenPool {
     /**
      * 通过传入的<em>action</em>判断对<em>TokenPool</em>的操作
      *
-     * @param action
+     * @param action 操作类型
      */
     public void cleanTokens(ClearAction action) {
         switch (action) {
             case All -> this.tokenPool.clear();
             case Outdated -> {
-                var outdateTime = KatServer.KatConfigAPI
+                int outdatedTime = KatServer.KatConfigAPI
                         .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_TOKENPOOL_OUTDATE)
                         .get();
                 for (var item : this.tokenPool.entrySet())
-                    if ((System.currentTimeMillis() - item.getValue()) >= outdateTime)
+                    if ((System.currentTimeMillis() - item.getValue()) >= outdatedTime)
                         this.tokenPool.remove(item.getKey());
             }
         }
