@@ -10,12 +10,15 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+import com.catkatpowered.katserver.task.KatTaskManager;
 import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * Kat API 入口
@@ -171,6 +174,22 @@ public class KatServer {
     }
 
     public static final class KatTaskAPI {
+
+        public static Future<?> addTask(Runnable task) {
+            return KatTaskManager.addTask(task);
+        }
+
+        public static <T> Future<T> addTask(Callable<T> task) {
+            return KatTaskManager.addTask(task);
+        }
+
+        public static <T> Future<T> addTask(Runnable task, T result) {
+            return KatTaskManager.addTask(task, result);
+        }
+
+        public static void exec(Runnable task) {
+            KatTaskManager.exec(task);
+        }
 
     }
 
