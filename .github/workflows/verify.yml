@@ -1,4 +1,4 @@
-name: Verify Build Github Actions
+name: Verify Build
 
 on:
   push:
