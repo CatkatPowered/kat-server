@@ -34,6 +34,13 @@ public class KatUniMessage {
     public String messageType = KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE;
 
     /**
+     * <b>ExtensionID</b> 用于确定消息来源, 不可更改
+     * </p>
+     */
+    @SerializedName("extension_id")
+    public String extensionID;
+
+    /**
      * <b>MessageGroup</b> 用于本条消息的聚合特征，方便消息存入库处理
      * </p>
      */

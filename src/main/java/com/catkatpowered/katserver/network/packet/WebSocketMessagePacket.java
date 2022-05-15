@@ -10,13 +10,10 @@ import lombok.Data;
 public class WebSocketMessagePacket {
     /*
     {
-        "extension_id": "discord",
+        "type": "websocket_message",
         "message": {}
     }
      */
-    // 平台标识符
-    @SerializedName("extension_id")
-    String extensionId;
     // 消息本体
     @SerializedName("message")
     KatUniMessage message;
@@ -26,7 +23,6 @@ public class WebSocketMessagePacket {
 
     @Builder
     public WebSocketMessagePacket(String extensionId, KatUniMessage message) {
-        this.extensionId = extensionId;
         this.message = message;
     }
 }

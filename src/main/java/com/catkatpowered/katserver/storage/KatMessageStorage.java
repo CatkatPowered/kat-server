@@ -22,11 +22,11 @@ public class KatMessageStorage {
      * @return 返回被<b>Optional</b>包装的<b>List</b>类型
      * @see Optional
      */
-
+    // TODO: 此处应根据ExtensionID, MessageGroup, StartTime, EndTime确定搜索范围
     public static Optional<List<KatUniMessage>> getMessage(@NotNull KatUniMessage indexMsg) {
         return Optional.ofNullable(
                 KatServer.KatDatabaseAPI
-                        .read(indexMsg.getMessageGroup(),
+                        .read(indexMsg.extensionID + "_" + indexMsg.getMessageGroup(),
                                 new HashMap<String, Object>() {{
                                     put("messageID", indexMsg.getMessageID());
                                 }},
@@ -41,7 +41,7 @@ public class KatMessageStorage {
      * @param newContent 新消息记录
      */
     public static void updateMessage(@NotNull KatUniMessage oldContent, KatUniMessage newContent) {
-        KatServer.KatDatabaseAPI.update(oldContent.getMessageGroup(),
+        KatServer.KatDatabaseAPI.update(oldContent.extensionID + "_" + oldContent.getMessageGroup(),
                 new HashMap<String, Object>() {{
                     put("message_id", oldContent.getMessageID());
                 }},
@@ -56,7 +56,7 @@ public class KatMessageStorage {
      */
     public static void deleteMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
-            KatServer.KatDatabaseAPI.delete(indexMsg.getMessageGroup(),
+            KatServer.KatDatabaseAPI.delete(indexMsg.extensionID + "_" + indexMsg.getMessageGroup(),
                     new HashMap<String, Object>() {{
                         put("message_id", indexMsg.getMessageID());
                     }});
@@ -70,7 +70,7 @@ public class KatMessageStorage {
      */
     public static void createMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
-            KatServer.KatDatabaseAPI.create(indexMsg.getMessageGroup(), indexMsg);
+            KatServer.KatDatabaseAPI.create(indexMsg.extensionID + "_" + indexMsg.getMessageGroup(), indexMsg);
         }
     }
 }

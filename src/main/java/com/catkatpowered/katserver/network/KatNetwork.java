@@ -5,6 +5,7 @@ import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.network.packet.*;
+import com.catkatpowered.katserver.storage.KatMessageStorage;
 import com.google.gson.Gson;
 import io.javalin.Javalin;
 import lombok.Getter;
@@ -61,9 +62,10 @@ public class KatNetwork {
                     case KatPacketTypeConstants.MESSAGE_PACKET:
                         WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
                                 WebSocketMessagePacket.class);
-                        // TODO: 异步保存消息到数据库
+                        // 异步保存消息到数据库
+                        KatMessageStorage.createMessage(webSocketMessagePacket.getMessage());
                         // 处理消息发送事件
-                        KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(), webSocketMessagePacket.getMessage()));
+                        KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getMessage().extensionID, webSocketMessagePacket.getMessage()));
                         return;
                     case KatPacketTypeConstants.MESSAGE_QUERY_PACKET:
                         WebsocketMessageQueryPacket websocketMessageQueryPacket = gson.fromJson(wsMessageContext.message(),
