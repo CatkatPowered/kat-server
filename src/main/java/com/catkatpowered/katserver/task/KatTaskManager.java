@@ -1,9 +1,28 @@
 package com.catkatpowered.katserver.task;
 
-// TODO：Task管理器部分需要完成对外API的抽象
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+
 public class KatTaskManager {
 
     public static void init() {
         KatTask.getInstance();
     }
+
+    public static Future<?> addTask(Runnable task) {
+        return KatTask.getInstance().addTask(task);
+    }
+
+    public static <T> Future<T> addTask(Callable<T> task) {
+        return KatTask.getInstance().addTask(task);
+    }
+
+    public static <T> Future<T> addTask(Runnable task, T result) {
+        return KatTask.getInstance().addTask(task, result);
+    }
+
+    public static void exec(Runnable task) {
+        KatTask.getInstance().exec(task);
+    }
+
 }

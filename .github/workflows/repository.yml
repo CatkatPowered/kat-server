@@ -1,4 +1,4 @@
-name: Publish Github Actions
+name: Maven Publish
 
 on:
   push:
