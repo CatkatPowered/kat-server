@@ -15,14 +15,27 @@ import java.util.Optional;
 @Slf4j
 public class KatMessageStorage {
 
+    public static Optional<List<KatUniMessage>> searchMessage(String extensionID, String messageGroup, Integer startTimeStamp, Integer endTimeStamp) {
+        return Optional.ofNullable(
+                KatServer.KatDatabaseAPI
+                        .search(extensionID + "_" + messageGroup,
+                                "message_timestamp",
+                                startTimeStamp,
+                                endTimeStamp,
+                                // TODO: 商议消息数限制
+                                20,
+                                KatUniMessage.class
+                        )
+        );
+    }
+
     /**
-     * 用于查询消息记录，索引值为<b>KatUniMessage.messageID</b>
+     * 用于查询单条消息记录，索引值为<b>KatUniMessage.messageID</b>
      *
      * @param indexMsg 对应数据库当中的索引
      * @return 返回被<b>Optional</b>包装的<b>List</b>类型
      * @see Optional
      */
-    // TODO: 此处应根据ExtensionID, MessageGroup, StartTime, EndTime确定搜索范围
     public static Optional<List<KatUniMessage>> getMessage(@NotNull KatUniMessage indexMsg) {
         return Optional.ofNullable(
                 KatServer.KatDatabaseAPI

@@ -4,6 +4,7 @@ import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
+import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.network.packet.*;
 import com.catkatpowered.katserver.storage.KatMessageStorage;
 import com.google.gson.Gson;
@@ -15,8 +16,8 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.Session;
 
-import java.security.KeyStore;
 import java.util.List;
+import java.util.Optional;
 
 public class KatNetwork {
 
@@ -70,7 +71,10 @@ public class KatNetwork {
                     case KatPacketTypeConstants.MESSAGE_QUERY_PACKET:
                         WebsocketMessageQueryPacket websocketMessageQueryPacket = gson.fromJson(wsMessageContext.message(),
                                 WebsocketMessageQueryPacket.class);
-                        // TODO: 处理消息查询并返回
+                        // 处理消息查询并返回
+                        Optional<List<KatUniMessage>> messages = KatMessageStorage.searchMessage(websocketMessageQueryPacket.getExtensionId(), websocketMessageQueryPacket.getMessageGroup(), websocketMessageQueryPacket.getStartTimeStamp(), websocketMessageQueryPacket.getEndTimeStamp());
+                        websocketMessageQueryPacket.setMessages(messages.get());
+                        wsMessageContext.send(websocketMessageQueryPacket);
                         return;
                 }
                 wsMessageContext.send(gson.toJson(ErrorPacket.builder().error("Unknown Packet").build()));

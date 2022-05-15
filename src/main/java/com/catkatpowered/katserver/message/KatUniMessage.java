@@ -63,6 +63,12 @@ public class KatUniMessage {
     public String messageContent;
 
     /**
+     * <b>MessageTimeStamp</b>消息时间戳
+     */
+    @SerializedName("message_timestamp")
+    public String messageTimeStamp;
+
+    /**
      * <b>MessageList</b> 指向的是下一级消息列表。</br>
      * <p>
      * 当前假设情况如下</br>
