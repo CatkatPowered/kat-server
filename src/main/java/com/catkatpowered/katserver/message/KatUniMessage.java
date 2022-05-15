@@ -66,7 +66,7 @@ public class KatUniMessage {
      * <b>MessageTimeStamp</b>消息时间戳
      */
     @SerializedName("message_timestamp")
-    public String messageTimeStamp;
+    public Integer messageTimeStamp;
 
     /**
      * <b>MessageList</b> 指向的是下一级消息列表。</br>
@@ -107,19 +107,23 @@ public class KatUniMessage {
     public String resourceURL;
 
     public KatUniMessage(
+            String extensionID,
             String messageType,
             String messageGroup,
             String messageID,
             String messageContent,
+            Integer messageTimeStamp,
             ArrayList<KatUniMessage> messageList,
             ArrayList<String> extended,
             String resourceHash,
             String resourceName,
             String resourceURL) {
+        this.extensionID = extensionID;
         this.messageType = messageType;
         this.messageGroup = messageGroup;
         this.messageID = messageID;
         this.messageContent = messageContent;
+        this.messageTimeStamp = messageTimeStamp;
         this.messageList = messageList;
         this.extended = extended;
         this.resourceHash = resourceHash;
