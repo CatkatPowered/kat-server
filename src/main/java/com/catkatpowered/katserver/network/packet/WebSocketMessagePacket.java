@@ -22,7 +22,8 @@ public class WebSocketMessagePacket {
     private String type = KatPacketTypeConstants.MESSAGE_PACKET;
 
     @Builder
-    public WebSocketMessagePacket(String extensionId, KatUniMessage message) {
+    public WebSocketMessagePacket(String type, KatUniMessage message) {
+        this.type = type;
         this.message = message;
     }
 }

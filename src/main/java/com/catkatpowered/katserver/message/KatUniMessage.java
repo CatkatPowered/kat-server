@@ -14,6 +14,7 @@ import java.util.Objects;
  *
  * @author suibing112233
  * @author hanbings
+ * @author CatMoe
  */
 @Data
 @Builder
@@ -66,7 +67,7 @@ public class KatUniMessage {
      * <b>MessageTimeStamp</b>消息时间戳
      */
     @SerializedName("message_timestamp")
-    public Integer messageTimeStamp;
+    public Long messageTimeStamp;
 
     /**
      * <b>MessageList</b> 指向的是下一级消息列表。</br>
@@ -112,7 +113,7 @@ public class KatUniMessage {
             String messageGroup,
             String messageID,
             String messageContent,
-            Integer messageTimeStamp,
+            Long messageTimeStamp,
             ArrayList<KatUniMessage> messageList,
             ArrayList<String> extended,
             String resourceHash,

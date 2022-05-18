@@ -16,7 +16,7 @@ public class KatWebSocketBroadcast implements Listener {
     public void onMessageReceive(MessageReceiveEvent event) {
         KatMessageStorage.createMessage(event.getMessage());
         Gson gson = new Gson();
-        WebSocketMessagePacket packet = WebSocketMessagePacket.builder().extensionId(event.getExtensionId()).message(event.getMessage()).build();
+        WebSocketMessagePacket packet = WebSocketMessagePacket.builder().type("websocket_message").message(event.getMessage()).build();
         KatNetwork.getSessions().forEach(session -> {
             try {
                 session.getRemote().sendString(gson.toJson(packet));
