@@ -10,10 +10,10 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KatNetwork {
-
     private static final KatNetwork Instance = new KatNetwork();
 
     @Getter
@@ -21,7 +21,7 @@ public class KatNetwork {
 
     // 包含所有moseeger客户端,实现无限客户端
     @Getter
-    private static List<Session> sessions;
+    private static List<Session> sessions = new ArrayList<Session>();
 
     private KatNetwork() {
         Javalin server = Javalin.create(config -> {

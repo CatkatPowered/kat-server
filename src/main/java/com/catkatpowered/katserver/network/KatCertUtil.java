@@ -21,6 +21,8 @@ import java.util.Random;
 
 public class KatCertUtil {
 
+    private static KeyStore keyStore;
+
     public static SslContextFactory getSslContextFactory() {
         if (KatServer.KatConfigAPI
                 .<Boolean>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_CUSTOM_CERT_ENABLED).get()) {
@@ -42,31 +44,34 @@ public class KatCertUtil {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private static KeyStore getKeyStore() {
-        String password = KatServer.KatConfigAPI
-                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_SELFGEN_CERT_PASSWORD).get();
-        String alias = KatServer.KatConfigAPI
-                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_SELFGEN_CERT_ALIAS).get();
-        Security.addProvider(new BouncyCastleProvider());
-        try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
-            keyPairGenerator.initialize(2048);
-            KeyPair keyPair = keyPairGenerator.generateKeyPair();
-            PublicKey publicKey = keyPair.getPublic();
-            PrivateKey privateKey = keyPair.getPrivate();
-            Certificate CAcertificate = new JcaX509CertificateConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME).getCertificate(createCertificate("CN=CA", "CN=CA", publicKey, privateKey));
-            Certificate CLcertificate = new JcaX509CertificateConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME).getCertificate(createCertificate("CN=CA", "CN=CA", publicKey, privateKey));
+    public static KeyStore getKeyStore() {
+        if (keyStore == null) {
+            String password = KatServer.KatConfigAPI
+                    .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_SELFGEN_CERT_PASSWORD).get();
+            String alias = KatServer.KatConfigAPI
+                    .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_SELFGEN_CERT_ALIAS).get();
+            Security.addProvider(new BouncyCastleProvider());
+            try {
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
+                keyPairGenerator.initialize(2048);
+                KeyPair keyPair = keyPairGenerator.generateKeyPair();
+                PublicKey publicKey = keyPair.getPublic();
+                PrivateKey privateKey = keyPair.getPrivate();
+                Certificate CAcertificate = new JcaX509CertificateConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME).getCertificate(createCertificate("CN=CA", "CN=CA", publicKey, privateKey));
+                Certificate CLcertificate = new JcaX509CertificateConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME).getCertificate(createCertificate("CN=CA", "CN=CA", publicKey, privateKey));
 
-            java.security.cert.Certificate[] outChain = {
-                    CLcertificate, CAcertificate};
-            KeyStore outStore = KeyStore.getInstance("PKCS12");
-            outStore.load(null, password.toCharArray());
-            outStore.setKeyEntry(alias, privateKey, password.toCharArray(),
-                    outChain);
-            return outStore;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+                java.security.cert.Certificate[] outChain = {
+                        CLcertificate, CAcertificate};
+                KeyStore outStore = KeyStore.getInstance("PKCS12");
+                outStore.load(null, password.toCharArray());
+                outStore.setKeyEntry(alias, privateKey, password.toCharArray(),
+                        outChain);
+                return outStore;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            return keyStore;
         }
         return null;
     }

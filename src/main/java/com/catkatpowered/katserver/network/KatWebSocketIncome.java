@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.network;
 
 import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.message.KatUniMessage;
@@ -18,7 +19,7 @@ public class KatWebSocketIncome {
         Gson gson = new Gson();
         ws.onConnect(wsConnectContext -> {
             // 发送服务端描述包
-            wsConnectContext.send(gson.toJson(ServerDescriptionPacket.builder().build()));
+            wsConnectContext.send(gson.toJson(ServerDescriptionPacket.builder().version(KatMiscConstants.KAT_SERVER_VERSION).build()));
             KatNetwork.getSessions().add(wsConnectContext.session);
         });
         ws.onClose(wsCloseContext -> {

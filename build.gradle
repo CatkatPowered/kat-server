@@ -50,6 +50,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
 
+    testImplementation 'com.squareup.okhttp3:okhttp:4.9.3'
 }
 
 task sourcesJar(type: Jar) {
@@ -83,6 +84,7 @@ tasks.withType(JavaCompile) {
 }
 
 test {
+    testLogging.showStandardStreams = true
     useJUnitPlatform()
 }
 
