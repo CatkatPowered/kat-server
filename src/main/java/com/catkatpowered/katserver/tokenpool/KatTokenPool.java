@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class KatTokenPool {
-    private static KatTokenPool INSTANCE = new KatTokenPool();
+    private static final KatTokenPool INSTANCE = new KatTokenPool();
     @Getter
     @Setter
     private ConcurrentHashMap<String, Long> tokenPool = new ConcurrentHashMap<>();

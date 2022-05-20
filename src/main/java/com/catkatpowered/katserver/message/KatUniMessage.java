@@ -14,6 +14,7 @@ import java.util.Objects;
  *
  * @author suibing112233
  * @author hanbings
+ * @author CatMoe
  */
 @Data
 @Builder
@@ -32,6 +33,13 @@ public class KatUniMessage {
     @SerializedName("message_type")
     @Default
     public String messageType = KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE;
+
+    /**
+     * <b>ExtensionID</b> 用于确定消息来源, 不可更改
+     * </p>
+     */
+    @SerializedName("extension_id")
+    public String extensionID;
 
     /**
      * <b>MessageGroup</b> 用于本条消息的聚合特征，方便消息存入库处理
@@ -54,6 +62,12 @@ public class KatUniMessage {
      */
     @SerializedName("message_content")
     public String messageContent;
+
+    /**
+     * <b>MessageTimeStamp</b>消息时间戳
+     */
+    @SerializedName("message_timestamp")
+    public Long messageTimeStamp;
 
     /**
      * <b>MessageList</b> 指向的是下一级消息列表。</br>
@@ -94,19 +108,23 @@ public class KatUniMessage {
     public String resourceURL;
 
     public KatUniMessage(
+            String extensionID,
             String messageType,
             String messageGroup,
             String messageID,
             String messageContent,
+            Long messageTimeStamp,
             ArrayList<KatUniMessage> messageList,
             ArrayList<String> extended,
             String resourceHash,
             String resourceName,
             String resourceURL) {
+        this.extensionID = extensionID;
         this.messageType = messageType;
         this.messageGroup = messageGroup;
         this.messageID = messageID;
         this.messageContent = messageContent;
+        this.messageTimeStamp = messageTimeStamp;
         this.messageList = messageList;
         this.extended = extended;
         this.resourceHash = resourceHash;

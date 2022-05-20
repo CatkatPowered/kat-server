@@ -15,18 +15,31 @@ import java.util.Optional;
 @Slf4j
 public class KatMessageStorage {
 
+    public static Optional<List<KatUniMessage>> searchMessage(String extensionID, String messageGroup, Integer startTimeStamp, Integer endTimeStamp) {
+        return Optional.ofNullable(
+                KatServer.KatDatabaseAPI
+                        .search(extensionID + "_" + messageGroup,
+                                "message_timestamp",
+                                startTimeStamp,
+                                endTimeStamp,
+                                // TODO: 商议消息数限制
+                                20,
+                                KatUniMessage.class
+                        )
+        );
+    }
+
     /**
-     * 用于查询消息记录，索引值为<b>KatUniMessage.messageID</b>
+     * 用于查询单条消息记录，索引值为<b>KatUniMessage.messageID</b>
      *
      * @param indexMsg 对应数据库当中的索引
      * @return 返回被<b>Optional</b>包装的<b>List</b>类型
      * @see Optional
      */
-
     public static Optional<List<KatUniMessage>> getMessage(@NotNull KatUniMessage indexMsg) {
         return Optional.ofNullable(
                 KatServer.KatDatabaseAPI
-                        .read(indexMsg.getMessageGroup(),
+                        .read(indexMsg.extensionID + "_" + indexMsg.getMessageGroup(),
                                 new HashMap<String, Object>() {{
                                     put("messageID", indexMsg.getMessageID());
                                 }},
@@ -41,7 +54,7 @@ public class KatMessageStorage {
      * @param newContent 新消息记录
      */
     public static void updateMessage(@NotNull KatUniMessage oldContent, KatUniMessage newContent) {
-        KatServer.KatDatabaseAPI.update(oldContent.getMessageGroup(),
+        KatServer.KatDatabaseAPI.update(oldContent.extensionID + "_" + oldContent.getMessageGroup(),
                 new HashMap<String, Object>() {{
                     put("message_id", oldContent.getMessageID());
                 }},
@@ -56,7 +69,7 @@ public class KatMessageStorage {
      */
     public static void deleteMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
-            KatServer.KatDatabaseAPI.delete(indexMsg.getMessageGroup(),
+            KatServer.KatDatabaseAPI.delete(indexMsg.extensionID + "_" + indexMsg.getMessageGroup(),
                     new HashMap<String, Object>() {{
                         put("message_id", indexMsg.getMessageID());
                     }});
@@ -70,7 +83,7 @@ public class KatMessageStorage {
      */
     public static void createMessage(@NotNull KatUniMessage indexMsg) {
         if (indexMsg.isFullIndex()) {
-            KatServer.KatDatabaseAPI.create(indexMsg.getMessageGroup(), indexMsg);
+            KatServer.KatDatabaseAPI.create(indexMsg.extensionID + "_" + indexMsg.getMessageGroup(), indexMsg);
         }
     }
 }
