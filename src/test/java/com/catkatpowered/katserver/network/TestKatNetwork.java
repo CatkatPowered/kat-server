@@ -10,26 +10,15 @@ import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.message.KatUniMessage;
 import com.google.gson.Gson;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,41 +36,8 @@ public class TestKatNetwork {
             .messageTimeStamp(1652881882L)
             .build();
 
-    @Test
-    public void network() throws InterruptedException {
-        TestKatNetwork test = new TestKatNetwork();
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-
-        List<Runnable> runnable = new ArrayList<>() {{
-            add(test::server);
-            add(() -> {
-                try {
-                    test.connection();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            add(() -> {
-                try {
-                    test.newMessageBroadcast();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            add(test::newMessageIncome);
-        }};
-
-        runnable.forEach(r -> {
-            executor.submit(r);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    public void server() {
+    @BeforeAll
+    public static void start() {
         KatServerMain.main(new String[0]);
         KeyStore keyStore = KatCertUtil.getKeyStore();
         SSLContext sslContext = null;
@@ -127,6 +83,7 @@ public class TestKatNetwork {
                 .build();
     }
 
+    @Test
     public void connection() throws InterruptedException {
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
@@ -144,7 +101,7 @@ public class TestKatNetwork {
             }
 
             @Override
-            public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response) {
+            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                 connected = false;
             }
         }
@@ -158,6 +115,7 @@ public class TestKatNetwork {
         connected = null;
     }
 
+    @Test
     public void newMessageBroadcast() throws InterruptedException {
         connected = false;
         Request request = new Request.Builder()
@@ -166,9 +124,9 @@ public class TestKatNetwork {
                 .build();
         class Listener extends WebSocketListener {
             @Override
-            public void onMessage(WebSocket webSocket, String text) {
+            public void onMessage(@NotNull WebSocket webSocket, String text) {
                 if (text.contains("server_description")) {
-                    connected = true;
+                    connected= true;
                     return;
                 }
                 //{"message":{"message_type":"testExtension","extension_id":"PlainMessage","message_group":"101010101","message_id":"uuid","message_content":"欸嘿~","message_timestamp":1652881882},"type":"websocket_message"}
@@ -186,15 +144,15 @@ public class TestKatNetwork {
         KatEventManager.callEvent(new MessageReceiveEvent(plainTextMessage));
     }
 
+    @Test
     public void newMessageIncome() {
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
                         .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
-        WebSocket webSocket = wsClient.newWebSocket(request, new WebSocketListener() {
-        });
+        WebSocket webSocket = wsClient.newWebSocket(request, new WebSocketListener() {});
         Gson gson = new Gson();
-        class eventListener implements Listener {
+        class eventListener implements Listener{
             @EventHandler
             public void onMessage(MessageSendEvent event) {
                 assertEquals(gson.toJson(event.getMessage()), "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
