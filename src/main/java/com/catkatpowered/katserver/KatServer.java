@@ -97,18 +97,19 @@ public class KatServer {
         }
 
         public static <T> Optional<T> getConfig(String configNode) {
-            return KatConfigManager.<T>getConfig(configNode);
+            return KatConfigManager.getConfig(configNode);
         }
     }
 
     // KatDatabase API
+
     /**
      * 封装对数据库的操作
      */
     public static final class KatDatabaseAPI {
         /**
          * 注册自定义<em>connector</em>
-         * 
+         *
          * @param connector
          * @see DatabaseConnector
          */
@@ -118,7 +119,7 @@ public class KatServer {
 
         /**
          * 在集合中创建新的对象
-         * 
+         *
          * @param collection
          * @param data
          */
@@ -130,7 +131,7 @@ public class KatServer {
 
         /**
          * 在集合中创建新的对象
-         * 
+         *
          * @param collection
          * @param data
          */
@@ -140,7 +141,7 @@ public class KatServer {
 
         /**
          * 更新数据库中的对象
-         * 
+         *
          * @param collection
          * @param index
          * @param data
@@ -151,7 +152,7 @@ public class KatServer {
 
         /**
          * 删除数据库中的对象
-         * 
+         *
          * @param collection
          * @param index
          */
@@ -161,7 +162,7 @@ public class KatServer {
 
         /**
          * 读取数据库中的对象
-         * 
+         *
          * @param <T>
          * @param collection
          * @param index
@@ -170,6 +171,13 @@ public class KatServer {
          */
         public static <T> List<T> read(String collection, Map<String, Object> index, Class<T> type) {
             return KatDatabaseManager.read(collection, index, type);
+        }
+
+        /**
+         * 查询数据库中的对象
+         */
+        public static <T, V> List<T> search(String collection, String data, V top, V bottom, int limit, Class<T> type) {
+            return KatDatabaseManager.search(collection, data, top, bottom, limit, type);
         }
     }
 
@@ -196,7 +204,7 @@ public class KatServer {
     public static final class KatTokenPoolAPI {
         /**
          * 生成新的<em>token</em>
-         * 
+         *
          * @return
          */
         public static String newToken() {
@@ -205,7 +213,7 @@ public class KatServer {
 
         /**
          * 撤销<em>token</em>
-         * 
+         *
          * @param tokeString
          * @return 是否成功撤销
          */
@@ -215,7 +223,7 @@ public class KatServer {
 
         /**
          * 检查<em>token</em>是否过期
-         * 
+         *
          * @param token
          * @return
          */

@@ -9,12 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MessageReceiveEvent extends Event {
-    String extensionId;
     KatUniMessage message;
 
     @Builder
-    public MessageReceiveEvent(String extensionId, KatUniMessage message) {
-        this.extensionId = extensionId;
+    public MessageReceiveEvent(KatUniMessage message) {
         this.message = message;
     }
 }

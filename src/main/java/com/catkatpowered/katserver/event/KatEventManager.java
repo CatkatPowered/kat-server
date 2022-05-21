@@ -1,6 +1,9 @@
 package com.catkatpowered.katserver.event;
 
+import com.catkatpowered.katserver.event.events.MessageReceiveEvent;
+import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.event.interfaces.Listener;
+import com.catkatpowered.katserver.message.KatUniMessage;
 
 /**
  * 事件总线
@@ -10,8 +13,10 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 public class KatEventManager {
 
     public static void init() {
-        // TODO: 注册所以events包下的event
+        // TODO: 注册所有events包下的event
         // 扫包大师
+        registerEvent(MessageReceiveEvent.builder().build());
+        registerEvent(MessageSendEvent.builder().build());
     }
 
     public static void callEvent(Event event) {

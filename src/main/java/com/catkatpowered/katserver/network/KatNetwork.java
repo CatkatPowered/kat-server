@@ -2,23 +2,19 @@ package com.catkatpowered.katserver.network;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.event.events.MessageSendEvent;
-import com.catkatpowered.katserver.network.packet.ServerDescriptionPacket;
-import com.catkatpowered.katserver.network.packet.WebSocketMessagePacket;
-import com.google.gson.Gson;
 import io.javalin.Javalin;
 import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.Session;
 
-import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KatNetwork {
-
     private static final KatNetwork Instance = new KatNetwork();
 
     @Getter
@@ -26,7 +22,8 @@ public class KatNetwork {
 
     // 包含所有moseeger客户端,实现无限客户端
     @Getter
-    private static List<Session> sessions;
+    @Setter
+    private static List<Session> sessions = new ArrayList<Session>();
 
     private KatNetwork() {
         Javalin server = Javalin.create(config -> {
@@ -40,29 +37,12 @@ public class KatNetwork {
                 return app;
             });
         });
-        Gson gson = new Gson();
         // HTTP Handlers
         server.get("/resource", new HttpHandler());
 
         // WebSocket Handlers
-        server.ws("/websocket", ws -> {
-            ws.onConnect(wsConnectContext -> {
-                // 发送服务端描述包
-                wsConnectContext.send(gson.toJson(ServerDescriptionPacket.builder().build()));
-                sessions.add(wsConnectContext.session);
-            });
-            ws.onClose(wsCloseContext -> {
-                sessions.remove(wsCloseContext.session);
-            });
-            ws.onMessage(wsMessageContext -> {
-                WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
-                        WebSocketMessagePacket.class);
+        server.ws("/websocket", KatWebSocketIncome::KatNetworkIncomeHandler);
 
-                // 处理消息发送事件
-                KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getExtensionId(), webSocketMessagePacket.getMessage()));
-                // TODO: 异步保存消息到数据库
-            });
-        });
 
         network = server.start();
     }
