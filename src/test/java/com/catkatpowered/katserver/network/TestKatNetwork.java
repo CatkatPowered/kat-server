@@ -5,7 +5,11 @@ import com.catkatpowered.katserver.KatServerMain;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.events.MessageReceiveEvent;
+import com.catkatpowered.katserver.event.events.MessageSendEvent;
+import com.catkatpowered.katserver.event.interfaces.EventHandler;
+import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.message.KatUniMessage;
+import com.google.gson.Gson;
 import okhttp3.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,6 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestKatNetwork {
     private static OkHttpClient wsClient;
     private static Boolean connected = null;
+    private static KatUniMessage plainTextMessage = KatUniMessage.builder()
+            .extensionID("testExtension")
+            .messageType("PlainMessage")
+            .messageGroup("101010101")
+            .messageID("uuid")
+            .messageContent("欸嘿~")
+            .messageTimeStamp(1652881882L)
+            .build();
 
     @BeforeAll
     public static void start() {
@@ -94,6 +106,7 @@ public class TestKatNetwork {
         }
         wsClient.newWebSocket(request, new Listener());
         while (true) {
+            Thread.currentThread().join(1000);
             if (connected != null)
                 break;
         }
@@ -115,32 +128,36 @@ public class TestKatNetwork {
                     connected= true;
                     return;
                 }
-                assertEquals(text, "{\"message\":{\"message_type\":\"PlainMessage\",\"extension_id\":\"testExtension\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882,\"message_list\":[],\"extended\":[],\"resource_hash\":\"\",\"resource_name\":\"\",\"resource_url\":\"\"},\"type\":\"websocket_message\"}");
+                //{"message":{"message_type":"testExtension","extension_id":"PlainMessage","message_group":"101010101","message_id":"uuid","message_content":"欸嘿~","message_timestamp":1652881882},"type":"websocket_message"}
+                assertEquals(text, "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
                 connected = null;
             }
         }
+
         wsClient.newWebSocket(request, new Listener());
         while (true) {
+            Thread.currentThread().join(2000);
             if (connected)
                 break;
         }
-        KatEventManager.callEvent(new MessageReceiveEvent(new KatUniMessage(
-                "testExtension",
-                "PlainMessage",
-                "101010101",
-                "uuid",
-                "欸嘿~",
-                1652881882L,
-                new ArrayList<KatUniMessage>(),
-                new ArrayList<String>(),
-                "",
-                "",
-                ""
-        )));
+        KatEventManager.callEvent(new MessageReceiveEvent(plainTextMessage));
     }
 
     @Test
     public void newMessageIncome() {
-
+        Request request = new Request.Builder()
+                .url("wss://localhost:" + KatServer.KatConfigAPI
+                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
+                .build();
+        WebSocket webSocket = wsClient.newWebSocket(request, new WebSocketListener() {});
+        Gson gson = new Gson();
+        class eventListener implements Listener{
+            @EventHandler
+            public void onMessage(MessageSendEvent event) {
+                assertEquals(gson.toJson(event.getMessage()), "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
+            }
+        }
+        KatServer.KatEventBusAPI.registerListener(new eventListener());
+        webSocket.send("{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
     }
 }
