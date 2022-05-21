@@ -15,13 +15,11 @@ import org.eclipse.jetty.websocket.api.Session;
 public class KatWebSocketBroadcast implements Listener {
     @EventHandler
     public void onMessageReceive(MessageReceiveEvent event) {
-        System.out.println("Event triggered");
         KatMessageStorage.createMessage(event.getMessage());
         Gson gson = new Gson();
         WebSocketMessagePacket packet = WebSocketMessagePacket.builder().type("websocket_message").message(event.getMessage()).build();
         try {
             for (Session session : KatNetwork.getSessions()) {
-                System.out.println(session.getRemote());
                 session.getRemote().sendString(gson.toJson(packet));
             }
         } catch (Exception e) {

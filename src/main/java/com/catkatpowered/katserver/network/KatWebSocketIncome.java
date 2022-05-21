@@ -9,6 +9,7 @@ import com.catkatpowered.katserver.network.packet.*;
 import com.catkatpowered.katserver.storage.KatMessageStorage;
 import com.google.gson.Gson;
 import io.javalin.websocket.WsConfig;
+import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,9 @@ public class KatWebSocketIncome {
         ws.onConnect(wsConnectContext -> {
             // 发送服务端描述包
             wsConnectContext.send(gson.toJson(ServerDescriptionPacket.builder().version(KatMiscConstants.KAT_SERVER_VERSION).build()));
-            KatNetwork.getSessions().add(wsConnectContext.session);
+            List<Session> sessions = KatNetwork.getSessions();
+            sessions.add(wsConnectContext.session);
+            KatNetwork.setSessions(sessions);
         });
         ws.onClose(wsCloseContext -> {
             KatNetwork.getSessions().remove(wsCloseContext.session);

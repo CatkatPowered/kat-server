@@ -16,10 +16,12 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestKatNetwork {
     private static OkHttpClient wsClient;
+    private static Boolean connected = null;
 
     @BeforeAll
     public static void start() {
@@ -70,46 +72,58 @@ public class TestKatNetwork {
 
     @Test
     public void connection() throws InterruptedException {
-        final Boolean[] isSocketConnected = new Boolean[1];
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
-                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get()+"/websocket")
+                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
         class Listener extends WebSocketListener {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
-                isSocketConnected[0] = true;
+                connected = true;
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
-                isSocketConnected[0] = false;
+                connected = false;
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                System.out.println(t.getMessage());
-                isSocketConnected[0] = false;
+                connected = false;
             }
         }
         wsClient.newWebSocket(request, new Listener());
-        Thread.currentThread().join(3000);
-        assertTrue(isSocketConnected[0]);
+        while (true) {
+            if (connected != null)
+                break;
+        }
+        assertTrue(connected);
+        connected = null;
     }
 
     @Test
     public void newMessageBroadcast() throws InterruptedException {
+        connected = false;
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
-                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get()+ "/websocket")
+                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
         class Listener extends WebSocketListener {
             @Override
             public void onMessage(WebSocket webSocket, String text) {
-                System.out.println(text);
+                if (text.contains("server_description")) {
+                    connected= true;
+                    return;
+                }
+                assertEquals(text, "{\"message\":{\"message_type\":\"PlainMessage\",\"extension_id\":\"testExtension\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882,\"message_list\":[],\"extended\":[],\"resource_hash\":\"\",\"resource_name\":\"\",\"resource_url\":\"\"},\"type\":\"websocket_message\"}");
+                connected = null;
             }
         }
         wsClient.newWebSocket(request, new Listener());
+        while (true) {
+            if (connected)
+                break;
+        }
         KatEventManager.callEvent(new MessageReceiveEvent(new KatUniMessage(
                 "testExtension",
                 "PlainMessage",
@@ -123,6 +137,10 @@ public class TestKatNetwork {
                 "",
                 ""
         )));
-        Thread.currentThread().join(10000);
+    }
+
+    @Test
+    public void newMessageIncome() {
+
     }
 }

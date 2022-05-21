@@ -4,6 +4,7 @@ import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import io.javalin.Javalin;
 import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -21,6 +22,7 @@ public class KatNetwork {
 
     // 包含所有moseeger客户端,实现无限客户端
     @Getter
+    @Setter
     private static List<Session> sessions = new ArrayList<Session>();
 
     private KatNetwork() {
