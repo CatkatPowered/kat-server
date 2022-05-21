@@ -18,6 +18,11 @@ jobs:
         with:
           java-version: 17
 
+      - name: Set up MongoDB 4.4
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: 4.4
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
