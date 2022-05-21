@@ -22,7 +22,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Gradle test
-        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.event.TestKatNetwork"
+        run: ./gradlew test --tests --stacktrace "com.catkatpowered.katserver.network.TestKatNetwork"
 
       - name: Upload fail reports
         uses: actions/upload-artifact@v2
