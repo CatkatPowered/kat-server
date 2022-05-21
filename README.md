@@ -26,6 +26,7 @@
 | [Tests for Utils](https://github.com/CatkatPowered/kat-server/actions/workflows/test-utils.yml) | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/catkatpowered/kat-server/Tests%20for%20Utils?style=flat) | 测试工具类                   |
 | [Tests for TokenPool](https://github.com/CatkatPowered/kat-server/actions/workflows/test-tokenpool.yml) | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/catkatpowered/kat-server/Tests%20for%20TokenPool?style=flat) | 测试 Token 池                |
 | [Tests for EventBus](https://github.com/CatkatPowered/kat-server/actions/workflows/test-event.yml) | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/catkatpowered/kat-server/Tests%20for%20EventBus?style=flat) | 测试事件总线                 |
+| [Tests for Network](https://github.com/CatkatPowered/kat-server/actions/workflows/test-network.yml) | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/catkatpowered/kat-server/Tests%20for%20Network?style=flat) | 测试网络模块                 |
 | [FOSSA License Scan](https://app.fossa.com/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server?utm_source=share_link) | [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FCatkatPowered%2Fkat-server?ref=badge_small) | 扫描项目以及依赖开源证书     |
 
 ## 🍉 条款与声明
