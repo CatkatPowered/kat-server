@@ -11,6 +11,7 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.message.KatUniMessage;
 import com.google.gson.Gson;
 import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestKatNetwork {
     private static OkHttpClient wsClient;
     private static Boolean connected = null;
-    private static KatUniMessage plainTextMessage = KatUniMessage.builder()
+    private static final KatUniMessage plainTextMessage = KatUniMessage.builder()
             .extensionID("testExtension")
             .messageType("PlainMessage")
             .messageGroup("101010101")
@@ -90,12 +91,12 @@ public class TestKatNetwork {
                 .build();
         class Listener extends WebSocketListener {
             @Override
-            public void onOpen(WebSocket webSocket, Response response) {
+            public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
                 connected = true;
             }
 
             @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
+            public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
                 connected = false;
             }
 
@@ -123,7 +124,7 @@ public class TestKatNetwork {
                 .build();
         class Listener extends WebSocketListener {
             @Override
-            public void onMessage(WebSocket webSocket, String text) {
+            public void onMessage(@NotNull WebSocket webSocket, String text) {
                 if (text.contains("server_description")) {
                     connected= true;
                     return;

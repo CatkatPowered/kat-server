@@ -9,6 +9,8 @@ import org.yaml.snakeyaml.Yaml;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestKatTokenPool {
 
@@ -30,7 +32,7 @@ public class TestKatTokenPool {
     @Test
     public void newToken() {
         var token = KatTokenPool.getINSTANCE().newToken();
-        assertEquals(true, KatTokenPool.getINSTANCE().checkToken(token));
+        assertTrue(KatTokenPool.getINSTANCE().checkToken(token));
     }
 
     @Test
@@ -75,9 +77,9 @@ public class TestKatTokenPool {
     public void destroyToken() {
         var token = KatTokenPool.getINSTANCE().newToken();
 
-        assertEquals(true, KatTokenPool.getINSTANCE().getTokenPool().containsKey(token));
+        assertTrue(KatTokenPool.getINSTANCE().getTokenPool().containsKey(token));
         KatTokenPool.getINSTANCE().destroyToken(token);
-        assertEquals(false, KatTokenPool.getINSTANCE().getTokenPool().containsKey(token));
+        assertFalse(KatTokenPool.getINSTANCE().getTokenPool().containsKey(token));
 
     }
 }

@@ -17,7 +17,7 @@ database:
   # mongodb: mongodb://localhost:27017/database_name
   #
   # Note: No need to carry username and password in url
-  database_url:
+  database_url: mongodb://localhost:27017/kat-server
   database_username:
   database_password:
 
