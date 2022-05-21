@@ -24,12 +24,10 @@ public class KatDatabaseManager {
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         String url = KatServer.KatConfigAPI
                 .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_URL).get();
-        @SuppressWarnings("OptionalGetWithoutIsPresent")
         String username = KatServer.KatConfigAPI
-                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_USER_NAME).get();
-        @SuppressWarnings("OptionalGetWithoutIsPresent")
+                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_USER_NAME).orElse(null);
         String password = KatServer.KatConfigAPI
-                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_PASSWORD).get();
+                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE_PASSWORD).orElse(null);
 
         // 初始化数据库连接器
         KatDatabaseManager.register(new MongodbConnector(url, username, password));

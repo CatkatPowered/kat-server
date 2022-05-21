@@ -3,22 +3,30 @@ package com.catkatpowered.katserver.network;
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.KatServerMain;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import com.catkatpowered.katserver.config.KatConfig;
+import com.catkatpowered.katserver.config.KatConfigManager;
+import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.events.MessageReceiveEvent;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
+import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessage;
+import com.catkatpowered.katserver.storage.KatStorageManager;
+import com.catkatpowered.katserver.task.KatTaskManager;
 import com.google.gson.Gson;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.net.ssl.*;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,10 +43,74 @@ public class TestKatNetwork {
             .messageContent("欸嘿~")
             .messageTimeStamp(1652881882L)
             .build();
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String defaultConfig = """
+            ######################### Network #############################
+            network:
+              network_port: 25565
+              selfgen_cert:
+                cert_password: "catmoe"
+                cert_alias: "catmoe"
+              custom_cert:
+                enabled: false
+                cert_path: "./cert.jks"
+                cert_password: "catmoe"
+                        
+                        
+            ######################### Database ############################
+            database:
+              # default support mongodb
+              # demo database_url:
+              # mongodb: mongodb://localhost:27017/database_name
+              #
+              # Note: No need to carry username and password in url
+              database_url: mongodb://localhost:27017/kat-server
+              database_username:
+              database_password:
+                        
+            ####################### Storage ###############################
+            # The resource file storage
+            resource:
+              # You can choose those type of resource_storage
+              # 1.local
+              resource_storage: local
+                        
+              # If you choose `local`,
+              # you can set the resource file where to store.
+              data_folder_path: "./data"
+                        
+            ####################### ExecThreads ############################
+            exec:
+              exec_threads: 16
+                        
+            ####################### TokenPool ##############################
+            # This section are the settings of token pool
+                        
+            tokenpool:
+              # You can set the token how long to live
+              #
+              # Milisecond
+              outdate: 10000
+            """;
 
     @BeforeAll
     public static void start() {
-        KatServerMain.main(new String[0]);
+        // 启动配置文件模块
+        Map<String, Object> yml = new Yaml().load(defaultConfig);
+        KatConfig.getInstance().setConfigContent(yml);
+        // 启动事件总线模块
+        KatEventManager.init();
+        // 启动网络模块
+        KatNetworkManager.init();
+        // 启动数据库
+        KatDatabaseManager.init();
+        // 启动储存模块
+        KatStorageManager.init();
+        // 启动多线程模块
+        KatTaskManager.init();
+        // 启动扩展模块
+        KatExtensionManager.init();
+
         KeyStore keyStore = KatCertUtil.getKeyStore();
         SSLContext sslContext = null;
 
