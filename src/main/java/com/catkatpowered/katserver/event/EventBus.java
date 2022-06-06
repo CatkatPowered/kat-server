@@ -1,20 +1,27 @@
 package com.catkatpowered.katserver.event;
 
-import com.catkatpowered.katserver.event.interfaces.Blockable;
-import com.catkatpowered.katserver.event.interfaces.Cancellable;
-import com.catkatpowered.katserver.event.interfaces.EventHandler;
-import com.catkatpowered.katserver.event.interfaces.Listener;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
+import com.catkatpowered.katserver.event.interfaces.Blockable;
+import com.catkatpowered.katserver.event.interfaces.Cancellable;
+import com.catkatpowered.katserver.event.interfaces.EventHandler;
+import com.catkatpowered.katserver.event.interfaces.Listener;
+
+import lombok.Getter;
+
+/**
+ * @author hanbings
+ * @author suibing112233
+ */
 @SuppressWarnings("unused")
 public class EventBus {
 
+    @Getter
+    private final Map<Class<? extends Event>, RegisteredListener> eventHandlers = new ConcurrentHashMap<>();
     private static final EventBus instance = new EventBus();
-    private final Map<Class<? extends Event>, RegisteredListener> handlers = new ConcurrentHashMap<>();
 
     private EventBus() {
     }
@@ -24,8 +31,8 @@ public class EventBus {
     }
 
     public void callEvent(Event event) {
-        if (handlers.containsKey(event.getClass())) {
-            for (RegisteredHandler handler : handlers.get(event.getClass()).getHandlerList()) {
+        if (eventHandlers.containsKey(event.getClass())) {
+            for (RegisteredHandler handler : eventHandlers.get(event.getClass()).getHandlerList()) {
                 if (event instanceof Blockable && ((Blockable) event).isBlocked()) {
                     return;
                 }
@@ -45,47 +52,29 @@ public class EventBus {
     }
 
     public RegisteredListener getEventHandler(Event event) {
-        return handlers.get(event.getClass());
+        return eventHandlers.get(event.getClass());
     }
 
     public void registerEvent(Event event) {
-        if (!handlers.containsKey(event.getClass())) {
-            handlers.put(event.getClass(), new RegisteredListener());
+        if (!eventHandlers.containsKey(event.getClass())) {
+            eventHandlers.put(event.getClass(), new RegisteredListener());
         }
     }
 
     public void unregisterEvent(Event event) {
-        handlers.remove(event.getClass());
+        eventHandlers.remove(event.getClass());
     }
 
     public void registerListener(Listener listener) {
-        // Class<?> clazz = listener.getClass();
-        // for (Method method : clazz.getDeclaredMethods()) {
-        //     if (method.isAnnotationPresent(EventHandler.class)) {
-        //         final Class<?> event;
-        //         method.setAccessible(true);
-        //         event = method.getParameterTypes()[0];
-        //         if (handlers.containsKey(event)) {
-        //             EventHandler annotation = method.getAnnotation(EventHandler.class);
-        //             handlers.get(event).addHandler(
-        // new RegisteredHandler(
-        //                             annotation.priority(),
-        //                             annotation.ignoreCancelled(),
-        //                             listener,
-        //                             method));
-        //         }
-        //     }
-        // }
-
         Stream.of(listener.getClass().getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(EventHandler.class))
-                .filter(method -> handlers.containsKey(method.getParameterTypes()[0]))
+                .filter(method -> eventHandlers.containsKey(method.getParameterTypes()[0]))
                 .forEach(method -> {
                     method.setAccessible(true);
 
                     var event = method.getParameterTypes()[0];
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
-                    handlers.get(event).addHandler(
+                    eventHandlers.get(event).addHandler(
                             new RegisteredHandler(
                                     annotation.priority(),
                                     annotation.ignoreCancelled(),
@@ -97,33 +86,15 @@ public class EventBus {
     }
 
     public void unregisterListener(Listener listener) {
-        // Class<?> clazz = listener.getClass();
-        // for (Method method : clazz.getDeclaredMethods()) {
-        //     if (method.isAnnotationPresent(EventHandler.class)) {
-        //         final Class<?> event;
-        //         method.setAccessible(true);
-        //         event = method.getParameterTypes()[0];
-        //         if (handlers.containsKey(event)) {
-        //             EventHandler annotation = method.getAnnotation(EventHandler.class);
-        //             handlers.get(event).removeHandler(
-        //                     new RegisteredHandler(
-        //                             annotation.priority(),
-        //                             annotation.ignoreCancelled(),
-        //                             listener,
-        //                             method));
-        //         }
-        //     }
-        // }
-
         Stream.of(listener.getClass().getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(EventHandler.class))
-                .filter(method -> handlers.containsKey(method.getParameterTypes()[0]))
+                .filter(method -> eventHandlers.containsKey(method.getParameterTypes()[0]))
                 .forEach(method -> {
                     method.setAccessible(true);
 
                     var event = method.getParameterTypes()[0];
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
-                    handlers.get(event).removeHandler(listener);
+                    eventHandlers.get(event).removeHandler(listener);
 
                     method.setAccessible(false);
                 });

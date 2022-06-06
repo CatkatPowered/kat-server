@@ -1,5 +1,13 @@
 package com.catkatpowered.katserver;
 
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
@@ -13,13 +21,6 @@ import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
 import com.catkatpowered.katserver.task.KatTaskManager;
 import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-
 /**
  * Kat API 入口
  *
@@ -32,29 +33,61 @@ public class KatServer {
     // EventBus API
     public static final class KatEventBusAPI {
 
-        public static void unregisterEvent(Event event) {
-            KatEventManager.unregisterEvent(event);
-        }
-
+        /**
+         * 注册事件监听器
+         * 
+         * @param listener
+         */
         public static void registerListener(Listener listener) {
             KatEventManager.registerListener(listener);
         }
 
+        /**
+         * 注销事件监听器
+         * 
+         * @param listener
+         */
         public static void unregisterListener(Listener listener) {
             KatEventManager.unregisterListener(listener);
         }
 
+        /**
+         * 调用事件，当事件发生时需要调用此方法
+         * 
+         * @param event
+         */
         public static void callEvent(Event event) {
             KatEventManager.callEvent(event);
         }
 
+        /**
+         * 获取事件句柄。所有已经注册的事件
+         * 
+         * @param event
+         * @return
+         */
         public static RegisteredListener getEventHandler(Event event) {
             return KatEventManager.getEventHandler(event);
         }
 
+        /**
+         * 注册事件
+         * 
+         * @param event
+         */
         public static void registerEvent(Event event) {
             KatEventManager.registerEvent(event);
         }
+
+        /**
+         * 注销事件
+         * 
+         * @param event
+         */
+        public static void unregisterEvent(Event event) {
+            KatEventManager.unregisterEvent(event);
+        }
+
     }
 
     // 扩展 API
@@ -96,6 +129,13 @@ public class KatServer {
             return KatConfigManager.getAllConfig();
         }
 
+        /**
+         * 通过节点表达方式获取配置文件内容，参照 <b>{@link KatConfigNodeConstants}</b>
+         * 
+         * @param <T>        配置内容的具体类型
+         * @param configNode 配置文件的节点表示方法
+         * @return 由 <b>{@link Optional}</b> 包装的配置内容
+         */
         public static <T> Optional<T> getConfig(String configNode) {
             return KatConfigManager.getConfig(configNode);
         }
@@ -203,9 +243,9 @@ public class KatServer {
 
     public static final class KatTokenPoolAPI {
         /**
-         * 生成新的<em>token</em>
+         * 生成新的 <em>token</em>
          *
-         * @return
+         * @return 返回 <em>token</em> 内容
          */
         public static String newToken() {
             return KatTokenPoolManager.newToken();
@@ -215,7 +255,7 @@ public class KatServer {
          * 撤销<em>token</em>
          *
          * @param tokeString
-         * @return 是否成功撤销
+         * @return 撤销状态
          */
         public static boolean revokeToken(String tokeString) {
             return KatTokenPoolManager.revokeToken(tokeString);
@@ -225,7 +265,7 @@ public class KatServer {
          * 检查<em>token</em>是否过期
          *
          * @param token
-         * @return
+         * @return 过期状态
          */
         public static boolean checkToken(String token) {
             return KatTokenPoolManager.checkToken(token);
