@@ -1,13 +1,16 @@
 package com.catkatpowered.katserver.message;
 
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
+
 import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
+import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.google.gson.annotations.SerializedName;
+
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Kat 聚合消息
@@ -148,13 +151,12 @@ public class KatUniMessage {
      * @return 当包含资源类信息时，返回<b>true</b>，否则返回<b>false</b>
      */
     public boolean isResource() {
-        return
-                Objects.equals(this.messageType, KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE)
-                        || Objects.equals(this.messageType,
+        return Objects.equals(this.messageType, KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE)
+                || Objects.equals(this.messageType,
                         KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE)
-                        || Objects.equals(this.messageType,
+                || Objects.equals(this.messageType,
                         KatMessageTypeConstants.KAT_MESSAGE_TYPE_AUDIO_MESSAGE)
-                        || Objects.equals(this.messageType,
+                || Objects.equals(this.messageType,
                         KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
     }
 
@@ -175,5 +177,11 @@ public class KatUniMessage {
 
     public boolean isIdentified() {
         return this.messageGroup != null;
+    }
+
+    public Optional<KatResource> toKatResource() {
+        return isResource()
+                ? Optional.of(KatResource.builder().Hash(this.resourceHash).Size(-1).URL(this.resourceURL).build())
+                : Optional.empty();
     }
 }
