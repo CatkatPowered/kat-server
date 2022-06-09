@@ -1,5 +1,7 @@
 package com.catkatpowered.katserver.storage.providers;
 
+import java.net.URI;
+
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
@@ -7,11 +9,12 @@ import lombok.Data;
 @Data
 @Builder
 public class KatResource {
-    public String URL;
-    public String Hash;
+    public URI uri;
+    public String hash;
+
     /**
      * 为 -1 时，长度未知
      */
     @Default
-    public Integer Size = -1;
+    public Long size = (long) -1;
 }

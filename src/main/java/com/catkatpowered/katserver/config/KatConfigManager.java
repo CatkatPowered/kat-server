@@ -16,10 +16,10 @@ public class KatConfigManager {
 
     public static void init() {
         if (!Files.exists(Path.of(KatWorkingDir.fixPath(
-                KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH).toString())))) {
+                KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH).toString())))) {
             try {
                 Files.createDirectory(Path.of(KatWorkingDir.fixPath(
-                        KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH)
+                        KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH)
                                 .toString())));
             } catch (IOException e) {
                 log.error(String.valueOf(e));

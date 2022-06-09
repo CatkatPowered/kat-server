@@ -3,7 +3,7 @@ package com.catkatpowered.katserver.common.constants;
 public class KatConfigNodeConstants {
 
     public static final String KAT_CONFIG_RESOURCE = "resource";
-    public static final String KAT_CONFIG_DATA_FOLDER_PATH = KAT_CONFIG_RESOURCE + "." + "data_folder_path";
+    public static final String KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH = KAT_CONFIG_RESOURCE + "." + "data_folder_path";
 
     public static final String KAT_CONFIG_NETWORK = "network";
     public static final String KAT_CONFIG_NETWORK_PORT = KAT_CONFIG_NETWORK + "." + "network_port";

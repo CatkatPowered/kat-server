@@ -43,6 +43,6 @@ public class KatMiscConstants {
 
     // SQLite 数据库存储路径
     public static final String KAT_DATABASE_PATH = KatWorkingDir.fixPath(
-            KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_DATA_FOLDER_PATH) + "/database.db");
+            KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH) + "/database.db");
 
 }

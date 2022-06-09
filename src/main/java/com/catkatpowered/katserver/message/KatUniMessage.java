@@ -1,5 +1,7 @@
 package com.catkatpowered.katserver.message;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
@@ -180,8 +182,17 @@ public class KatUniMessage {
     }
 
     public Optional<KatResource> toKatResource() {
+        URI uri = null;
+        try {
+            uri = new URI(this.resourceURL);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         return isResource()
-                ? Optional.of(KatResource.builder().Hash(this.resourceHash).Size(-1).URL(this.resourceURL).build())
+                ? Optional.of(
+                        KatResource.builder().hash(this.resourceHash).size((long) -1).uri(uri)
+                                .build())
                 : Optional.empty();
     }
 }

@@ -148,9 +148,9 @@ public class KatServer {
      */
     public static final class KatDatabaseAPI {
         /**
-         * 注册自定义<em>connector</em>
+         * 注册自定义 {@link DatabaseConnector}
          *
-         * @param connector
+         * @param connector 准备注册的DatabaseConnector
          * @see DatabaseConnector
          */
         public static void register(DatabaseConnector connector) {
@@ -221,6 +221,9 @@ public class KatServer {
         }
     }
 
+    /**
+     * 封装对任务的操作
+     */
     public static final class KatTaskAPI {
 
         public static Future<?> addTask(Runnable task) {
@@ -241,6 +244,9 @@ public class KatServer {
 
     }
 
+    /**
+     * 封装对TokenPool的操作
+     */
     public static final class KatTokenPoolAPI {
         /**
          * 生成新的 <em>token</em>
