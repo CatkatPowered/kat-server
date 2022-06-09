@@ -1,10 +1,28 @@
 package com.catkatpowered.katserver.network;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
+
 import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.KatServerMain;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.config.KatConfig;
-import com.catkatpowered.katserver.config.KatConfigManager;
 import com.catkatpowered.katserver.database.KatDatabaseManager;
 import com.catkatpowered.katserver.event.KatEventManager;
 import com.catkatpowered.katserver.event.events.MessageReceiveEvent;
@@ -16,21 +34,12 @@ import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.KatStorageManager;
 import com.catkatpowered.katserver.task.KatTaskManager;
 import com.google.gson.Gson;
-import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
 
-import javax.net.ssl.*;
-import java.security.KeyStore;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 
 public class TestKatNetwork {
     private static OkHttpClient wsClient;

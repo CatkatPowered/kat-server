@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.storage.resource;
+package com.catkatpowered.katserver.storage.providers;
 
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -8,8 +8,7 @@ import lombok.Data;
 @Builder
 public class KatResource {
     public String URL;
-    public String MD5;
-    public String Token;
+    public String Hash;
     /**
      * 为 -1 时，长度未知
      */

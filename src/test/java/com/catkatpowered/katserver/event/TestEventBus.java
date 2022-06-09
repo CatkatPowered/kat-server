@@ -1,12 +1,14 @@
 package com.catkatpowered.katserver.event;
 
-import com.catkatpowered.katserver.event.interfaces.EventHandler;
-import com.catkatpowered.katserver.event.interfaces.Listener;
-import lombok.Getter;
-import lombok.Setter;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.catkatpowered.katserver.event.interfaces.EventHandler;
+import com.catkatpowered.katserver.event.interfaces.Listener;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class TestEventBus {
     @Test

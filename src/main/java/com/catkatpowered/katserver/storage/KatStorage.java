@@ -1,13 +1,13 @@
 package com.catkatpowered.katserver.storage;
 
-import com.catkatpowered.katserver.common.constants.KatStorageTypeConstants;
-import com.catkatpowered.katserver.storage.resource.ResourceLocalStorage;
-import com.catkatpowered.katserver.storage.resource.ResourceStorage;
-import jdk.jfr.Experimental;
-
 import java.util.HashMap;
 
-// TODO：编写选择储存方案的逻辑
+import com.catkatpowered.katserver.common.constants.KatStorageTypeConstants;
+import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
+import com.catkatpowered.katserver.storage.providers.local.LocalProvider;
+
+import jdk.jfr.Experimental;
+
 @Experimental
 public class KatStorage {
 
@@ -20,15 +20,14 @@ public class KatStorage {
         return Instance;
     }
 
-    public void addStorage(String resourceName, ResourceStorage storage) {
+    public void addStorage(String resourceName, KatStorageProvider storage) {
         this.storageTarget.put(resourceName, storage);
     }
 
-    private final HashMap<String, ResourceStorage> storageTarget = new HashMap<String, ResourceStorage>() {
+    private final HashMap<String, KatStorageProvider> storageTarget = new HashMap<String, KatStorageProvider>() {
         {
-            storageTarget.put(KatStorageTypeConstants.KAT_STORAGE_TYPE_LOCAL, new ResourceLocalStorage());
+            storageTarget.put(KatStorageTypeConstants.KAT_STORAGE_TYPE_LOCAL, new LocalProvider());
         }
     };
-
 
 }

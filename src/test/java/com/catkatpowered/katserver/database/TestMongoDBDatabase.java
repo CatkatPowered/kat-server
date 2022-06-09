@@ -1,16 +1,18 @@
 package com.catkatpowered.katserver.database;
 
-import com.catkatpowered.katserver.database.mongodb.MongodbConnection;
-import com.catkatpowered.katserver.database.mongodb.MongodbConnector;
-import lombok.AllArgsConstructor;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import com.catkatpowered.katserver.database.mongodb.MongodbConnection;
+import com.catkatpowered.katserver.database.mongodb.MongodbConnector;
+
+import lombok.AllArgsConstructor;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class TestMongoDBDatabase {
