@@ -30,7 +30,7 @@ public class KatServerMain {
         KatDatabaseManager.init();
         // 启动储存模块
         KatStorageManager.init();
-        // 启动多线程模块
+        // 启动任务模块
         KatTaskManager.init();
         // 启动扩展模块
         KatExtensionManager.init();
