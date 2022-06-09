@@ -11,7 +11,7 @@ import com.catkatpowered.katserver.task.KatTaskManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 本项目采用 AGpl v3 进行开源 请遵循开源协议
+ * 本项目采用 AGPL v3 进行开源 请遵循开源协议
  */
 @Slf4j
 public class KatServerMain {
