@@ -5,6 +5,7 @@ import lombok.Builder.Default;
 import lombok.Getter;
 
 import java.net.URI;
+import java.util.Objects;
 
 
 @Builder
@@ -21,6 +22,10 @@ public class KatResource {
     @Default
     @Getter
     private Long size = (long) -1;
+
+    public boolean equalHash(String hashString) {
+        return Objects.equals(hashString, this.hash);
+    }
 
     public boolean isHashed() {
         return this.hash.length() == 0;
