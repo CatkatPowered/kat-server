@@ -20,7 +20,7 @@ public class TestKatTokenPool {
 
                 tokenpool:
                   # You can set the token how long to live
-                  outdate: 10000
+                  outdated: 10000
             """;
 
     @BeforeAll
