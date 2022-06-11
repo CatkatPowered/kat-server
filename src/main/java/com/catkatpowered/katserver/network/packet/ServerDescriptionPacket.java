@@ -12,6 +12,9 @@ import lombok.Data;
  */
 @Data
 public class ServerDescriptionPacket {
+    // 数据包类型
+    @SerializedName("type")
+    private String type = KatPacketTypeConstants.SERVER_DESCRIPTION_PACKET;
     // 服务器名称
     @SerializedName("server")
     String server;
@@ -21,14 +24,16 @@ public class ServerDescriptionPacket {
     // 服务器描述
     @SerializedName("description")
     String description;
-    // 数据包类型
-    @SerializedName("type")
-    private String type = KatPacketTypeConstants.SERVER_DESCRIPTION_PACKET;
+    // 所有接入的IM桥及其描述
+    // TODO: 改为自动获取,等待imbridge接入系统完工并提供API
+    @SerializedName("im_bridge_description")
+    String imBridgeDescription;
 
     @Builder
-    public ServerDescriptionPacket(String server, String version, String description) {
+    public ServerDescriptionPacket(String server, String version, String imBridgeDescription, String description) {
         this.server = server;
         this.version = version;
+        this.imBridgeDescription = imBridgeDescription;
         this.description = description;
     }
 }
