@@ -17,7 +17,7 @@ public class KatConfigNodeConstants {
     public static final String KAT_CONFIG_EXEC_THREADS = KAT_CONFIG_EXEC + "." + "exec_threads";
 
     public static final String KAT_CONFIG_TOKENPOOL = "tokenpool";
-    public static final String KAT_CONFIG_TOKENPOOL_OUTDATE = KAT_CONFIG_TOKENPOOL + "." + "outdate";
+    public static final String KAT_CONFIG_TOKENPOOL_OUTDATED = KAT_CONFIG_TOKENPOOL + "." + "outdated";
 
     public static final String KAT_CONFIG_DATABASE = "database";
     public static final String KAT_CONFIG_DATABASE_TYPE = KAT_CONFIG_DATABASE + "." + "database_type";

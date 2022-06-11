@@ -42,5 +42,5 @@ exec:
 tokenpool:
   # You can set the token how long to live
   #
-  # Milisecond
-  outdate: 10000
+  # Unit: Millisecond
+  outdated: 10000
