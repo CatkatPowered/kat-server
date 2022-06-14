@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.network.packet;
+package com.catkatpowered.katserver.network.websocket.packet;
 
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.google.gson.annotations.SerializedName;
@@ -11,10 +11,11 @@ import lombok.Data;
  * @author hanbings
  */
 @Data
+@Builder
 public class ServerDescriptionPacket {
     // 数据包类型
     @SerializedName("type")
-    private String type = KatPacketTypeConstants.SERVER_DESCRIPTION_PACKET;
+    private final String type = KatPacketTypeConstants.SERVER_DESCRIPTION_PACKET;
     // 服务器名称
     @SerializedName("server")
     String server;
@@ -29,7 +30,7 @@ public class ServerDescriptionPacket {
     @SerializedName("im_bridge_description")
     String imBridgeDescription;
 
-    @Builder
+
     public ServerDescriptionPacket(String server, String version, String imBridgeDescription, String description) {
         this.server = server;
         this.version = version;

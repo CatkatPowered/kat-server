@@ -2,6 +2,9 @@ package com.catkatpowered.katserver.network;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import com.catkatpowered.katserver.network.http.HttpHandler;
+import com.catkatpowered.katserver.network.utils.KatCertUtil;
+import com.catkatpowered.katserver.network.websocket.KatWebSocketIncome;
 import io.javalin.Javalin;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +26,7 @@ public class KatNetwork {
     // 包含所有moseeger客户端,实现无限客户端
     @Getter
     @Setter
-    private static List<Session> sessions = new ArrayList<Session>();
+    private static List<Session> sessions = new ArrayList<>();
 
     private KatNetwork() {
         Javalin server = Javalin.create(config -> {

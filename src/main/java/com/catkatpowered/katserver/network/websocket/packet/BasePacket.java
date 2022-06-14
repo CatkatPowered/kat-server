@@ -1,16 +1,15 @@
-package com.catkatpowered.katserver.network.packet;
+package com.catkatpowered.katserver.network.websocket.packet;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Data;
 
+// BasePacket只被用来继承
 @Data
 public class BasePacket {
-    @SerializedName("type")
     String type;
-
-    @Builder
     public BasePacket(String type) {
         this.type = type;
     }
+
 }

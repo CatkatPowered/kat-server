@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.network;
 
 import com.catkatpowered.katserver.event.KatEventManager;
+import com.catkatpowered.katserver.network.websocket.KatWebSocketBroadcast;
 
 public class KatNetworkManager {
 

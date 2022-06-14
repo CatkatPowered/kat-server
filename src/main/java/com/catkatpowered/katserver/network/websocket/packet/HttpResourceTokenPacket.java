@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.network.packet;
+package com.catkatpowered.katserver.network.websocket.packet;
 
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.google.gson.annotations.SerializedName;
@@ -11,10 +11,11 @@ import lombok.Data;
  * @author hanbings
  */
 @Data
+@Builder
 public class HttpResourceTokenPacket {
     // 凭据数据包
     @SerializedName("type")
-    String type = KatPacketTypeConstants.RESOURCE_TOKEN_PACKET;
+    final String type = KatPacketTypeConstants.RESOURCE_TOKEN_PACKET;
     // 凭据
     @SerializedName("token")
     String token;
@@ -25,7 +26,7 @@ public class HttpResourceTokenPacket {
     @SerializedName("websocket_sec_key")
     String websocketSecKey;
 
-    @Builder
+
     public HttpResourceTokenPacket(String token, long expireTime, String websocketSecKey) {
         this.token = token;
         this.expireTime = expireTime;

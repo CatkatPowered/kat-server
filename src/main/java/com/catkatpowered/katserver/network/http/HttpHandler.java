@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.network;
+package com.catkatpowered.katserver.network.http;
 
 import com.google.gson.Gson;
 import io.javalin.http.Context;

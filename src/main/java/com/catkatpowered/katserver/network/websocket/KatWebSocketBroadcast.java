@@ -1,9 +1,10 @@
-package com.catkatpowered.katserver.network;
+package com.catkatpowered.katserver.network.websocket;
 
 import com.catkatpowered.katserver.event.events.MessageReceiveEvent;
 import com.catkatpowered.katserver.event.interfaces.EventHandler;
 import com.catkatpowered.katserver.event.interfaces.Listener;
-import com.catkatpowered.katserver.network.packet.WebSocketMessagePacket;
+import com.catkatpowered.katserver.network.KatNetwork;
+import com.catkatpowered.katserver.network.websocket.packet.WebSocketMessagePacket;
 import com.catkatpowered.katserver.storage.KatMessageStorage;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ public class KatWebSocketBroadcast implements Listener {
     public void onMessageReceive(MessageReceiveEvent event) {
         KatMessageStorage.createMessage(event.getMessage());
         Gson gson = new Gson();
-        WebSocketMessagePacket packet = WebSocketMessagePacket.builder().type("websocket_message").message(event.getMessage()).build();
+        WebSocketMessagePacket packet = WebSocketMessagePacket.builder().message(event.getMessage()).build();
         try {
             for (Session session : KatNetwork.getSessions()) {
                 session.getRemote().sendString(gson.toJson(packet));

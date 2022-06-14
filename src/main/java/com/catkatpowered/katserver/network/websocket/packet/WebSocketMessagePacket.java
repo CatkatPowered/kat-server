@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.network.packet;
+package com.catkatpowered.katserver.network.websocket.packet;
 
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.message.KatUniMessage;
@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class WebSocketMessagePacket {
     /*
     {
@@ -19,11 +20,10 @@ public class WebSocketMessagePacket {
     KatUniMessage message;
     // 数据包类型
     @SerializedName("type")
-    private String type = KatPacketTypeConstants.MESSAGE_PACKET;
+    final String type = KatPacketTypeConstants.MESSAGE_PACKET;
 
-    @Builder
-    public WebSocketMessagePacket(String type, KatUniMessage message) {
-        this.type = type;
+
+    public WebSocketMessagePacket(KatUniMessage message) {
         this.message = message;
     }
 }

@@ -1,11 +1,12 @@
-package com.catkatpowered.katserver.network;
+package com.catkatpowered.katserver.network.websocket;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.message.KatUniMessage;
-import com.catkatpowered.katserver.network.packet.*;
+import com.catkatpowered.katserver.network.KatNetwork;
+import com.catkatpowered.katserver.network.websocket.packet.*;
 import com.catkatpowered.katserver.storage.KatMessageStorage;
 import com.google.gson.Gson;
 import io.javalin.websocket.WsConfig;

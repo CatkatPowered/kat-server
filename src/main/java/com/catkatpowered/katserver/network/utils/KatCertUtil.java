@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.network;
+package com.catkatpowered.katserver.network.utils;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;

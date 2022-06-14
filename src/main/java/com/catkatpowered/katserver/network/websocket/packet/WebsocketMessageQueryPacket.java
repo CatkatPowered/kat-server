@@ -1,4 +1,4 @@
-package com.catkatpowered.katserver.network.packet;
+package com.catkatpowered.katserver.network.websocket.packet;
 
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
 import com.catkatpowered.katserver.message.KatUniMessage;
@@ -12,6 +12,7 @@ import java.util.List;
 // moseeger -> kat-server 时提供 extensionId,startTimeStamp,endTimeStamp,messageGroup
 // kat-server -> moseeger 时返回原信息并填充 messages
 @Data
+@Builder
 public class WebsocketMessageQueryPacket {
     // 平台标识符
     @SerializedName("extension_id")
@@ -21,7 +22,7 @@ public class WebsocketMessageQueryPacket {
     List<KatUniMessage> messages;
     // 数据包类型
     @SerializedName("type")
-    String type = KatPacketTypeConstants.MESSAGE_QUERY_PACKET;
+    final String type = KatPacketTypeConstants.MESSAGE_QUERY_PACKET;
     // 查询起始时间戳
     @SerializedName("start_timestamp")
     Integer startTimeStamp;
@@ -32,7 +33,7 @@ public class WebsocketMessageQueryPacket {
     @SerializedName("message_group")
     String messageGroup;
 
-    @Builder
+
     public WebsocketMessageQueryPacket(String extensionId, List<KatUniMessage> messages, Integer startTimeStamp, Integer endTimeStamp, String messageGroup) {
         this.extensionId = extensionId;
         this.messages = messages;
