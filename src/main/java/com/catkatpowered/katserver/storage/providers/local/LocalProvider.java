@@ -76,7 +76,7 @@ public class LocalProvider extends KatStorageProvider {
     }
 
     private Optional<String> toPath(String hashString) {
-        return Optional.of(Path.of(this.resourceStoragePath, hashString.substring(0, 2)).toAbsolutePath().toString());
+        return Optional.of(Path.of(this.resourceStoragePath, hashString.substring(0, 2), hashString.substring(2, 4)).toAbsolutePath().toString());
     }
 
 }
