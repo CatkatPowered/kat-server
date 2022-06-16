@@ -9,7 +9,6 @@ network:
     cert_path: "./cert.jks"
     cert_password: "catmoe"
 
-
 ######################### Database ############################
 database:
   # default support mongodb
@@ -24,9 +23,9 @@ database:
 ####################### Storage ###############################
 # The resource file storage
 resource:
-  # You can choose those type of resource_storage
+  # You can choose those type of storage_provider
   # 1.local
-  resource_storage: local
+  storage_provider: local
 
   # If you choose `local`,
   # you can set the resource file where to store.
