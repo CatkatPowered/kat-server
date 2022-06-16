@@ -31,8 +31,8 @@ public abstract class KatStorageProvider {
     public abstract Optional<KatResource> validate(String hashString);
 
     /**
-     * 上传资源
-     *
+     * 上传资源文件到指定位置。
+     * 
      * @param resource 包含资源信息的数据结构
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      */

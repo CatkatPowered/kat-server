@@ -18,6 +18,9 @@ import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
+import com.catkatpowered.katserver.storage.KatStorageManager;
+import com.catkatpowered.katserver.storage.providers.KatResource;
+import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 import com.catkatpowered.katserver.task.KatTaskManager;
 import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
 
@@ -275,6 +278,65 @@ public class KatServer {
          */
         public static boolean checkToken(String token) {
             return KatTokenPoolManager.checkToken(token);
+        }
+    }
+
+    public static final class KatStorageAPI {
+
+        public static KatStorageProvider getStorageProvider() {
+            return KatStorageManager.getStorageProvider();
+        }
+
+        /**
+         * 拉取资源位置。
+         * 
+         * 注意，该函数返回值中为URI，需要做适当的处理
+         * 
+         * @param hashString
+         * @return
+         */
+        public static Optional<KatResource> fetch(String hashString) {
+            return KatStorageManager.fetch(hashString);
+        }
+
+        /**
+         * 校验文件是否正确
+         * 
+         * @param hashString
+         * @return
+         */
+        public static Optional<KatResource> validate(String hashString) {
+            return KatStorageManager.validate(hashString);
+        }
+
+        /**
+         * 上传文件
+         * 
+         * @param resource 包含信息的容器
+         * @return
+         */
+        public static Optional<KatResource> upload(KatResource resource) {
+            return KatStorageManager.upload(resource);
+        }
+
+        /**
+         * 删除文件。
+         * 
+         * @param hashString 文件hash值
+         * @return
+         */
+        public static boolean delete(String hashString) {
+            return KatStorageManager.delete(hashString);
+        }
+
+        /**
+         * 更新文件。
+         * 
+         * @param resource
+         * @return
+         */
+        public static Optional<KatResource> update(KatResource resource) {
+            return KatStorageManager.update(resource);
         }
     }
 }
