@@ -112,6 +112,12 @@ public class KatUniMessage {
     @SerializedName("resource_url")
     public String resourceURL;
 
+    /**
+     * <b>ResourceToken</b> 用于资源文件请求时的一次性鉴权
+     */
+    @SerializedName("resource_token")
+    public String resourceToken;
+
     public KatUniMessage(
             String extensionID,
             String messageType,
@@ -123,7 +129,8 @@ public class KatUniMessage {
             ArrayList<String> extended,
             String resourceHash,
             String resourceName,
-            String resourceURL) {
+            String resourceURL,
+            String resourceToken) {
         this.extensionID = extensionID;
         this.messageType = messageType;
         this.messageGroup = messageGroup;
@@ -135,6 +142,7 @@ public class KatUniMessage {
         this.resourceHash = resourceHash;
         this.resourceName = resourceName;
         this.resourceURL = resourceURL;
+        this.resourceToken = resourceToken;
     }
 
     /**
