@@ -7,8 +7,6 @@ import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 
-import lombok.var;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
