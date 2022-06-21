@@ -50,6 +50,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
 
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     testImplementation 'com.squareup.okhttp3:okhttp:4.9.3'
 }
 

@@ -2,12 +2,14 @@ package com.catkatpowered.katserver.storage.providers.local;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
+import com.catkatpowered.katserver.common.utils.KatDownload;
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
 import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,7 +63,6 @@ public class LocalProvider extends KatStorageProvider {
         return !Objects.equals(hashString, fileSha256) ? Optional.empty() : fetchedKatResource;
     }
 
-    // TODO: 等待DownloadUtil
     @Override
     public Optional<KatResource> upload(KatResource resource) {
         var optionalFilePath = this.toPath(resource.getHash());
@@ -73,6 +74,17 @@ public class LocalProvider extends KatStorageProvider {
 
         if (file.getParentFile().exists())
             file.getParentFile().mkdirs();
+
+        if (KatDownload.isFileLocked(filePath)) {
+            try {
+                if (KatDownload.downloadFile(file, resource.getUri().toURL(), null)) {
+                    resource.setUri(file.toURI());
+                    return Optional.of(resource);
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
 
         return Optional.empty();
     }

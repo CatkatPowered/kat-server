@@ -3,6 +3,7 @@ package com.catkatpowered.katserver.storage.providers;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.net.URI;
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Builder
 public class KatResource {
     @Getter
+    @Setter
     private URI uri;
     @Default
     @Getter
