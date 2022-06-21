@@ -8,7 +8,6 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.Map;
 
-import lombok.var;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
