@@ -3,8 +3,11 @@ package com.catkatpowered.katserver.storage.providers.local;
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
+import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
+
+import lombok.var;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -20,7 +23,9 @@ public class LocalProvider extends KatStorageProvider {
 
     public LocalProvider() {
         super();
-        resourceStoragePath = KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH).orElse("./data");
+        resourceStoragePath = KatServer.KatConfigAPI
+                .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH)
+                .orElse(KatWorkSpace.fixPath("./data"));
     }
 
     /**
@@ -34,10 +39,12 @@ public class LocalProvider extends KatStorageProvider {
     @Override
     public Optional<KatResource> fetch(String hashString) {
         var path = toPath(hashString);
-        if (path.isEmpty()) return Optional.empty();
+        if (path.isEmpty())
+            return Optional.empty();
 
         var file = new File(path.get());
-        if (!(new File(path.get())).exists()) return Optional.empty();
+        if (!(new File(path.get())).exists())
+            return Optional.empty();
 
         return Optional.of(KatResource.builder().hash(hashString).size(file.length()).uri(file.toURI()).build());
     }
@@ -46,7 +53,8 @@ public class LocalProvider extends KatStorageProvider {
     public Optional<KatResource> validate(String hashString) {
         // 判断是否存在文件，若不存在则返回空 Optional
         var fetchedKatResource = this.fetch(hashString);
-        if (fetchedKatResource.isEmpty()) return Optional.empty();
+        if (fetchedKatResource.isEmpty())
+            return Optional.empty();
 
         // 由于是本地文件，因此直接计算文件Sha256
         var fileURI = fetchedKatResource.get().getUri();
@@ -58,15 +66,26 @@ public class LocalProvider extends KatStorageProvider {
     // TODO: 等待DownloadUtil
     @Override
     public Optional<KatResource> upload(KatResource resource) {
+        var optionalFilePath = this.toPath(resource.getHash());
+        if (optionalFilePath.isEmpty())
+            return Optional.empty();
+
+        var filePath = optionalFilePath.get();
+        var file = new File(filePath);
+
+        if (file.getParentFile().exists())
+            file.getParentFile().mkdirs();
+
         return Optional.empty();
     }
 
     @Override
     public boolean delete(String hashString) {
-        var fetchedOptionalKatResource = this.fetch(hashString);
-        if (fetchedOptionalKatResource.isEmpty()) return false;
+        var fetchedFilePath = this.fetch(hashString);
+        if (fetchedFilePath.isEmpty())
+            return false;
 
-        var file = new File(fetchedOptionalKatResource.get().getUri());
+        var file = new File(fetchedFilePath.get().getUri());
         return file.delete();
     }
 
@@ -76,7 +95,8 @@ public class LocalProvider extends KatStorageProvider {
     }
 
     private Optional<String> toPath(String hashString) {
-        return Optional.of(Path.of(this.resourceStoragePath, hashString.substring(0, 2), hashString.substring(2, 4)).toAbsolutePath().toString());
+        return Optional.of(Path.of(this.resourceStoragePath, hashString.substring(0, 2), hashString.substring(2, 4))
+                .toAbsolutePath().toString());
     }
 
 }

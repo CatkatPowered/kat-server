@@ -2,7 +2,7 @@ package com.catkatpowered.katserver.config;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.common.utils.KatWorkingDir;
+import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -15,10 +15,10 @@ import java.util.Optional;
 public class KatConfigManager {
 
     public static void init() {
-        if (!Files.exists(Path.of(KatWorkingDir.fixPath(
+        if (!Files.exists(Path.of(KatWorkSpace.fixPath(
                 KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH).toString())))) {
             try {
-                Files.createDirectory(Path.of(KatWorkingDir.fixPath(
+                Files.createDirectory(Path.of(KatWorkSpace.fixPath(
                         KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH)
                                 .toString())));
             } catch (IOException e) {

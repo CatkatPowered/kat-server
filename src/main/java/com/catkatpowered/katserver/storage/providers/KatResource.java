@@ -7,7 +7,6 @@ import lombok.Getter;
 import java.net.URI;
 import java.util.Objects;
 
-
 @Builder
 public class KatResource {
     @Getter
@@ -31,7 +30,7 @@ public class KatResource {
         return this.hash.length() == 0;
     }
 
-    public boolean unknownSize() {
+    public boolean isUnknownSize() {
         return this.size == -1;
     }
 

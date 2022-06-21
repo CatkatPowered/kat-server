@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.config;
 
-import com.catkatpowered.katserver.common.utils.KatWorkingDir;
+import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class KatConfig {
     private Map<String, Object> configContent;
 
     private KatConfig() {
-        File katConfigFile = new File(KatWorkingDir.fixPath("./config.yml"));
+        File katConfigFile = new File(KatWorkSpace.fixPath("./config.yml"));
         try {
             // 检测配置文件状态并处理
             if (katConfigFile.exists()) {
