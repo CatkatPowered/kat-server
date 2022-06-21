@@ -65,8 +65,7 @@ public class TestKatNetwork {
                 enabled: false
                 cert_path: "./cert.jks"
                 cert_password: "catmoe"
-                        
-                        
+
             ######################### Database ############################
             database:
               # default support mongodb
@@ -77,31 +76,32 @@ public class TestKatNetwork {
               database_url: mongodb://localhost:27017/kat-server
               database_username:
               database_password:
-                        
+
             ####################### Storage ###############################
             # The resource file storage
             resource:
-              # You can choose those type of resource_storage
+              # You can choose those type of storage_provider
               # 1.local
-              resource_storage: local
-                        
+              storage_provider: local
+
               # If you choose `local`,
               # you can set the resource file where to store.
               data_folder_path: "./data"
-                        
+
             ####################### ExecThreads ############################
             exec:
               exec_threads: 16
-                        
+
             ####################### TokenPool ##############################
             # This section are the settings of token pool
-                        
+
             tokenpool:
               # You can set the token how long to live
               #
-              # Milisecond
-              outdate: 10000
-            """;
+              # Unit: Millisecond
+              outdated: 10000
+
+                """;
 
     @BeforeAll
     public static void start() {
@@ -137,7 +137,7 @@ public class TestKatNetwork {
 
                 @Override
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[]{};
+                    return new java.security.cert.X509Certificate[] {};
                 }
             };
         } catch (Exception e) {
@@ -146,9 +146,11 @@ public class TestKatNetwork {
 
         try {
             sslContext = SSLContext.getInstance("SSL");
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory
+                    .getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(keyStore, "catmoe".toCharArray());
-            sslContext.init(keyManagerFactory.getKeyManagers(), new TrustManager[]{trustManager}, new SecureRandom());
+            sslContext.init(keyManagerFactory.getKeyManagers(), new TrustManager[] { trustManager },
+                    new SecureRandom());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -208,11 +210,12 @@ public class TestKatNetwork {
             @Override
             public void onMessage(@NotNull WebSocket webSocket, String text) {
                 if (text.contains("server_description")) {
-                    connected= true;
+                    connected = true;
                     return;
                 }
-                //{"message":{"message_type":"testExtension","extension_id":"PlainMessage","message_group":"101010101","message_id":"uuid","message_content":"欸嘿~","message_timestamp":1652881882},"type":"websocket_message"}
-                assertEquals(text, "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
+                // {"message":{"message_type":"testExtension","extension_id":"PlainMessage","message_group":"101010101","message_id":"uuid","message_content":"欸嘿~","message_timestamp":1652881882},"type":"websocket_message"}
+                assertEquals(text,
+                        "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
                 connected = null;
             }
         }
@@ -232,15 +235,18 @@ public class TestKatNetwork {
                 .url("wss://localhost:" + KatServer.KatConfigAPI
                         .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
-        WebSocket webSocket = wsClient.newWebSocket(request, new WebSocketListener() {});
+        WebSocket webSocket = wsClient.newWebSocket(request, new WebSocketListener() {
+        });
         Gson gson = new Gson();
-        class eventListener implements Listener{
+        class eventListener implements Listener {
             @EventHandler
             public void onMessage(MessageSendEvent event) {
-                assertEquals(gson.toJson(event.getMessage()), "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
+                assertEquals(gson.toJson(event.getMessage()),
+                        "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
             }
         }
         KatServer.KatEventBusAPI.registerListener(new eventListener());
-        webSocket.send("{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
+        webSocket.send(
+                "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}");
     }
 }

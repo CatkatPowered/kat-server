@@ -18,7 +18,7 @@ public class KatStorage {
 
     private final HashMap<String, KatStorageProvider> storageProviders = new HashMap<String, KatStorageProvider>() {
         {
-            storageProviders.put(KatStorageTypeConstants.KAT_STORAGE_PROVIDER_LOCAL, new LocalProvider());
+            put(KatStorageTypeConstants.KAT_STORAGE_PROVIDER_LOCAL, new LocalProvider());
         }
     };
 
