@@ -15,4 +15,8 @@ public class KatTokenPoolManager {
     public static boolean checkToken(String token) {
         return KatTokenPool.getINSTANCE().checkToken(token);
     }
+
+    public static KatTokenPool getInstance() {
+        return KatTokenPool.getINSTANCE();
+    }
 }

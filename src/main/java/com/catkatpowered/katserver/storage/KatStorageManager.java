@@ -73,4 +73,13 @@ public class KatStorageManager {
         return KatStorage.getInstance().getProvider().update(resource);
     }
 
+    /**
+     * 非常不推荐您使用这个方法
+     *
+     * @return 获取 <em>KatStorage</em> 的实例
+     */
+    @Deprecated
+    public static KatStorage getInstance() {
+        return KatStorage.getInstance();
+    }
 }
