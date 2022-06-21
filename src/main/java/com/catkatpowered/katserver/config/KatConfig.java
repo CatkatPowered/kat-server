@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Kat Server 的配置文件项
+ * KatServer 的配置文件项
  *
  * @author CatMoe
- * @author suibing112233
+ * @author Krysztal
  */
 @Slf4j
 public class KatConfig {
@@ -38,10 +38,7 @@ public class KatConfig {
             } else {
                 if (katConfigFile.createNewFile()) {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
-                    outputStream.write(Objects.requireNonNull(KatConfig.class
-                                    .getClassLoader()
-                                    .getResourceAsStream("config.yml"))
-                            .readAllBytes());
+                    outputStream.write(Objects.requireNonNull(KatConfig.class.getClassLoader().getResourceAsStream("config.yml")).readAllBytes());
                     outputStream.flush();
                     outputStream.close();
                     Yaml yaml = new Yaml();

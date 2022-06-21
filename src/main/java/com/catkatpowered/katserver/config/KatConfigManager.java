@@ -11,6 +11,9 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * @author Krysztal
+ */
 @Slf4j
 public class KatConfigManager {
 

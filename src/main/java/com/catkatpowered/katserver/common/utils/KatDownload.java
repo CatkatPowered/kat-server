@@ -1,22 +1,22 @@
 package com.catkatpowered.katserver.common.utils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.net.URL;
-import java.util.Map;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+import java.io.*;
+import java.net.URL;
+import java.util.Map;
+
+/**
+ * <em>KatServer</em> 提供的标准下载工具
+ *
+ * @author Krysztal
+ * @see OkHttpClient
+ */
 public class KatDownload {
     public static boolean isFileLocked(File file) {
         var f = new File(file.getAbsolutePath() + ".lock");
-        if (f.exists())
-            return true;
-        return false;
+        return f.exists();
     }
 
     public static boolean isFileLocked(String path) {
@@ -45,8 +45,7 @@ public class KatDownload {
         var downloadRequest = downloadRequestBuilder.build();
         var call = client.newCall(downloadRequest);
 
-        try {
-            var r = call.execute();
+        try (var r = call.execute()) {
             writeFile(file, r.body().charStream());
         } catch (IOException e) {
             e.printStackTrace();

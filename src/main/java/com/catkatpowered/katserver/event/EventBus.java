@@ -1,20 +1,19 @@
 package com.catkatpowered.katserver.event;
 
+import com.catkatpowered.katserver.event.interfaces.Blockable;
+import com.catkatpowered.katserver.event.interfaces.Cancellable;
+import com.catkatpowered.katserver.event.interfaces.EventHandler;
+import com.catkatpowered.katserver.event.interfaces.Listener;
+import lombok.Getter;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import com.catkatpowered.katserver.event.interfaces.Blockable;
-import com.catkatpowered.katserver.event.interfaces.Cancellable;
-import com.catkatpowered.katserver.event.interfaces.EventHandler;
-import com.catkatpowered.katserver.event.interfaces.Listener;
-
-import lombok.Getter;
-
 /**
  * @author hanbings
- * @author suibing112233
+ * @author Krystal
  */
 @SuppressWarnings("unused")
 public class EventBus {

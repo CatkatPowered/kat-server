@@ -1,9 +1,9 @@
 package com.catkatpowered.katserver.storage;
 
-import java.util.Optional;
-
 import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
+
+import java.util.Optional;
 
 public class KatStorageManager {
 
@@ -13,7 +13,7 @@ public class KatStorageManager {
 
     /**
      * 获取储存提供者
-     * 
+     *
      * @return 配置文件中所配置的 KatStorageProvider
      * @see KatStorageProvider
      */
@@ -23,9 +23,9 @@ public class KatStorageManager {
 
     /**
      * 拉取资源位置。
-     * 
+     * <p>
      * 注意，该函数返回值中为URI，需要做适当的处理
-     * 
+     *
      * @param hashString
      * @return
      */
@@ -35,7 +35,7 @@ public class KatStorageManager {
 
     /**
      * 校验文件是否正确
-     * 
+     *
      * @param hashString
      * @return
      */
@@ -45,7 +45,7 @@ public class KatStorageManager {
 
     /**
      * 上传文件
-     * 
+     *
      * @param resource 包含信息的容器
      * @return
      */
@@ -55,7 +55,7 @@ public class KatStorageManager {
 
     /**
      * 删除文件。
-     * 
+     *
      * @param hashString 文件hash值
      * @return
      */
@@ -65,7 +65,7 @@ public class KatStorageManager {
 
     /**
      * 更新文件。
-     * 
+     *
      * @param resource
      * @return
      */

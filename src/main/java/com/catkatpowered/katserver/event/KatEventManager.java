@@ -1,16 +1,16 @@
 package com.catkatpowered.katserver.event;
 
-import java.util.Map;
-
 import com.catkatpowered.katserver.event.events.MessageReceiveEvent;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.event.interfaces.Listener;
+
+import java.util.Map;
 
 /**
  * 事件总线
  *
  * @author hanbings
- * @author SUIBING112233
+ * @author Krysztal
  */
 public class KatEventManager {
 
@@ -43,10 +43,10 @@ public class KatEventManager {
 
     /**
      * 非常不建议直接获取 <em>EventBus</em> 的实例。
-     * 
+     * <p>
      * 若您想尽可能的使用底层，您应当使用其他已经抽象出来的 <b>{@link KatEventManager}</b> 方法。
-     * 
-     * @return
+     *
+     * @return <em>EventBus</em> 的实例
      */
     @Deprecated
     public static EventBus getEventBus() {
