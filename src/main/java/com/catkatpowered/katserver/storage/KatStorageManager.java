@@ -1,6 +1,6 @@
 package com.catkatpowered.katserver.storage;
 
-import com.catkatpowered.katserver.storage.providers.KatResource;
+import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class KatStorageManager {
      * @param hashString
      * @return
      */
-    public static Optional<KatResource> fetch(String hashString) {
+    public static Optional<KatUniMessage> fetch(String hashString) {
         return KatStorage.getInstance().getProvider().fetch(hashString);
     }
 
@@ -39,7 +39,7 @@ public class KatStorageManager {
      * @param hashString
      * @return
      */
-    public static Optional<KatResource> validate(String hashString) {
+    public static Optional<KatUniMessage> validate(String hashString) {
         return KatStorage.getInstance().getProvider().validate(hashString);
     }
 
@@ -49,7 +49,7 @@ public class KatStorageManager {
      * @param resource 包含信息的容器
      * @return
      */
-    public static Optional<KatResource> upload(KatResource resource) {
+    public static Optional<KatUniMessage> upload(KatUniMessage resource) {
         return KatStorage.getInstance().getProvider().upload(resource);
     }
 
@@ -69,7 +69,7 @@ public class KatStorageManager {
      * @param resource
      * @return
      */
-    public static Optional<KatResource> update(KatResource resource) {
+    public static Optional<KatUniMessage> update(KatUniMessage resource) {
         return KatStorage.getInstance().getProvider().update(resource);
     }
 

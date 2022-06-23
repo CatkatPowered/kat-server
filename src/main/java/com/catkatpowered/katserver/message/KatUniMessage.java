@@ -1,13 +1,10 @@
 package com.catkatpowered.katserver.message;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.catkatpowered.katserver.common.constants.KatMessageTypeConstants;
-import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Builder;
@@ -169,16 +166,6 @@ public class KatUniMessage {
 
     public boolean isIdentified() {
         return this.messageGroup != null;
-    }
-
-    public Optional<KatResource> toKatResource() {
-        URI uri = this.resourceURI;
-
-        return isResource()
-                ? Optional.of(
-                        KatResource.builder().hash(this.resourceHash).size((long) -1).uri(uri)
-                                .build())
-                : Optional.empty();
     }
 
     public boolean isUnknownSize() {

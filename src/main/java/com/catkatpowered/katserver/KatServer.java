@@ -17,9 +17,9 @@ import com.catkatpowered.katserver.event.RegisteredListener;
 import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
+import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
 import com.catkatpowered.katserver.storage.KatStorageManager;
-import com.catkatpowered.katserver.storage.providers.KatResource;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 import com.catkatpowered.katserver.task.KatTaskManager;
 import com.catkatpowered.katserver.tokenpool.KatTokenPoolManager;
@@ -295,7 +295,7 @@ public class KatServer {
          * @param hashString
          * @return
          */
-        public static Optional<KatResource> fetch(String hashString) {
+        public static Optional<KatUniMessage> fetch(String hashString) {
             return KatStorageManager.fetch(hashString);
         }
 
@@ -305,7 +305,7 @@ public class KatServer {
          * @param hashString
          * @return
          */
-        public static Optional<KatResource> validate(String hashString) {
+        public static Optional<KatUniMessage> validate(String hashString) {
             return KatStorageManager.validate(hashString);
         }
 
@@ -315,7 +315,7 @@ public class KatServer {
          * @param resource 包含信息的容器
          * @return
          */
-        public static Optional<KatResource> upload(KatResource resource) {
+        public static Optional<KatUniMessage> upload(KatUniMessage resource) {
             return KatStorageManager.upload(resource);
         }
 
@@ -335,7 +335,7 @@ public class KatServer {
          * @param resource
          * @return
          */
-        public static Optional<KatResource> update(KatResource resource) {
+        public static Optional<KatUniMessage> update(KatUniMessage resource) {
             return KatStorageManager.update(resource);
         }
     }

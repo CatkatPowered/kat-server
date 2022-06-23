@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver.storage.providers;
 
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
+import com.catkatpowered.katserver.message.KatUniMessage;
 
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public abstract class KatStorageProvider {
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      * @see KatShaUtils
      */
-    public abstract Optional<KatResource> fetch(String hashString);
+    public abstract Optional<KatUniMessage> fetch(String hashString);
 
     /**
      * 使用 Hash 校验资源，校验工具为 {@link KatShaUtils}
@@ -28,7 +29,7 @@ public abstract class KatStorageProvider {
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      * @see KatShaUtils
      */
-    public abstract Optional<KatResource> validate(String hashString);
+    public abstract Optional<KatUniMessage> validate(String hashString);
 
     /**
      * 上传资源文件到指定位置。
@@ -36,7 +37,7 @@ public abstract class KatStorageProvider {
      * @param resource 包含资源信息的数据结构
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      */
-    public abstract Optional<KatResource> upload(KatResource resource);
+    public abstract Optional<KatUniMessage> upload(KatUniMessage resource);
 
     /**
      * 删除资源
@@ -52,5 +53,5 @@ public abstract class KatStorageProvider {
      * @param resource 包含资源信息的数据结构
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      */
-    public abstract Optional<KatResource> update(KatResource resource);
+    public abstract Optional<KatUniMessage> update(KatUniMessage resource);
 }

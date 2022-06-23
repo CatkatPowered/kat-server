@@ -5,7 +5,7 @@ import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.utils.KatDownload;
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
 import com.catkatpowered.katserver.common.utils.KatWorkSpace;
-import com.catkatpowered.katserver.storage.providers.KatResource;
+import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 
 import java.io.File;
@@ -37,7 +37,7 @@ public class LocalProvider extends KatStorageProvider {
      * @see com.catkatpowered.katserver.common.utils.KatShaUtils
      */
     @Override
-    public Optional<KatResource> fetch(String hashString) {
+    public Optional<KatUniMessage> fetch(String hashString) {
         var path = toPath(hashString);
         if (path.isEmpty())
             return Optional.empty();
@@ -46,26 +46,29 @@ public class LocalProvider extends KatStorageProvider {
         if (!(new File(path.get())).exists())
             return Optional.empty();
 
-        return Optional.of(KatResource.builder().hash(hashString).size(file.length()).uri(file.toURI()).build());
+        return Optional.of(KatUniMessage.builder()
+                .resourceHash(hashString)
+                .resourceSize(file.length())
+                .resourceURI(file.toURI()).build());
     }
 
     @Override
-    public Optional<KatResource> validate(String hashString) {
+    public Optional<KatUniMessage> validate(String hashString) {
         // 判断是否存在文件，若不存在则返回空 Optional
-        var fetchedKatResource = this.fetch(hashString);
-        if (fetchedKatResource.isEmpty())
+        var fetchedResource = this.fetch(hashString);
+        if (fetchedResource.isEmpty())
             return Optional.empty();
 
         // 由于是本地文件，因此直接计算文件Sha256
-        var fileURI = fetchedKatResource.get().getUri();
+        var fileURI = fetchedResource.get().getResourceURI();
         var fileSha256 = KatShaUtils.sha256(new File(fileURI));
 
-        return !Objects.equals(hashString, fileSha256) ? Optional.empty() : fetchedKatResource;
+        return !Objects.equals(hashString, fileSha256) ? Optional.empty() : fetchedResource;
     }
 
     @Override
-    public Optional<KatResource> upload(KatResource resource) {
-        var optionalFilePath = this.toPath(resource.getHash());
+    public Optional<KatUniMessage> upload(KatUniMessage resource) {
+        var optionalFilePath = this.toPath(resource.getResourceHash());
         if (optionalFilePath.isEmpty())
             return Optional.empty();
 
@@ -77,8 +80,8 @@ public class LocalProvider extends KatStorageProvider {
 
         if (KatDownload.isFileLocked(filePath)) {
             try {
-                if (KatDownload.downloadFile(file, resource.getUri().toURL(), null)) {
-                    resource.setUri(file.toURI());
+                if (KatDownload.downloadFile(file, resource.getResourceURI().toURL(), null)) {
+                    resource.setResourceURI(file.toURI());
                     return Optional.of(resource);
                 }
             } catch (MalformedURLException e) {
@@ -95,12 +98,12 @@ public class LocalProvider extends KatStorageProvider {
         if (fetchedFilePath.isEmpty())
             return false;
 
-        var file = new File(fetchedFilePath.get().getUri());
+        var file = new File(fetchedFilePath.get().getResourceURI());
         return file.delete();
     }
 
     @Override
-    public Optional<KatResource> update(KatResource resource) {
+    public Optional<KatUniMessage> update(KatUniMessage resource) {
         return Optional.empty();
     }
 
