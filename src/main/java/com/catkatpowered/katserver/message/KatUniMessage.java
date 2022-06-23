@@ -89,7 +89,7 @@ public class KatUniMessage {
     /**
      * <b>Extended</b> 是<em>Extension</em>对消息的额外补充内容</br>
      * <p>
-     * <em>KatServer</em>对这部分消息是不敏感的，也就是说并不会对这段内容进行额外的补充
+     * <em>KatServer</em>对这部分消息是不敏感的，并不会对这段内容进行额外的补充
      */
     @SerializedName("extended")
     public ArrayList<String> extended;
@@ -107,10 +107,19 @@ public class KatUniMessage {
     public String resourceName;
 
     /**
-     * <b>ResourceURL</b> 为资源文件的下载地址
+     * <b>ResourceURI</b> 为资源文件的下载地址
      */
-    @SerializedName("resource_url")
-    public String resourceURL;
+    @SerializedName("resource_uri")
+    public URI resourceURI;
+
+    /**
+     * <b>ResourceSize</b> 为资源的大小
+     * 
+     * 当为-1时，大小未知
+     */
+    @SerializedName("resource_size")
+    @Default
+    public long resourceSize = (long) -1;
 
     /**
      * <b>ResourceToken</b> 用于资源文件请求时的一次性鉴权
@@ -118,37 +127,10 @@ public class KatUniMessage {
     @SerializedName("resource_token")
     public String resourceToken;
 
-    public KatUniMessage(
-            String extensionID,
-            String messageType,
-            String messageGroup,
-            String messageID,
-            String messageContent,
-            Long messageTimeStamp,
-            ArrayList<KatUniMessage> messageList,
-            ArrayList<String> extended,
-            String resourceHash,
-            String resourceName,
-            String resourceURL,
-            String resourceToken) {
-        this.extensionID = extensionID;
-        this.messageType = messageType;
-        this.messageGroup = messageGroup;
-        this.messageID = messageID;
-        this.messageContent = messageContent;
-        this.messageTimeStamp = messageTimeStamp;
-        this.messageList = messageList;
-        this.extended = extended;
-        this.resourceHash = resourceHash;
-        this.resourceName = resourceName;
-        this.resourceURL = resourceURL;
-        this.resourceToken = resourceToken;
-    }
-
     /**
      * 判断是否包含资源信息<br>
      * <p>
-     * 当前的条件为当<b>MessageType</b>等于以下项目<br>
+     * 当前的条件为当<b>MessageType</b>等于以下任意类型<br>
      * <ol>
      * <li><b>KAT_MESSAGE_TYPE_FILE_MESSAGE</b></li>
      * <li><b>KAT_MESSAGE_TYPE_IMAGE_MESSAGE</b></li>
@@ -178,7 +160,7 @@ public class KatUniMessage {
     }
 
     public boolean isDownloadable() {
-        return this.resourceURL != null;
+        return this.resourceURI != null;
     }
 
     public boolean isHashed() {
@@ -190,12 +172,7 @@ public class KatUniMessage {
     }
 
     public Optional<KatResource> toKatResource() {
-        URI uri = null;
-        try {
-            uri = new URI(this.resourceURL);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        URI uri = this.resourceURI;
 
         return isResource()
                 ? Optional.of(
@@ -203,4 +180,9 @@ public class KatUniMessage {
                                 .build())
                 : Optional.empty();
     }
+
+    public boolean isUnknownSize() {
+        return this.resourceSize == -1;
+    }
+
 }
