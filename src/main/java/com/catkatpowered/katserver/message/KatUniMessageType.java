@@ -15,18 +15,22 @@ public class KatUniMessageType {
 
     private static final KatUniMessageType Instance = new KatUniMessageType();
 
-    @Getter
+    @Getter 
     @Setter
-    private HashSet<String> messageTypes = new HashSet<>();
+    private HashSet<String> messageTypes = new HashSet<>() {
+        {
+
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE);
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_COLLECTION_MESSAGE);
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE);
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_AUDIO_MESSAGE);
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE);
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
+            add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_MIXED_MESSAGE);
+        }
+    };
 
     private KatUniMessageType() {
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_FILE_MESSAGE);
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_COLLECTION_MESSAGE);
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_PLAIN_MESSAGE);
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_AUDIO_MESSAGE);
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_IMAGE_MESSAGE);
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_VIDEO_MESSAGE);
-        this.messageTypes.add(KatMessageTypeConstants.KAT_MESSAGE_TYPE_MIXED_MESSAGE);
     }
 
     public static KatUniMessageType getInstance() {
