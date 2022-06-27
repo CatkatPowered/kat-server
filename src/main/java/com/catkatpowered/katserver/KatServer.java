@@ -1,6 +1,7 @@
 package com.catkatpowered.katserver;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -315,8 +316,8 @@ public class KatServer {
          * @param resource 包含信息的容器
          * @return
          */
-        public static Optional<KatUniMessage> upload(KatUniMessage resource) {
-            return KatStorageManager.upload(resource);
+        public static void upload(String fileHash, InputStream inputStream) {
+            KatStorageManager.upload(fileHash, inputStream);
         }
 
         /**
@@ -329,14 +330,5 @@ public class KatServer {
             return KatStorageManager.delete(hashString);
         }
 
-        /**
-         * 更新文件。
-         * 
-         * @param resource
-         * @return
-         */
-        public static Optional<KatUniMessage> update(KatUniMessage resource) {
-            return KatStorageManager.update(resource);
-        }
     }
 }

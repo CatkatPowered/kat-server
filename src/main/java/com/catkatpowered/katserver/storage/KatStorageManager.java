@@ -1,9 +1,10 @@
 package com.catkatpowered.katserver.storage;
 
+import java.io.InputStream;
+import java.util.Optional;
+
 import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
-
-import java.util.Optional;
 
 public class KatStorageManager {
 
@@ -49,8 +50,8 @@ public class KatStorageManager {
      * @param resource 包含信息的容器
      * @return
      */
-    public static Optional<KatUniMessage> upload(KatUniMessage resource) {
-        return KatStorage.getInstance().getProvider().upload(resource);
+    public static void upload(String fileHash, InputStream inputStream) {
+        KatStorage.getInstance().getProvider().upload(fileHash, inputStream);
     }
 
     /**
@@ -61,16 +62,6 @@ public class KatStorageManager {
      */
     public static boolean delete(String hashString) {
         return KatStorage.getInstance().getProvider().delete(hashString);
-    }
-
-    /**
-     * 更新文件。
-     *
-     * @param resource
-     * @return
-     */
-    public static Optional<KatUniMessage> update(KatUniMessage resource) {
-        return KatStorage.getInstance().getProvider().update(resource);
     }
 
     /**
