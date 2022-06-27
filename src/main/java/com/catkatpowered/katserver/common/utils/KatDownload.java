@@ -1,11 +1,14 @@
 package com.catkatpowered.katserver.common.utils;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * <em>KatServer</em> 提供的标准下载工具
@@ -14,26 +17,9 @@ import java.util.Map;
  * @see OkHttpClient
  */
 public class KatDownload {
-    public static boolean isFileLocked(File file) {
-        var f = new File(file.getAbsolutePath() + ".lock");
-        return f.exists();
-    }
 
-    public static boolean isFileLocked(String path) {
-        return isFileLocked(new File(path));
-    }
-
-    public static void removeLockedFile(File file) {
-        if (isFileLocked(file))
-            file = new File(file.getAbsolutePath() + ".lock");
-        file.delete();
-    }
-
-    public static void removeLockedFile(String path) {
-        removeLockedFile(new File(path));
-    }
-
-    public static boolean downloadFile(File file, URL url, Map<String, String> headers) {
+    public static InputStream getDownloadFileStream(File file, URL url, Map<String, String> headers)
+            throws IOException {
         var client = new OkHttpClient();
         var downloadRequestBuilder = new Request.Builder().url(url);
 
@@ -45,40 +31,34 @@ public class KatDownload {
         var downloadRequest = downloadRequestBuilder.build();
         var call = client.newCall(downloadRequest);
 
-        try (var r = call.execute()) {
-            writeFile(file, r.body().charStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return call.execute().body().byteStream();
 
     }
 
-    private static void writeFile(File path, Reader reader) throws IOException {
-        var filePath = path.getPath();
+    public static void writeFile(File path, InputStream inputStream) {
+        var file = new KatFile(path.getAbsolutePath());
 
-        // Is locked
-        if (isFileLocked(path))
-            return;
-        else
-            path = new File(filePath + ".lock");
+        file.lock();
 
         // Buffer
         var len = 0;
-        var buffer = new char[2048];
+        var buffer = new byte[2048];
 
-        // Buffered writer
-        var fileBufferWriter = new BufferedWriter(new FileWriter(path));
+        try {
 
-        while ((len = reader.read(buffer)) != -1) {
-            fileBufferWriter.write(buffer, 0, len);
+            var fileOutputStream = new FileOutputStream(path);
+
+            while ((len = inputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, len);
+            }
+
+            fileOutputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            file.delete();
+        } finally {
+            file.unlock();
         }
-
-        fileBufferWriter.close();
-
-        // Unlock
-        path.renameTo(new File(filePath.replaceAll(".lock", "")));
-
     }
 }

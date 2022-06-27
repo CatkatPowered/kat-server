@@ -1,9 +1,10 @@
 package com.catkatpowered.katserver.storage.providers;
 
+import java.io.InputStream;
+import java.util.Optional;
+
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
 import com.catkatpowered.katserver.message.KatUniMessage;
-
-import java.util.Optional;
 
 /**
  * @author Krysztal
@@ -37,7 +38,7 @@ public abstract class KatStorageProvider {
      * @param resource 包含资源信息的数据结构
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      */
-    public abstract Optional<KatUniMessage> upload(KatUniMessage resource);
+    public abstract void upload(String fileHash, InputStream inputStream);
 
     /**
      * 删除资源
@@ -47,11 +48,4 @@ public abstract class KatStorageProvider {
      */
     public abstract boolean delete(String hashString);
 
-    /**
-     * 更新资源
-     *
-     * @param resource 包含资源信息的数据结构
-     * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
-     */
-    public abstract Optional<KatUniMessage> update(KatUniMessage resource);
 }

@@ -1,5 +1,11 @@
 package com.catkatpowered.katserver.storage.providers.local;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.Objects;
+import java.util.Optional;
+
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.utils.KatDownload;
@@ -7,12 +13,6 @@ import com.catkatpowered.katserver.common.utils.KatShaUtils;
 import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author Krysztal
@@ -67,29 +67,12 @@ public class LocalProvider extends KatStorageProvider {
     }
 
     @Override
-    public Optional<KatUniMessage> upload(KatUniMessage resource) {
-        var optionalFilePath = this.toPath(resource.getResourceHash());
-        if (optionalFilePath.isEmpty())
-            return Optional.empty();
+    public void upload(String fileHash, InputStream inputStream) {
 
-        var filePath = optionalFilePath.get();
-        var file = new File(filePath);
+        var filePath = this.toPath(fileHash).get();
 
-        if (file.getParentFile().exists())
-            file.getParentFile().mkdirs();
+        KatDownload.writeFile(new File(filePath), inputStream);
 
-        if (KatDownload.isFileLocked(filePath)) {
-            try {
-                if (KatDownload.downloadFile(file, resource.getResourceURI().toURL(), null)) {
-                    resource.setResourceURI(file.toURI());
-                    return Optional.of(resource);
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return Optional.empty();
     }
 
     @Override
@@ -100,11 +83,6 @@ public class LocalProvider extends KatStorageProvider {
 
         var file = new File(fetchedFilePath.get().getResourceURI());
         return file.delete();
-    }
-
-    @Override
-    public Optional<KatUniMessage> update(KatUniMessage resource) {
-        return Optional.empty();
     }
 
     private Optional<String> toPath(String hashString) {
