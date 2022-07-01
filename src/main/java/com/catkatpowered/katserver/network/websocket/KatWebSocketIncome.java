@@ -26,29 +26,34 @@ public class KatWebSocketIncome {
             sessions.add(wsConnectContext.session);
             KatNetwork.setSessions(sessions);
         });
-        ws.onClose(wsCloseContext -> {
-            KatNetwork.getSessions().remove(wsCloseContext.session);
-        });
+        ws.onClose(wsCloseContext -> KatNetwork.getSessions().remove(wsCloseContext.session));
         ws.onMessage(wsMessageContext -> {
             String type = gson.fromJson(wsMessageContext.message(),
                     BasePacket.class).getType();
             switch (type) {
-                case KatPacketTypeConstants.MESSAGE_PACKET:
+                case KatPacketTypeConstants.MESSAGE_PACKET -> {
                     WebSocketMessagePacket webSocketMessagePacket = gson.fromJson(wsMessageContext.message(),
                             WebSocketMessagePacket.class);
+                    if (webSocketMessagePacket.getMessage().isResource() && !KatServer.KatTokenPoolAPI.checkToken(webSocketMessagePacket.getMessage().resourceToken)) {
+                        wsMessageContext.send(gson.toJson(ErrorPacket.builder().error("Invalid Resource Token").build()));
+                        return;
+                    }
                     // 异步保存消息到数据库
                     KatMessageStorage.createMessage(webSocketMessagePacket.getMessage());
                     // 处理消息发送事件
-                    KatServer.KatEventBusAPI.callEvent(new MessageSendEvent(webSocketMessagePacket.getMessage().extensionID, webSocketMessagePacket.getMessage()));
+                    KatServer.KatEventBusAPI.callEvent(MessageSendEvent.builder().extensionId(webSocketMessagePacket.getMessage().extensionID).message(webSocketMessagePacket.getMessage()).build());
+
                     return;
-                case KatPacketTypeConstants.MESSAGE_QUERY_PACKET:
+                }
+                case KatPacketTypeConstants.MESSAGE_QUERY_PACKET -> {
                     WebsocketMessageQueryPacket websocketMessageQueryPacket = gson.fromJson(wsMessageContext.message(),
                             WebsocketMessageQueryPacket.class);
                     // 处理消息查询并返回
                     Optional<List<KatUniMessage>> messages = KatMessageStorage.searchMessage(websocketMessageQueryPacket.getExtensionId(), websocketMessageQueryPacket.getMessageGroup(), websocketMessageQueryPacket.getStartTimeStamp(), websocketMessageQueryPacket.getEndTimeStamp());
-                    websocketMessageQueryPacket.setMessages(messages.get());
+                    websocketMessageQueryPacket.setMessages(messages.orElse(null));
                     wsMessageContext.send(websocketMessageQueryPacket);
                     return;
+                }
             }
             wsMessageContext.send(gson.toJson(ErrorPacket.builder().error("Unknown Packet").build()));
         });

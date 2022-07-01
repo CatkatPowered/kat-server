@@ -7,14 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 public class MessageSendEvent extends Event {
     String extensionId;
     KatUniMessage message;
-
-    @Builder
-    public MessageSendEvent(String extensionId, KatUniMessage message) {
-        this.extensionId = extensionId;
-        this.message = message;
-    }
 }

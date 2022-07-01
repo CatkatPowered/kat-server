@@ -103,6 +103,7 @@ public class KatUniMessage {
     @SerializedName("resource_name")
     public String resourceName;
 
+    // TODO: 商讨此处是否应移出，文件的下载地址当前设计下只与资源文件hash有关
     /**
      * <b>ResourceURI</b> 为资源文件的下载地址
      */
@@ -116,7 +117,7 @@ public class KatUniMessage {
      */
     @SerializedName("resource_size")
     @Default
-    public long resourceSize = (long) -1;
+    public long resourceSize = -1;
 
     /**
      * <b>ResourceToken</b> 用于资源文件请求时的一次性鉴权

@@ -38,7 +38,7 @@ public class KatWebSocketBroadcast implements Listener {
                 session.getRemote().sendString(gson.toJson(packet));
             }
         } catch (Exception e) {
-            log.error(e.getStackTrace().toString());
+            log.error(e.getMessage());
         }
     }
 }

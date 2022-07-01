@@ -226,7 +226,7 @@ public class TestKatNetwork {
             if (connected)
                 break;
         }
-        KatEventManager.callEvent(new MessageReceiveEvent(plainTextMessage));
+        KatEventManager.callEvent(MessageReceiveEvent.builder().message(plainTextMessage).build());
     }
 
     @Test

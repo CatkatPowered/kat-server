@@ -7,12 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 public class MessageReceiveEvent extends Event {
     KatUniMessage message;
-
-    @Builder
-    public MessageReceiveEvent(KatUniMessage message) {
-        this.message = message;
-    }
 }

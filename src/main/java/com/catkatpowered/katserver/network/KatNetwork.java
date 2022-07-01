@@ -2,7 +2,8 @@ package com.catkatpowered.katserver.network;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
-import com.catkatpowered.katserver.network.http.HttpHandler;
+import com.catkatpowered.katserver.network.http.HttpGetHandler;
+import com.catkatpowered.katserver.network.http.HttpPostHandler;
 import com.catkatpowered.katserver.network.utils.KatCertUtil;
 import com.catkatpowered.katserver.network.websocket.KatWebSocketIncome;
 import io.javalin.Javalin;
@@ -29,19 +30,20 @@ public class KatNetwork {
     private static List<Session> sessions = new ArrayList<>();
 
     private KatNetwork() {
-        Javalin server = Javalin.create(config -> {
-            config.server(() -> {
-                Server app = new Server();
-                SslContextFactory sslContextFactory = KatCertUtil.getSslContextFactory();
-                ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
-                sslConnector.setPort(KatServer.KatConfigAPI
-                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get());
-                app.setConnectors(new Connector[]{sslConnector});
-                return app;
-            });
-        });
+        Javalin server = Javalin.create(config -> config.server(() -> {
+            Server app = new Server();
+            SslContextFactory sslContextFactory = KatCertUtil.getSslContextFactory();
+            ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
+            sslConnector.setPort(KatServer.KatConfigAPI
+                    .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get());
+            app.setConnectors(new Connector[]{sslConnector});
+            return app;
+        }));
         // HTTP Handlers
-        server.get("/resource", new HttpHandler());
+        // mosseger向kat-server请求文件
+        server.get("/resource/{resourceHash}", new HttpGetHandler());
+        // mosseger向kat-server上传文件
+        server.post("/resource/{resourceHash}/{resourceName}", new HttpPostHandler());
 
         // WebSocket Handlers
         server.ws("/websocket", KatWebSocketIncome::KatNetworkIncomeHandler);
