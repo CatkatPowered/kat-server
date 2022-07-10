@@ -296,7 +296,7 @@ public class KatServer {
          * @param hashString
          * @return
          */
-        public static Optional<KatUniMessage> fetch(String hashString) {
+        public static Optional<InputStream> fetch(String hashString) {
             return KatStorageManager.fetch(hashString);
         }
 
@@ -306,7 +306,7 @@ public class KatServer {
          * @param hashString
          * @return
          */
-        public static Optional<KatUniMessage> validate(String hashString) {
+        public static boolean validate(String hashString) {
             return KatStorageManager.validate(hashString);
         }
 

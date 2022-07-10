@@ -1,6 +1,8 @@
 package com.catkatpowered.katserver.storage.providers.local;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -11,7 +13,6 @@ import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import com.catkatpowered.katserver.common.utils.KatDownload;
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
 import com.catkatpowered.katserver.common.utils.KatWorkSpace;
-import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 
 /**
@@ -37,7 +38,7 @@ public class LocalProvider extends KatStorageProvider {
      * @see com.catkatpowered.katserver.common.utils.KatShaUtils
      */
     @Override
-    public Optional<KatUniMessage> fetch(String hashString) {
+    public Optional<InputStream> fetch(String hashString) {
         var path = toPath(hashString);
         if (path.isEmpty())
             return Optional.empty();
@@ -46,24 +47,34 @@ public class LocalProvider extends KatStorageProvider {
         if (!(new File(path.get())).exists())
             return Optional.empty();
 
-        return Optional.of(KatUniMessage.builder()
-                .resourceHash(hashString)
-                .resourceSize(file.length())
-                .resourceURI(file.toURI()).build());
+        InputStream fileInputStream = null;
+
+        try {
+            fileInputStream = new FileInputStream(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.ofNullable(fileInputStream);
     }
 
     @Override
-    public Optional<KatUniMessage> validate(String hashString) {
+    public boolean validate(String hashString) {
         // 判断是否存在文件，若不存在则返回空 Optional
         var fetchedResource = this.fetch(hashString);
         if (fetchedResource.isEmpty())
-            return Optional.empty();
+            return false;
 
         // 由于是本地文件，因此直接计算文件Sha256
-        var fileURI = fetchedResource.get().getResourceURI();
-        var fileSha256 = KatShaUtils.sha256(new File(fileURI));
+        var fileSha256 = KatShaUtils.sha256(fetchedResource.get());
 
-        return !Objects.equals(hashString, fileSha256) ? Optional.empty() : fetchedResource;
+        try {
+            fetchedResource.get().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Objects.equals(hashString, fileSha256);
     }
 
     @Override
@@ -81,7 +92,7 @@ public class LocalProvider extends KatStorageProvider {
         if (fetchedFilePath.isEmpty())
             return false;
 
-        var file = new File(fetchedFilePath.get().getResourceURI());
+        var file = new File(this.toPath(hashString).get());
         return file.delete();
     }
 

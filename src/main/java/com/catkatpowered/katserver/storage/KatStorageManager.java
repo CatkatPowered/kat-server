@@ -3,7 +3,6 @@ package com.catkatpowered.katserver.storage;
 import java.io.InputStream;
 import java.util.Optional;
 
-import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 
 public class KatStorageManager {
@@ -30,7 +29,7 @@ public class KatStorageManager {
      * @param hashString
      * @return
      */
-    public static Optional<KatUniMessage> fetch(String hashString) {
+    public static Optional<InputStream> fetch(String hashString) {
         return KatStorage.getInstance().getProvider().fetch(hashString);
     }
 
@@ -40,7 +39,7 @@ public class KatStorageManager {
      * @param hashString
      * @return
      */
-    public static Optional<KatUniMessage> validate(String hashString) {
+    public static boolean validate(String hashString) {
         return KatStorage.getInstance().getProvider().validate(hashString);
     }
 

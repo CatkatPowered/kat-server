@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.Optional;
 
 import com.catkatpowered.katserver.common.utils.KatShaUtils;
-import com.catkatpowered.katserver.message.KatUniMessage;
 
 /**
  * @author Krysztal
@@ -21,7 +20,7 @@ public abstract class KatStorageProvider {
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      * @see KatShaUtils
      */
-    public abstract Optional<KatUniMessage> fetch(String hashString);
+    public abstract Optional<InputStream> fetch(String hashString);
 
     /**
      * 使用 Hash 校验资源，校验工具为 {@link KatShaUtils}
@@ -30,7 +29,7 @@ public abstract class KatStorageProvider {
      * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
      * @see KatShaUtils
      */
-    public abstract Optional<KatUniMessage> validate(String hashString);
+    public abstract boolean validate(String hashString);
 
     /**
      * 上传资源文件到指定位置。
