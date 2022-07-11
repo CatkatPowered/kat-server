@@ -103,7 +103,6 @@ public class KatUniMessage {
     @SerializedName("resource_name")
     public String resourceName;
 
-
     /**
      * <b>ResourceSize</b> 为资源的大小
      * 
@@ -150,7 +149,6 @@ public class KatUniMessage {
     public boolean isFullIndex() {
         return (this.messageGroup == null || this.messageID == null);
     }
-
 
     public boolean isHashed() {
         return this.resourceHash != null;
