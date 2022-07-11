@@ -104,6 +104,12 @@ public class KatUniMessage {
     public String resourceName;
 
     /**
+     * <b>ResourceURI</b> 为资源文件的下载地址
+     */
+    @SerializedName("resource_uri")
+    public URI resourceURI;
+
+    /**
      * <b>ResourceSize</b> 为资源的大小
      * 
      * 当为-1时，大小未知
@@ -148,6 +154,10 @@ public class KatUniMessage {
      */
     public boolean isFullIndex() {
         return (this.messageGroup == null || this.messageID == null);
+    }
+
+    public boolean isDownloadable() {
+        return this.resourceURI != null;
     }
 
     public boolean isHashed() {
