@@ -18,7 +18,7 @@ import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 /**
  * @author Krysztal
  */
-public class LocalProvider extends KatStorageProvider {
+public class LocalProvider implements KatStorageProvider {
 
     private final String resourceStoragePath;
 

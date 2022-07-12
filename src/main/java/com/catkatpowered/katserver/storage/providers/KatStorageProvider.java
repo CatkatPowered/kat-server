@@ -8,10 +8,7 @@ import com.catkatpowered.katserver.common.utils.KatShaUtils;
 /**
  * @author Krysztal
  */
-public abstract class KatStorageProvider {
-
-    protected KatStorageProvider() {
-    }
+public interface KatStorageProvider {
 
     /**
      * 获取资源
