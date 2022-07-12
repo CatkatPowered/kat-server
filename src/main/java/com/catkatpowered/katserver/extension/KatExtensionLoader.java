@@ -88,7 +88,7 @@ public class KatExtensionLoader {
                 | IllegalAccessException
                 | InvocationTargetException
                 | NoSuchMethodException exception) {
-            log.error("unknown error. cloud not load {} extension.", info.extension, exception);
+            log.error("unknown error. cloud not load extension {}.", info.extension, exception);
         }
     }
 
@@ -184,7 +184,7 @@ public class KatExtensionLoader {
             // 注入依赖
             return gson.fromJson(json, KatExtensionInfo.class);
         } catch (IOException exception) {
-            log.error("Are you ready {} is a extension?", extension.getName(), exception);
+            log.error("Are you sure {} is a extension?", extension.getName(), exception);
         }
         return null;
     }

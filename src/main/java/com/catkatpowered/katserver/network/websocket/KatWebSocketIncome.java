@@ -3,6 +3,7 @@ package com.catkatpowered.katserver.network.websocket;
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
 import com.catkatpowered.katserver.common.constants.KatPacketTypeConstants;
+import com.catkatpowered.katserver.event.events.CustomPacketReceiveEvent;
 import com.catkatpowered.katserver.event.events.MessageSendEvent;
 import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.network.KatNetwork;
@@ -53,6 +54,11 @@ public class KatWebSocketIncome {
                     websocketMessageQueryPacket.setMessages(messages.orElse(null));
                     wsMessageContext.send(websocketMessageQueryPacket);
                     return;
+                }
+                case KatPacketTypeConstants.CUSTOM_PACKET -> {
+                    CustomPacket customPacket = gson.fromJson(wsMessageContext.message(),
+                            CustomPacket.class);
+                    KatServer.KatEventBusAPI.callEvent(CustomPacketReceiveEvent.builder().extensionId(customPacket.getExtensionId()).content(customPacket.getContent()).build());
                 }
             }
             wsMessageContext.send(gson.toJson(ErrorPacket.builder().error("Unknown Packet").build()));
