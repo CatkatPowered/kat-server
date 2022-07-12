@@ -36,8 +36,8 @@ public class KatStorage {
         return Instance;
     }
 
-    public void addStorage(String resourceName, KatStorageProvider storage) {
-        this.storageProviders.put(resourceName, storage);
+    public void addStorage(String name, KatStorageProvider storage) {
+        this.storageProviders.put(name, storage);
     }
 
 }
