@@ -18,7 +18,6 @@ import com.catkatpowered.katserver.event.RegisteredListener;
 import com.catkatpowered.katserver.event.interfaces.Listener;
 import com.catkatpowered.katserver.extension.KatExtension;
 import com.catkatpowered.katserver.extension.KatExtensionManager;
-import com.catkatpowered.katserver.message.KatUniMessage;
 import com.catkatpowered.katserver.message.KatUniMessageTypeManager;
 import com.catkatpowered.katserver.storage.KatStorageManager;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
@@ -283,15 +282,28 @@ public class KatServer {
     }
 
     public static final class KatStorageAPI {
-
+        /**
+         * 获取当前的 StorageProvider
+         * 
+         * @return
+         */
         public static KatStorageProvider getStorageProvider() {
             return KatStorageManager.getStorageProvider();
         }
 
         /**
-         * 拉取资源位置。
+         * 注册新的储存提供者
          * 
-         * 注意，该函数返回值中为URI，需要做适当的处理
+         * @param name                  储存提供者名称
+         * @param newKatStorageProvider 储存提供者实现
+         * @see KatStorageProviderManager
+         */
+        public static void registerStorageProvider(String name, KatStorageProvider newKatStorageProvider) {
+            KatStorageManager.registerStorageProvider(name, newKatStorageProvider);
+        }
+
+        /**
+         * 拉取资源文件。
          * 
          * @param hashString
          * @return

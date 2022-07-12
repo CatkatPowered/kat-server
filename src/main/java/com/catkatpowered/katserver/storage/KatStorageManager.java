@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
+import com.catkatpowered.katserver.storage.providers.local.*;
 
 public class KatStorageManager {
 
@@ -19,6 +20,18 @@ public class KatStorageManager {
      */
     public static KatStorageProvider getStorageProvider() {
         return KatStorage.getInstance().getProvider();
+    }
+
+    /**
+     * 注册新的储存提供者
+     * 
+     * @param name                  储存提供者名称
+     * @param newKatStorageProvider 储存提供者实现
+     * @see KatStorageProvider
+     * @see LocalProvider
+     */
+    public static void registerStorageProvider(String name, KatStorageProvider newKatStorageProvider) {
+        KatStorage.getInstance().addStorage(name, newKatStorageProvider);
     }
 
     /**
