@@ -14,8 +14,8 @@ public class HttpGetHandler implements Handler {
     public void handle(@NotNull Context ctx) throws Exception {
         HttpRequestBody body = gson.fromJson(new String(ctx.body().getBytes()), HttpRequestBody.class);
         if (KatServer.KatTokenPoolAPI.checkToken(body.getResourceToken())) {
-            // 直接用stream传递，用流发送给mosseger端
-            ctx.result(KatServer.KatStorageAPI.fetch(body.getResourceHash()).get());
+          // 直接用stream传递，用流发送给mosseger端
+          ctx.result(KatServer.KatStorageAPI.fetch(body.getResourceHash()));
         }
     }
 }

@@ -308,7 +308,7 @@ public class KatServer {
          * @param hashString
          * @return
          */
-        public static Optional<InputStream> fetch(String hashString) {
+        public static  InputStream  fetch(String hashString) {
             return KatStorageManager.fetch(hashString);
         }
 
