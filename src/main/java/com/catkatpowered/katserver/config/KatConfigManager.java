@@ -19,11 +19,10 @@ public class KatConfigManager {
 
     public static void init() {
         if (!Files.exists(Path.of(KatWorkSpace.fixPath(
-                KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH).toString())))) {
+                KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH).get())))) {
             try {
                 Files.createDirectory(Path.of(KatWorkSpace.fixPath(
-                        KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH)
-                                .toString())));
+                        KatServer.KatConfigAPI.<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH).get())));
             } catch (IOException e) {
                 log.error(String.valueOf(e));
             }
@@ -38,13 +37,9 @@ public class KatConfigManager {
             return Optional.empty();
         }
 
-        var nodes = optionalConfigNode.get().split("\\.");
-        Map<String, Object> res = KatConfig.getInstance().getConfigContent();
-        for (int i = 0; i < nodes.length - 1; i++) {
-            res = (Map<String, Object>) res.get(nodes[i]);
-        }
+        Object res = KatConfig.getInstance().getConfigContent().get(configNode);
 
-        return Optional.ofNullable((T) res.get(nodes[nodes.length - 1]));
+        return Optional.ofNullable((T) res);
     }
 
     public static Map<String, Object> getAllConfig() {

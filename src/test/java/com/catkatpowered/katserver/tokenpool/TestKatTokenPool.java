@@ -4,29 +4,32 @@ import com.catkatpowered.katserver.config.KatConfig;
 import com.catkatpowered.katserver.tokenpool.KatTokenPool.ClearAction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
+import org.tomlj.Toml;
+import org.tomlj.TomlParseResult;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestKatTokenPool {
 
     static String defaultConfig = """
-                ####################### TokenPool ##############################
-                # This section are the settings of token pool
-
-                tokenpool:
-                  # You can set the token how long to live
-                  outdated: 10000
+                [tokenpool]
+                # You can set the token how long to live
+                #
+                # Unit: Millisecond
+                outdated = 10000
             """;
 
     @BeforeAll
     public static void initTest() {
-        Map<String, Object> yml = new Yaml().load(defaultConfig);
-        KatConfig.getInstance().setConfigContent(yml);
+        Map<String, Object> config = new HashMap<>();
+        TomlParseResult toml = Toml.parse(defaultConfig);
+        for (Map.Entry<String, Object> entry : toml.dottedEntrySet()) {
+            config.put(entry.getKey(), entry.getValue());
+        }
+        KatConfig.getInstance().setConfigContent(config);
     }
 
     @Test

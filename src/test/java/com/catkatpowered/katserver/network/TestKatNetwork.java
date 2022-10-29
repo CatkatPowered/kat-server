@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.security.KeyStore;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +20,6 @@ import com.catkatpowered.katserver.network.utils.KatCertUtil;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
 
 import com.catkatpowered.katserver.KatServer;
 import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
@@ -41,6 +41,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import org.tomlj.Toml;
+import org.tomlj.TomlParseResult;
 
 public class TestKatNetwork {
     private static OkHttpClient wsClient;
@@ -56,58 +58,63 @@ public class TestKatNetwork {
     @SuppressWarnings("SpellCheckingInspection")
     private static final String defaultConfig = """
             ######################### Network #############################
-            network:
-              network_port: 25565
-              selfgen_cert:
-                cert_password: "catmoe"
-                cert_alias: "catmoe"
-              custom_cert:
-                enabled: false
-                cert_path: "./cert.jks"
-                cert_password: "catmoe"
+            [network]
+            network_port = 25565
+
+            [network.selfgen_cert]
+            cert_password = "catmoe"
+            cert_alias = "catmoe"
+
+            [network.custom_cert]
+            enabled = false
+            cert_path = "./cert.jks"
+            cert_password = "catmoe"
 
             ######################### Database ############################
-            database:
-              # default support mongodb
-              # demo database_url:
-              # mongodb: mongodb://localhost:27017/database_name
-              #
-              # Note: No need to carry username and password in url
-              database_url: mongodb://localhost:27017/kat-server
-              database_username:
-              database_password:
+            [database]
+            # default support mongodb
+            # demo database_url:
+            # mongodb: mongodb://localhost:27017/database_name
+            #
+            # Note: No need to carry username and password in url
+            database_url = "mongodb://localhost:27017/kat-server"
+            database_username = ""
+            database_password = ""
 
             ####################### Storage ###############################
             # The resource file storage
-            resource:
-              # You can choose those type of storage_provider
-              # 1.local
-              storage_provider: local
+            [resource]
+            # You can choose those type of storage_provider
+            # 1.local
+            storage_provider = "local"
 
-              # If you choose `local`,
-              # you can set the resource file where to store.
-              data_folder_path: "./data"
-
+            # If you choose `local`,
+            # you can set the resource file where to store.
+            data_folder_path = "./data"
+                  
             ####################### ExecThreads ############################
-            exec:
-              exec_threads: 16
-
+            [exec]
+            exec_threads = 16
+                  
             ####################### TokenPool ##############################
             # This section are the settings of token pool
-
-            tokenpool:
-              # You can set the token how long to live
-              #
-              # Unit: Millisecond
-              outdated: 10000
-
-                """;
+                  
+            [tokenpool]
+            # You can set the token how long to live
+            #
+            # Unit: Millisecond
+            outdated = 10000
+                      """;
 
     @BeforeAll
     public static void start() {
         // 启动配置文件模块
-        Map<String, Object> yml = new Yaml().load(defaultConfig);
-        KatConfig.getInstance().setConfigContent(yml);
+        Map<String, Object> config = new HashMap<>();
+        TomlParseResult toml = Toml.parse(defaultConfig);
+        for (Map.Entry<String, Object> entry : toml.dottedEntrySet()) {
+            config.put(entry.getKey(), entry.getValue());
+        }
+        KatConfig.getInstance().setConfigContent(config);
         // 启动事件总线模块
         KatEventManager.init();
         // 启动网络模块
@@ -137,7 +144,7 @@ public class TestKatNetwork {
 
                 @Override
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[] {};
+                    return new java.security.cert.X509Certificate[]{};
                 }
             };
         } catch (Exception e) {
@@ -149,7 +156,7 @@ public class TestKatNetwork {
             KeyManagerFactory keyManagerFactory = KeyManagerFactory
                     .getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(keyStore, "catmoe".toCharArray());
-            sslContext.init(keyManagerFactory.getKeyManagers(), new TrustManager[] { trustManager },
+            sslContext.init(keyManagerFactory.getKeyManagers(), new TrustManager[]{trustManager},
                     new SecureRandom());
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +178,7 @@ public class TestKatNetwork {
     public void connection() throws InterruptedException {
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
-                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
+                        .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
         class Listener extends WebSocketListener {
             @Override
@@ -204,7 +211,7 @@ public class TestKatNetwork {
         connected = false;
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
-                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
+                        .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
         class Listener extends WebSocketListener {
             @Override
@@ -233,7 +240,7 @@ public class TestKatNetwork {
     public void newMessageIncome() {
         Request request = new Request.Builder()
                 .url("wss://localhost:" + KatServer.KatConfigAPI
-                        .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
+                        .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get() + "/websocket")
                 .build();
         WebSocket webSocket = wsClient.newWebSocket(request, new WebSocketListener() {
         });

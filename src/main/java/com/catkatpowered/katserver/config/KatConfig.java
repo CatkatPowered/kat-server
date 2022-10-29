@@ -4,9 +4,11 @@ import com.catkatpowered.katserver.common.utils.KatWorkSpace;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.yaml.snakeyaml.Yaml;
+import org.tomlj.Toml;
+import org.tomlj.TomlParseResult;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,27 +25,31 @@ public class KatConfig {
 
     @Getter
     @Setter
-    private Map<String, Object> configContent;
+    private Map<String, Object> configContent = new HashMap<>();
 
     private KatConfig() {
-        File katConfigFile = new File(KatWorkSpace.fixPath("./config.yml"));
+        File katConfigFile = new File(KatWorkSpace.fixPath("./config.toml"));
         try {
             // 检测配置文件状态并处理
             if (katConfigFile.exists()) {
-                Yaml yaml = new Yaml();
                 InputStream inputStream = new FileInputStream(katConfigFile);
-                configContent = yaml.load(inputStream);
+                TomlParseResult toml = Toml.parse(inputStream);
+                for (Map.Entry<String, Object> entry : toml.dottedEntrySet()) {
+                    configContent.put(entry.getKey(), entry.getValue());
+                }
                 inputStream.close();
 
             } else {
                 if (katConfigFile.createNewFile()) {
                     OutputStream outputStream = new FileOutputStream(katConfigFile);
-                    outputStream.write(Objects.requireNonNull(KatConfig.class.getClassLoader().getResourceAsStream("config.yml")).readAllBytes());
+                    outputStream.write(Objects.requireNonNull(KatConfig.class.getClassLoader().getResourceAsStream("config.toml")).readAllBytes());
                     outputStream.flush();
                     outputStream.close();
-                    Yaml yaml = new Yaml();
                     InputStream inputStream = new FileInputStream(katConfigFile);
-                    configContent = yaml.load(inputStream);
+                    TomlParseResult toml = Toml.parse(inputStream);
+                    for (Map.Entry<String, Object> entry : toml.dottedEntrySet()) {
+                        configContent.put(entry.getKey(), entry.getValue());
+                    }
                     inputStream.close();
 
                 } else {

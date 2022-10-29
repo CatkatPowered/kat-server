@@ -39,8 +39,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation 'com.google.guava:guava:31.0.1-jre'
 
-    // https://mvnrepository.com/artifact/org.yaml/snakeyaml
-    implementation 'org.yaml:snakeyaml:1.30'
+    // https://mvnrepository.com/artifact/org.tomlj/tomlj
+    implementation group: 'org.tomlj', name: 'tomlj', version: '1.1.0'
 
     // https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver
     implementation 'org.mongodb:mongo-java-driver:3.12.10'
