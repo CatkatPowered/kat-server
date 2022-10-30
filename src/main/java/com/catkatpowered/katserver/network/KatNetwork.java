@@ -9,6 +9,7 @@ import com.catkatpowered.katserver.network.websocket.KatWebSocketIncome;
 import io.javalin.Javalin;
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -30,15 +31,17 @@ public class KatNetwork {
     private static List<Session> sessions = new ArrayList<>();
 
     private KatNetwork() {
-        Javalin server = Javalin.create(config -> config.server(() -> {
-            Server app = new Server();
-            SslContextFactory sslContextFactory = KatCertUtil.getSslContextFactory();
-            ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
-            sslConnector.setPort(KatServer.KatConfigAPI
-                    .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get().intValue());
-            app.setConnectors(new Connector[]{sslConnector});
-            return app;
-        }));
+        Javalin server = Javalin.create(javalinConfig -> {
+            javalinConfig.jetty.server(() -> {
+                Server app = new Server();
+                SslContextFactory.Server sslContextFactory = KatCertUtil.getSslContextFactory();
+                ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
+                sslConnector.setPort(KatServer.KatConfigAPI
+                        .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get().intValue());
+                app.setConnectors(new Connector[]{sslConnector});
+                return app;
+            });
+        });
         // HTTP Handlers
         // mosseger向kat-server请求文件
         server.get("/resource/{resourceHash}", new HttpGetHandler());

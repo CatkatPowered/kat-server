@@ -22,7 +22,7 @@ public class HttpPostHandler implements Handler {
         String resourceHash = ctx.pathParam("resourceHash");
         String resourceName = ctx.pathParam("resourceName");
         UploadedFile uploadedFile = ctx.uploadedFile(resourceName);
-        InputStream inputStream = uploadedFile.getContent();
+        InputStream inputStream = uploadedFile.content();
         KatServer.KatStorageAPI.upload(resourceHash, inputStream);
         // 返回对应的token
         ctx.json(gson.toJson(HttpPostResponse.builder().resourceToken(KatServer.KatTokenPoolAPI.newToken()).build()));
