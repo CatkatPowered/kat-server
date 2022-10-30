@@ -23,11 +23,11 @@ public class KatCertUtil {
 
     private static KeyStore keyStore;
 
-    public static SslContextFactory getSslContextFactory() {
+    public static SslContextFactory.Server getSslContextFactory() {
         if (KatServer.KatConfigAPI
                 .<Boolean>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_CUSTOM_CERT_ENABLED).get()) {
             // 自定义证书
-            SslContextFactory sslContextFactory = new SslContextFactory.Server();
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setKeyStorePath(KatServer.KatConfigAPI
                     .<String>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_CUSTOM_CERT_PATH).get());
             sslContextFactory.setKeyStorePassword(KatServer.KatConfigAPI
@@ -35,7 +35,7 @@ public class KatCertUtil {
             return sslContextFactory;
         } else {
             // 生成一次性自签证书
-            SslContextFactory sslContextFactory = new SslContextFactory.Server();
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             KeyStore keyStore = getKeyStore();
             sslContextFactory.setKeyStore(keyStore);
             sslContextFactory.setKeyStorePassword("catmoe");
