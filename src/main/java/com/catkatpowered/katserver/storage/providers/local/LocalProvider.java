@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
-
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,10 +25,11 @@ public class LocalProvider implements KatStorageProvider {
   public LocalProvider() {
     super();
     resourceStoragePath =
-        KatServer.KatConfigAPI
-            .<String>getConfig(
-                KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH)
-            .orElse(KatWorkSpace.fixPath("./data"));
+      KatServer.KatConfigAPI
+        .<String>getConfig(
+          KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH
+        )
+        .orElse(KatWorkSpace.fixPath("./data"));
   }
 
   /**
@@ -44,12 +44,10 @@ public class LocalProvider implements KatStorageProvider {
   @Nullable
   public InputStream fetch(String hashString) {
     var path = toPath(hashString);
-    if (path == null)
-      return null;
+    if (path == null) return null;
 
     var file = new File(path);
-    if (!(new File(path)).exists())
-      return null;
+    if (!(new File(path)).exists()) return null;
 
     InputStream fileInputStream = null;
 
@@ -66,8 +64,7 @@ public class LocalProvider implements KatStorageProvider {
   public boolean validate(String hashString) {
     // 判断是否存在文件，若不存在则返回空 Optional
     var fetchedResource = this.fetch(hashString);
-    if (fetchedResource == null)
-      return false;
+    if (fetchedResource == null) return false;
 
     // 由于是本地文件，因此直接计算文件Sha256
     var fileSha256 = KatShaUtils.sha256(fetchedResource);
@@ -83,7 +80,6 @@ public class LocalProvider implements KatStorageProvider {
 
   @Override
   public void upload(String fileHash, InputStream inputStream) {
-
     var filePath = this.toPath(fileHash);
 
     KatDownload.writeFile(new File(filePath), inputStream);
@@ -92,8 +88,7 @@ public class LocalProvider implements KatStorageProvider {
   @Override
   public boolean delete(String hashString) {
     var fetchedFilePath = this.fetch(hashString);
-    if (fetchedFilePath == null)
-      return false;
+    if (fetchedFilePath == null) return false;
 
     var file = new File(this.toPath(hashString));
     return file.delete();
@@ -101,9 +96,12 @@ public class LocalProvider implements KatStorageProvider {
 
   private String toPath(String hashString) {
     return Path
-        .of(this.resourceStoragePath, hashString.substring(0, 2),
-            hashString.substring(2, 4))
-        .toAbsolutePath()
-        .toString();
+      .of(
+        this.resourceStoragePath,
+        hashString.substring(0, 2),
+        hashString.substring(2, 4)
+      )
+      .toAbsolutePath()
+      .toString();
   }
 }

@@ -15,10 +15,10 @@ package com.catkatpowered.katserver.event;
  */
 @SuppressWarnings("unused")
 public enum EventPriority {
-    LOWEST,
-    LOW,
-    NORMAL,
-    HIGH,
-    HIGHEST,
-    MONITOR
+  LOWEST,
+  LOW,
+  NORMAL,
+  HIGH,
+  HIGHEST,
+  MONITOR,
 }

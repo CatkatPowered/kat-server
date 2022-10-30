@@ -3,13 +3,13 @@ package com.catkatpowered.katserver.storage;
 import com.catkatpowered.katserver.storage.providers.KatStorageProvider;
 import com.catkatpowered.katserver.storage.providers.local.*;
 import java.io.InputStream;
-
 import org.jetbrains.annotations.Nullable;
-
 
 public class KatStorageManager {
 
-  public static void init() { KatStorage.getInstance(); }
+  public static void init() {
+    KatStorage.getInstance();
+  }
 
   /**
    * 获取储存提供者
@@ -29,7 +29,10 @@ public class KatStorageManager {
    * @see KatStorageProvider
    * @see LocalProvider
    */
-    public static void registerStorageProvider(String name, KatStorageProvider newKatStorageProvider) {
+  public static void registerStorageProvider(
+    String name,
+    KatStorageProvider newKatStorageProvider
+  ) {
     KatStorage.getInstance().addStorage(name, newKatStorageProvider);
   }
 

@@ -1,22 +1,22 @@
 package com.catkatpowered.katserver.tokenpool;
 
 public class KatTokenPoolManager {
-    public static void init() {
-    }
 
-    public static String newToken() {
-        return KatTokenPool.getINSTANCE().newToken();
-    }
+  public static void init() {}
 
-    public static boolean revokeToken(String tokeString) {
-        return KatTokenPool.getINSTANCE().destroyToken(tokeString);
-    }
+  public static String newToken() {
+    return KatTokenPool.getINSTANCE().newToken();
+  }
 
-    public static boolean checkToken(String token) {
-        return KatTokenPool.getINSTANCE().checkToken(token);
-    }
+  public static boolean revokeToken(String tokeString) {
+    return KatTokenPool.getINSTANCE().destroyToken(tokeString);
+  }
 
-    public static KatTokenPool getInstance() {
-        return KatTokenPool.getINSTANCE();
-    }
+  public static boolean checkToken(String token) {
+    return KatTokenPool.getINSTANCE().checkToken(token);
+  }
+
+  public static KatTokenPool getInstance() {
+    return KatTokenPool.getINSTANCE();
+  }
 }

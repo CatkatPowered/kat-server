@@ -9,29 +9,28 @@ import java.util.concurrent.Future;
  */
 public class KatTaskManager {
 
-    public static void init() {
-        KatTask.getInstance();
-    }
+  public static void init() {
+    KatTask.getInstance();
+  }
 
-    public static Future<?> addTask(Runnable task) {
-        return KatTask.getInstance().addTask(task);
-    }
+  public static Future<?> addTask(Runnable task) {
+    return KatTask.getInstance().addTask(task);
+  }
 
-    public static <T> Future<T> addTask(Callable<T> task) {
-        return KatTask.getInstance().addTask(task);
-    }
+  public static <T> Future<T> addTask(Callable<T> task) {
+    return KatTask.getInstance().addTask(task);
+  }
 
-    public static <T> Future<T> addTask(Runnable task, T result) {
-        return KatTask.getInstance().addTask(task, result);
-    }
+  public static <T> Future<T> addTask(Runnable task, T result) {
+    return KatTask.getInstance().addTask(task, result);
+  }
 
-    public static void exec(Runnable task) {
-        KatTask.getInstance().exec(task);
-    }
+  public static void exec(Runnable task) {
+    KatTask.getInstance().exec(task);
+  }
 
-    @Deprecated
-    public static KatTask getInstance() {
-        return KatTask.getInstance();
-    }
-
+  @Deprecated
+  public static KatTask getInstance() {
+    return KatTask.getInstance();
+  }
 }

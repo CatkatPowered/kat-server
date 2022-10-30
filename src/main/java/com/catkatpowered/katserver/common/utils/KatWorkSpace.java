@@ -1,7 +1,6 @@
 package com.catkatpowered.katserver.common.utils;
 
 import com.catkatpowered.katserver.common.constants.KatMiscConstants;
-
 import java.nio.file.Path;
 
 /**
@@ -16,12 +15,16 @@ import java.nio.file.Path;
  */
 public class KatWorkSpace {
 
-    public static String getWorkingDir() {
-        var workingDir = System.getenv().get(KatMiscConstants.KAT_ENV_WORKING_DIR);
-        return workingDir == null || workingDir.isEmpty() ? System.getProperty("user.dir") : workingDir;
-    }
+  public static String getWorkingDir() {
+    var workingDir = System.getenv().get(KatMiscConstants.KAT_ENV_WORKING_DIR);
+    return workingDir == null || workingDir.isEmpty()
+      ? System.getProperty("user.dir")
+      : workingDir;
+  }
 
-    public static String fixPath(String path) {
-        return Path.of(path).isAbsolute() ? path : KatWorkSpace.getWorkingDir() + path;
-    }
+  public static String fixPath(String path) {
+    return Path.of(path).isAbsolute()
+      ? path
+      : KatWorkSpace.getWorkingDir() + path;
+  }
 }

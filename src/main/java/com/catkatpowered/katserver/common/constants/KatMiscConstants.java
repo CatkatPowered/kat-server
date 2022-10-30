@@ -12,14 +12,15 @@ import com.catkatpowered.katserver.common.utils.KatWorkSpace;
  */
 public class KatMiscConstants {
 
-    // Kat Server 项目名
-    public static final String KAT_PROJECT_NAME = "KatServer";
+  // Kat Server 项目名
+  public static final String KAT_PROJECT_NAME = "KatServer";
 
-    // Kat Server 版本号
-    public static final String KAT_SERVER_VERSION = "1.0.0";
+  // Kat Server 版本号
+  public static final String KAT_SERVER_VERSION = "1.0.0";
 
-    // Kat Server 字符画
-    public static final String KAT_SERVER_LOGO = """
+  // Kat Server 字符画
+  public static final String KAT_SERVER_LOGO =
+    """
 
              _  __     _    _____                         \\s
             | |/ /    | |  / ____|                        \\s
@@ -30,18 +31,26 @@ public class KatMiscConstants {
                                                           \\s
             """;
 
-    // Kat Server 环境变量：KAT_ENV_WORKING_DIR
-    public static final String KAT_ENV_WORKING_DIR = "KAT_ENV_WORKING_DIR";
+  // Kat Server 环境变量：KAT_ENV_WORKING_DIR
+  public static final String KAT_ENV_WORKING_DIR = "KAT_ENV_WORKING_DIR";
 
-    // 日志文件储存路径
-    public static final String KAT_LOGGER_PATH = KatWorkSpace.fixPath("/log");
+  // 日志文件储存路径
+  public static final String KAT_LOGGER_PATH = KatWorkSpace.fixPath("/log");
 
-    // 扩展存储路径
-    public static final String KAT_EXTENSIONS_ROOT = KatWorkSpace.fixPath("/extension");
-    // 扩展配置文件存储路径
-    public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkSpace.fixPath("/extension/config");
+  // 扩展存储路径
+  public static final String KAT_EXTENSIONS_ROOT = KatWorkSpace.fixPath(
+    "/extension"
+  );
+  // 扩展配置文件存储路径
+  public static final String KAT_EXTENSIONS_CONFIG_ROOT = KatWorkSpace.fixPath(
+    "/extension/config"
+  );
 
-    // SQLite 数据库存储路径
-    public static final String KAT_DATABASE_PATH = KatWorkSpace.fixPath(KatServer.KatConfigAPI.getConfig(KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH) + "/database.db");
-
+  // SQLite 数据库存储路径
+  public static final String KAT_DATABASE_PATH = KatWorkSpace.fixPath(
+    KatServer.KatConfigAPI.getConfig(
+      KatConfigNodeConstants.KAT_CONFIG_RESOURCE_DATA_FOLDER_PATH
+    ) +
+    "/database.db"
+  );
 }

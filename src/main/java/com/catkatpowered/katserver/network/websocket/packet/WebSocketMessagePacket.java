@@ -9,21 +9,22 @@ import lombok.Data;
 @Data
 @Builder
 public class WebSocketMessagePacket {
-    /*
+
+  /*
     {
         "type": "websocket_message",
         "message": {}
     }
      */
-    // 消息本体
-    @SerializedName("message")
-    KatUniMessage message;
-    // 数据包类型
-    @SerializedName("type")
-    final String type = KatPacketTypeConstants.MESSAGE_PACKET;
+  // 消息本体
+  @SerializedName("message")
+  KatUniMessage message;
 
+  // 数据包类型
+  @SerializedName("type")
+  final String type = KatPacketTypeConstants.MESSAGE_PACKET;
 
-    public WebSocketMessagePacket(KatUniMessage message) {
-        this.message = message;
-    }
+  public WebSocketMessagePacket(KatUniMessage message) {
+    this.message = message;
+  }
 }

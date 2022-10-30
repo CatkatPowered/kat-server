@@ -2,19 +2,19 @@ package com.catkatpowered.katserver.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.catkatpowered.katserver.KatServer;
+import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
-
-import com.catkatpowered.katserver.KatServer;
-import com.catkatpowered.katserver.common.constants.KatConfigNodeConstants;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 
 public class TestKatConfig {
-    String defaultConfig = """
+
+  String defaultConfig =
+    """
             ######################### Network #############################
             [network]
             network_port = 25565
@@ -64,31 +64,36 @@ public class TestKatConfig {
             outdated = 10000
             """;
 
-    @Test
-    public void testConfigNode() {
-        Map<String, Object> config = new HashMap<>();
-        TomlParseResult toml = Toml.parse(defaultConfig);
-        for (Map.Entry<String, Object> entry : toml.dottedEntrySet()) {
-            //System.out.println(entry.getKey() + " / " + entry.getValue());
-            config.put(entry.getKey(), entry.getValue());
-        }
-        KatConfig.getInstance().setConfigContent(config);
-
-        // Get undefined or null config node
-        var undefinedNode = KatServer.KatConfigAPI.getConfig("undefined");
-        assertEquals(Optional.empty(), undefinedNode);
-
-        var nullNode = KatServer.KatConfigAPI.getConfig("");
-        assertEquals(Optional.empty(), nullNode);
-
-        var nullConfigNode = KatServer.KatConfigAPI.getConfig(null); // 炒饭
-        assertEquals(Optional.empty(), nullConfigNode);
-
-        // Try worn type cast
-        KatServer.KatConfigAPI.<Test>getConfig(KatConfigNodeConstants.KAT_CONFIG_DATABASE); // 炒饭，酒吧没炸就行
-
-        // Get already exist config node
-        var networkPort = KatServer.KatConfigAPI.<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get().intValue();
-        assertEquals(25565, networkPort);
+  @Test
+  public void testConfigNode() {
+    Map<String, Object> config = new HashMap<>();
+    TomlParseResult toml = Toml.parse(defaultConfig);
+    for (Map.Entry<String, Object> entry : toml.dottedEntrySet()) {
+      //System.out.println(entry.getKey() + " / " + entry.getValue());
+      config.put(entry.getKey(), entry.getValue());
     }
+    KatConfig.getInstance().setConfigContent(config);
+
+    // Get undefined or null config node
+    var undefinedNode = KatServer.KatConfigAPI.getConfig("undefined");
+    assertEquals(Optional.empty(), undefinedNode);
+
+    var nullNode = KatServer.KatConfigAPI.getConfig("");
+    assertEquals(Optional.empty(), nullNode);
+
+    var nullConfigNode = KatServer.KatConfigAPI.getConfig(null); // 炒饭
+    assertEquals(Optional.empty(), nullConfigNode);
+
+    // Try worn type cast
+    KatServer.KatConfigAPI.<Test>getConfig(
+      KatConfigNodeConstants.KAT_CONFIG_DATABASE
+    ); // 炒饭，酒吧没炸就行
+
+    // Get already exist config node
+    var networkPort = KatServer.KatConfigAPI
+      .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT)
+      .get()
+      .intValue();
+    assertEquals(25565, networkPort);
+  }
 }

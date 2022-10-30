@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 public class CustomPacketReceiveEvent extends Event {
-    String extensionId;
-    Object content;
+
+  String extensionId;
+  Object content;
 }

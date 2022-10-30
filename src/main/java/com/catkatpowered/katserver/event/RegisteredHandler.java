@@ -1,40 +1,43 @@
 package com.catkatpowered.katserver.event;
 
 import com.catkatpowered.katserver.event.interfaces.Listener;
-
 import java.lang.reflect.Method;
 
 @SuppressWarnings("unused")
 public class RegisteredHandler {
-    private EventPriority priority;
-    private boolean ignoreCancelled;
-    private Listener listener;
-    private Method method;
 
-    private RegisteredHandler() {
-    }
+  private EventPriority priority;
+  private boolean ignoreCancelled;
+  private Listener listener;
+  private Method method;
 
-    public RegisteredHandler(EventPriority priority, boolean ignoreCancelled
-            , Listener listener, Method method) {
-        this.priority = priority;
-        this.ignoreCancelled = ignoreCancelled;
-        this.listener = listener;
-        this.method = method;
-    }
+  private RegisteredHandler() {}
 
-    public EventPriority getPriority() {
-        return priority;
-    }
+  public RegisteredHandler(
+    EventPriority priority,
+    boolean ignoreCancelled,
+    Listener listener,
+    Method method
+  ) {
+    this.priority = priority;
+    this.ignoreCancelled = ignoreCancelled;
+    this.listener = listener;
+    this.method = method;
+  }
 
-    public boolean isIgnoreCancelled() {
-        return ignoreCancelled;
-    }
+  public EventPriority getPriority() {
+    return priority;
+  }
 
-    public Listener getListener() {
-        return listener;
-    }
+  public boolean isIgnoreCancelled() {
+    return ignoreCancelled;
+  }
 
-    public Method getMethod() {
-        return method;
-    }
+  public Listener getListener() {
+    return listener;
+  }
+
+  public Method getMethod() {
+    return method;
+  }
 }

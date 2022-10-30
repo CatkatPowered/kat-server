@@ -8,7 +8,7 @@ package com.catkatpowered.katserver.event.interfaces;
  */
 @SuppressWarnings("unused SpellCheckingInspection")
 public interface Blockable {
-    boolean isBlocked();
+  boolean isBlocked();
 
-    void setBlocked(boolean block);
+  void setBlocked(boolean block);
 }

@@ -16,29 +16,31 @@ import org.eclipse.jetty.websocket.api.Session;
 // 此处监听event并转换成网络包发送给moseeger
 @Slf4j
 public class KatWebSocketBroadcast implements Listener {
-    @EventHandler
-    public void onMessageReceive(MessageReceiveEvent event) {
-        KatMessageStorage.createMessage(event.getMessage());
-        Gson gson = new Gson();
-        /*
+
+  @EventHandler
+  public void onMessageReceive(MessageReceiveEvent event) {
+    KatMessageStorage.createMessage(event.getMessage());
+    Gson gson = new Gson();
+    /*
         判断是否为文件类型的消息包
         若是，则填充resource_token给mosseger进行下一步请求使用
         若不是，则直接发送
         */
-        WebSocketMessagePacket packet;
-        if (event.getMessage().isResource()) {
-            KatUniMessage message = event.getMessage();
-            message.setResourceToken(KatServer.KatTokenPoolAPI.newToken());
-            packet = WebSocketMessagePacket.builder().message(message).build();
-        } else {
-            packet = WebSocketMessagePacket.builder().message(event.getMessage()).build();
-        }
-        try {
-            for (Session session : KatNetwork.getSessions()) {
-                session.getRemote().sendString(gson.toJson(packet));
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+    WebSocketMessagePacket packet;
+    if (event.getMessage().isResource()) {
+      KatUniMessage message = event.getMessage();
+      message.setResourceToken(KatServer.KatTokenPoolAPI.newToken());
+      packet = WebSocketMessagePacket.builder().message(message).build();
+    } else {
+      packet =
+        WebSocketMessagePacket.builder().message(event.getMessage()).build();
     }
+    try {
+      for (Session session : KatNetwork.getSessions()) {
+        session.getRemote().sendString(gson.toJson(packet));
+      }
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
+  }
 }

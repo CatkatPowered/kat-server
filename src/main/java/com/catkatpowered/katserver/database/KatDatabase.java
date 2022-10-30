@@ -4,16 +4,17 @@ import com.catkatpowered.katserver.database.interfaces.DatabaseConnector;
 
 public class KatDatabase {
 
-    @SuppressWarnings("all")
-    private static final KatDatabase Instance = new KatDatabase();
-    DatabaseConnector connector;
+  @SuppressWarnings("all")
+  private static final KatDatabase Instance = new KatDatabase();
 
-    public static KatDatabase getInstance() {
-        return Instance;
-    }
+  DatabaseConnector connector;
 
-    public void register(DatabaseConnector connector) {
-        this.connector = connector;
-        this.connector.open();
-    }
+  public static KatDatabase getInstance() {
+    return Instance;
+  }
+
+  public void register(DatabaseConnector connector) {
+    this.connector = connector;
+    this.connector.open();
+  }
 }

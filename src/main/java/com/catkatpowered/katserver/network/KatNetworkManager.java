@@ -6,13 +6,13 @@ import io.javalin.Javalin;
 
 public class KatNetworkManager {
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void init() {
-        KatNetwork.getInstance();
-        KatEventManager.registerListener(new KatWebSocketBroadcast());
-    }
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public static void init() {
+    KatNetwork.getInstance();
+    KatEventManager.registerListener(new KatWebSocketBroadcast());
+  }
 
-    public static Javalin getNetworkServer() {
-        return KatNetwork.getNetwork();
-    }
+  public static Javalin getNetworkServer() {
+    return KatNetwork.getNetwork();
+  }
 }

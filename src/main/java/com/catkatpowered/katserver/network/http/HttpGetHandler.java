@@ -9,22 +9,28 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 public class HttpGetHandler implements Handler {
-    Gson gson = new Gson();
-    @Override
-    public void handle(@NotNull Context ctx) throws Exception {
-        HttpRequestBody body = gson.fromJson(new String(ctx.body().getBytes()), HttpRequestBody.class);
-        if (KatServer.KatTokenPoolAPI.checkToken(body.getResourceToken())) {
-          // 直接用stream传递，用流发送给mosseger端
-          ctx.result(KatServer.KatStorageAPI.fetch(body.getResourceHash()));
-        }
+
+  Gson gson = new Gson();
+
+  @Override
+  public void handle(@NotNull Context ctx) throws Exception {
+    HttpRequestBody body = gson.fromJson(
+      new String(ctx.body().getBytes()),
+      HttpRequestBody.class
+    );
+    if (KatServer.KatTokenPoolAPI.checkToken(body.getResourceToken())) {
+      // 直接用stream传递，用流发送给mosseger端
+      ctx.result(KatServer.KatStorageAPI.fetch(body.getResourceHash()));
     }
+  }
 }
 
 @Data
 class HttpRequestBody {
-    @SerializedName("resource_token")
-    private String resourceToken;
 
-    @SerializedName("resource_hash")
-    private String resourceHash;
+  @SerializedName("resource_token")
+  private String resourceToken;
+
+  @SerializedName("resource_hash")
+  private String resourceHash;
 }

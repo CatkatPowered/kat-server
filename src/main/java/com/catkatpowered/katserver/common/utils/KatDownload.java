@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -18,47 +17,46 @@ import okhttp3.Request;
  */
 public class KatDownload {
 
-    public static InputStream getDownloadFileStream(File file, URL url, Map<String, String> headers)
-            throws IOException {
-        var client = new OkHttpClient();
-        var downloadRequestBuilder = new Request.Builder().url(url);
+  public static InputStream getDownloadFileStream(
+    File file,
+    URL url,
+    Map<String, String> headers
+  ) throws IOException {
+    var client = new OkHttpClient();
+    var downloadRequestBuilder = new Request.Builder().url(url);
 
-        if (headers != null)
-            for (var i : headers.keySet()) {
-                downloadRequestBuilder.addHeader(i, headers.get(i));
-            }
-
-        var downloadRequest = downloadRequestBuilder.build();
-        var call = client.newCall(downloadRequest);
-
-        return call.execute().body().byteStream();
-
+    if (headers != null) for (var i : headers.keySet()) {
+      downloadRequestBuilder.addHeader(i, headers.get(i));
     }
 
-    public static void writeFile(File path, InputStream inputStream) {
-        var file = new KatFile(path.getAbsolutePath());
+    var downloadRequest = downloadRequestBuilder.build();
+    var call = client.newCall(downloadRequest);
 
-        file.lock();
+    return call.execute().body().byteStream();
+  }
 
-        // Buffer
-        var len = 0;
-        var buffer = new byte[2048];
+  public static void writeFile(File path, InputStream inputStream) {
+    var file = new KatFile(path.getAbsolutePath());
 
-        try {
+    file.lock();
 
-            var fileOutputStream = new FileOutputStream(path);
+    // Buffer
+    var len = 0;
+    var buffer = new byte[2048];
 
-            while ((len = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, len);
-            }
+    try {
+      var fileOutputStream = new FileOutputStream(path);
 
-            fileOutputStream.close();
+      while ((len = inputStream.read(buffer)) != -1) {
+        fileOutputStream.write(buffer, 0, len);
+      }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            file.delete();
-        } finally {
-            file.unlock();
-        }
+      fileOutputStream.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      file.delete();
+    } finally {
+      file.unlock();
     }
+  }
 }

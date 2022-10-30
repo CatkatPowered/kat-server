@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
  * @author Krysztal
  */
 public interface KatStorageProvider {
-
   /**
    * 获取资源
    *
@@ -17,7 +16,8 @@ public interface KatStorageProvider {
    * @return 由 <b>Optional</b> 容器包装的包含资源文件的具体信息
    * @see KatShaUtils
    */
-  @Nullable public InputStream fetch(String hashString);
+  @Nullable
+  public InputStream fetch(String hashString);
 
   /**
    * 使用 Hash 校验资源，校验工具为 {@link KatShaUtils}

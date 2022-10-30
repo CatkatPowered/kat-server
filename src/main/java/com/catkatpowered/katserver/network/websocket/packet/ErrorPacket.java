@@ -8,14 +8,15 @@ import lombok.Data;
 @Data
 @Builder
 public class ErrorPacket {
-    // 错误信息
-    @SerializedName("error")
-    String error;
-    // 包类型
-    final String type = KatPacketTypeConstants.ERROR_PACKET;
 
+  // 错误信息
+  @SerializedName("error")
+  String error;
 
-    public ErrorPacket(String error) {
-        this.error = error;
-    }
+  // 包类型
+  final String type = KatPacketTypeConstants.ERROR_PACKET;
+
+  public ErrorPacket(String error) {
+    this.error = error;
+  }
 }

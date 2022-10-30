@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 public class MessageSendEvent extends Event {
-    String extensionId;
-    KatUniMessage message;
+
+  String extensionId;
+  KatUniMessage message;
 }

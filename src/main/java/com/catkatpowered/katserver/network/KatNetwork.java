@@ -7,6 +7,8 @@ import com.catkatpowered.katserver.network.http.HttpPostHandler;
 import com.catkatpowered.katserver.network.utils.KatCertUtil;
 import com.catkatpowered.katserver.network.websocket.KatWebSocketIncome;
 import io.javalin.Javalin;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.jetty.server.ConnectionFactory;
@@ -16,46 +18,53 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.Session;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class KatNetwork {
-    private static final KatNetwork Instance = new KatNetwork();
 
-    @Getter
-    private static Javalin network;
+  private static final KatNetwork Instance = new KatNetwork();
 
-    // 包含所有moseeger客户端,实现无限客户端
-    @Getter
-    @Setter
-    private static List<Session> sessions = new ArrayList<>();
+  @Getter
+  private static Javalin network;
 
-    private KatNetwork() {
-        Javalin server = Javalin.create(javalinConfig -> {
-            javalinConfig.jetty.server(() -> {
-                Server app = new Server();
-                SslContextFactory.Server sslContextFactory = KatCertUtil.getSslContextFactory();
-                ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
-                sslConnector.setPort(KatServer.KatConfigAPI
-                        .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get().intValue());
-                app.setConnectors(new Connector[]{sslConnector});
-                return app;
-            });
-        });
-        // HTTP Handlers
-        // mosseger向kat-server请求文件
-        server.get("/resource/{resourceHash}", new HttpGetHandler());
-        // mosseger向kat-server上传文件
-        server.post("/resource/{resourceHash}/{resourceName}", new HttpPostHandler());
+  // 包含所有moseeger客户端,实现无限客户端
+  @Getter
+  @Setter
+  private static List<Session> sessions = new ArrayList<>();
 
-        // WebSocket Handlers
-        server.ws("/websocket", KatWebSocketIncome::KatNetworkIncomeHandler);
+  private KatNetwork() {
+    Javalin server = Javalin.create(javalinConfig -> {
+      javalinConfig.jetty.server(() -> {
+        Server app = new Server();
+        SslContextFactory.Server sslContextFactory = KatCertUtil.getSslContextFactory();
+        ServerConnector sslConnector = new ServerConnector(
+          app,
+          sslContextFactory
+        );
+        sslConnector.setPort(
+          KatServer.KatConfigAPI
+            .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT)
+            .get()
+            .intValue()
+        );
+        app.setConnectors(new Connector[] { sslConnector });
+        return app;
+      });
+    });
+    // HTTP Handlers
+    // mosseger向kat-server请求文件
+    server.get("/resource/{resourceHash}", new HttpGetHandler());
+    // mosseger向kat-server上传文件
+    server.post(
+      "/resource/{resourceHash}/{resourceName}",
+      new HttpPostHandler()
+    );
 
+    // WebSocket Handlers
+    server.ws("/websocket", KatWebSocketIncome::KatNetworkIncomeHandler);
 
-        network = server.start();
-    }
+    network = server.start();
+  }
 
-    public static KatNetwork getInstance() {
-        return Instance;
-    }
+  public static KatNetwork getInstance() {
+    return Instance;
+  }
 }

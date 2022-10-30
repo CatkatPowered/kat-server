@@ -5,10 +5,11 @@ import com.catkatpowered.katserver.extension.KatExtensionInfo;
 import lombok.Getter;
 
 public class ExtensionEvent extends Event {
-    @Getter
-    KatExtensionInfo extensionInfo;
 
-    public ExtensionEvent(KatExtensionInfo extensionInfo) {
-        this.extensionInfo = extensionInfo;
-    }
+  @Getter
+  KatExtensionInfo extensionInfo;
+
+  public ExtensionEvent(KatExtensionInfo extensionInfo) {
+    this.extensionInfo = extensionInfo;
+  }
 }

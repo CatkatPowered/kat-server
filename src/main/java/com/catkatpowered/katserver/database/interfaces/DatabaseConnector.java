@@ -1,9 +1,9 @@
 package com.catkatpowered.katserver.database.interfaces;
 
 public interface DatabaseConnector {
-    void open();
+  void open();
 
-    void close();
+  void close();
 
-    DatabaseConnection connection();
+  DatabaseConnection connection();
 }
