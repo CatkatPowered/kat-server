@@ -12,4 +12,4 @@ bin/
 # Project
 logs/
 data/
-config.yml
+config.toml

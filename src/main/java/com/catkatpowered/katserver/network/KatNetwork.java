@@ -35,7 +35,7 @@ public class KatNetwork {
             SslContextFactory sslContextFactory = KatCertUtil.getSslContextFactory();
             ServerConnector sslConnector = new ServerConnector(app, sslContextFactory);
             sslConnector.setPort(KatServer.KatConfigAPI
-                    .<Integer>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get());
+                    .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_NETWORK_PORT).get().intValue());
             app.setConnectors(new Connector[]{sslConnector});
             return app;
         }));
