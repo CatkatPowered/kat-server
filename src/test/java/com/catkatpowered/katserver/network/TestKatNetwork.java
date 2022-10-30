@@ -295,13 +295,13 @@ public class TestKatNetwork {
       public void onMessage(MessageSendEvent event) {
         assertEquals(
           gson.toJson(event.getMessage()),
-          "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}"
+          "{\"message\":{\"message_type\":\"PlainMessage\",\"extension_id\":\"testExtension\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}"
         );
       }
     }
     KatServer.KatEventBusAPI.registerListener(new eventListener());
     webSocket.send(
-      "{\"message\":{\"message_type\":\"testExtension\",\"extension_id\":\"PlainMessage\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}"
+      "{\"message\":{\"message_type\":\"PlainMessage\",\"extension_id\":\"testExtension\",\"message_group\":\"101010101\",\"message_id\":\"uuid\",\"message_content\":\"欸嘿~\",\"message_timestamp\":1652881882},\"type\":\"websocket_message\"}"
     );
   }
 }
