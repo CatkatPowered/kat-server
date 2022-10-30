@@ -45,9 +45,9 @@ public class KatTokenPool {
         switch (action) {
             case All -> this.tokenPool.clear();
             case Outdated -> {
-                int outdatedTime = KatServer.KatConfigAPI
+                Long outdatedTime = KatServer.KatConfigAPI
                         .<Long>getConfig(KatConfigNodeConstants.KAT_CONFIG_TOKENPOOL_OUTDATED)
-                        .get().intValue();
+                        .get();
                 for (var item : this.tokenPool.entrySet())
                     if ((System.currentTimeMillis() - item.getValue()) >= outdatedTime)
                         this.tokenPool.remove(item.getKey());
