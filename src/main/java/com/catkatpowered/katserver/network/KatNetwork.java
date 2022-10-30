@@ -35,9 +35,18 @@ public class KatNetwork {
                 Server app = new Server();
                 SslContextFactory.Server sslContextFactory = KatCertUtil.getSslContextFactory();
                 sslContextFactory.setSniRequired(false);
+
+                HttpConfiguration httpsConfig = new HttpConfiguration();
+                SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+                secureRequestCustomizer.setSniHostCheck(false);
+                httpsConfig.addCustomizer(secureRequestCustomizer);
+                HttpConnectionFactory https = new HttpConnectionFactory(httpsConfig);
+                SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, https.getProtocol());
+
                 ServerConnector sslConnector = new ServerConnector(
                         app,
-                        sslContextFactory
+                        sslConnectionFactory,
+                        https
                 );
                 sslConnector.setPort(
                         KatServer.KatConfigAPI
@@ -45,6 +54,7 @@ public class KatNetwork {
                                 .get()
                                 .intValue()
                 );
+
                 app.setConnectors(new Connector[]{sslConnector});
                 return app;
             });
